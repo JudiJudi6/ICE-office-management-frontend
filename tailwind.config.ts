@@ -8,19 +8,29 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      backgroundSize: {
+        "size-200": "200% 200%",
+      },
+      backgroundPosition: {
+        "pos-0": "0% 0%",
+        "pos-100": "100% 100%",
+      },
       colors: {
-        main: "#ff5700",
-        mainHover: "#e84a00",
+        main1: "#fd9e0e",
+        main2: "#fc4508",
+        main3bg: "#fec372",
+        main4bg: "#ff8f5f",
+        // mainHover: "#e84a00",
 
-        bgWhite: "#f0f0f0", //kolor tła
+        white: "#fefefe", //kolor tła
         bgWhite1: "#f1f5fc", //kolor tla elementu
         bgWhite1Hover: "#f1f5f9", //kolor tla elementu ale hover
 
-        bgDark: "#0a0b0d", //kolor tła
+        dark: "#0a0b0d", //kolor tła
         bgDark1: "#141519", //kolor tla elementu
         bgDark1Hover: "#2b2d35", //kolor tla elementu ale hover
 
-        gray: "#8f8a88",
+        gray: "#b6b6b6",
 
         //&-rose-600 - to jest czerwony czasem
         //&-slate-300 - taki wyszarzony font
@@ -35,6 +45,7 @@ const config: Config = {
       screens: {
         xs: "320px",
         md400: "400px",
+        md500: "500px",
         md600: "600px",
         md750: "750px",
         md800: "800px",
