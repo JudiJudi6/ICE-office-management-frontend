@@ -7,5 +7,12 @@ interface TextLinkProps {
 }
 
 export default function TextLink({ href, children }: TextLinkProps) {
-  return <Link href={href}>{children}</Link>;
+  return (
+    <Link
+      href={href}
+      className="text-main2 hover:text-main1 transition-colors duration-300"
+    >
+      {children}
+    </Link>
+  );
 }
