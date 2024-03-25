@@ -45,7 +45,7 @@ export default function Input({ setValue, type, id, label }: InputProps) {
       </motion.label>
       <motion.input
         id={id}
-        className="border-none focus:outline-none px-3 py-2"
+        className="border-none focus:outline-none px-3 py-2 w-full"
         type={type}
         value={inputValue}
         onChange={(e) => changeValue(e.target.value)}
