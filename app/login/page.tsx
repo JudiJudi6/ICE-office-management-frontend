@@ -2,15 +2,10 @@
 
 import Input from "@/components/ui/Input";
 import TextLink from "@/components/ui/TextLink";
-import { OrbitControls } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
-import Link from "next/link";
 import React, { FormEvent, useEffect, useState } from "react";
-import { BoxGeometry, Mesh } from "three";
 
-import * as THREE from "three";
-import Render3D from "@/components/models3d/Render3D";
-import AxesHelper from "@/components/models3d/AxesHelper";
+
+import PageCanvas from "@/components/features/login/PageCanvas";
 
 export default function LogIn() {
   const [email, setEmail] = useState<string | number>("");
@@ -27,6 +22,8 @@ export default function LogIn() {
   //   },
   //   [email, password]
   // );
+
+
 
   return (
     <div className="min-h-screen w-full h-full">
@@ -69,70 +66,8 @@ export default function LogIn() {
               </span>
             </p>
           </div>
-          <div className="hidden xl:block w-1/2 h-full">
-            <Canvas camera={{ fov: 75, position: [8, 4, -4] }} shadows={true}>
-              <OrbitControls />
-              <Render3D path="desk" x={0} y={-1.5} z={0} />
-              <Render3D path="monitor" x={0.2} y={0.08} z={0} />
-              <Render3D
-                path="chair2"
-                x={-2}
-                y={-1.5}
-                z={-1}
-                scale={0.8}
-                rotY={2}
-              />
-              <Render3D
-                path="pot_leaves"
-                x={0}
-                y={-1.5}
-                z={2}
-                scale={0.4}
-                rotY={2}
-              />
-              <Render3D path="keyboard" x={-0.3} y={0.08} z={0} rotY={1.5} />
-              <Render3D
-                path="mouse_better"
-                x={-0.3}
-                y={0.08}
-                z={0.8}
-                rotY={3}
-              />
-              <mesh
-                position={new THREE.Vector3(-1, -1.5, 0)}
-                geometry={new THREE.BoxGeometry(4, 0.1, 5)}
-                receiveShadow={true}
-                castShadow={true}
-              >
-                <meshPhongMaterial color={"#e4d3c8"} />
-              </mesh>
-              <mesh
-                position={new THREE.Vector3(-1, 1.5, 0)}
-                geometry={new THREE.BoxGeometry(2, 0.1, 5)}
-                receiveShadow={true}
-                castShadow={true}
-              >
-                <meshPhongMaterial color={"#e4d3c8"} />
-              </mesh>
-
-         {/* gdzie pc */}
-
-
-              {/* <AxesHelper /> */}
-              <ambientLight intensity={4} />
-              <directionalLight
-                castShadow={true}
-                position={[0, 3, 0]}
-                intensity={10}
-                color="#fff"
-              />
-              {/* <pointLight
-                position={[0, 3, 0]}
-                intensity={100}
-                color="#fff"
-                castShadow={true}
-              /> */}
-            </Canvas>
+          <div className="hidden xl:block w-1/2 h-full ">
+            <PageCanvas />
           </div>
         </div>
       </div>

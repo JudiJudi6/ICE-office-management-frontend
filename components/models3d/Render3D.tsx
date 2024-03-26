@@ -1,5 +1,5 @@
 import { useLoader } from "@react-three/fiber";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Mesh } from "three";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
 
@@ -28,6 +28,12 @@ export default function Render3D({
   const mesh = useRef<Mesh>(null!);
   const gltf = useLoader(GLTFLoader, fileUrl);
 
+  gltf.scene.traverse((child) => {
+    if (child instanceof Mesh) {
+      child.receiveShadow = true;
+      child.castShadow = true;
+    }
+  });
 
   return (
     <mesh
@@ -35,10 +41,10 @@ export default function Render3D({
       position={[x, y, z]}
       scale={scale}
       rotation={[rotX, rotY, rotZ]}
-      receiveShadow={true}
+      receiveShadow
       castShadow={true}
     >
-      <primitive object={gltf.scene} receiveShadow={true} castShadow={true} />
+      <primitive object={gltf.scene} />
     </mesh>
   );
 }
