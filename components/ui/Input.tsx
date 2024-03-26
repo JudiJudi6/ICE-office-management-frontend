@@ -32,7 +32,9 @@ export default function Input({ setValue, type, id, label }: InputProps) {
     <div className="relative">
       <motion.label
         htmlFor={id}
-        className="absolute top-1/2 left-3 text-gray cursor-text"
+        className={`absolute top-1/2 left-3 text-gray cursor-text transition-colors duration-300 ${
+          focus ? "text-main1" : ""
+        } `}
         animate={
           focus
             ? { translateX: "-15px", translateY: "-140%", scale: 0.8 }
