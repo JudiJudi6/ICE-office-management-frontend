@@ -14,7 +14,7 @@ export default function LoginBtn() {
         <div className="flex justify-center items-center gap-4">
           <Link
             href="/login"
-            className="w-[110px] text-sm text-center hover:bg-gradient-to-r hover:to-main1 hover:via-main2 hover:from-main1 bg-size-200 bg-pos-0 hover:bg-pos-100 py-2 text-main2  tracking-wide  rounded-full transition-all duration-300 px-6"
+            className="w-[110px] text-sm text-center hover:bg-gradient-to-r  bg-size-200 bg-pos-0 hover:bg-pos-100 py-2 text-main1 hover:text-main2  tracking-wide  rounded-full transition-all duration-300 px-6"
           >
             Log in
           </Link>

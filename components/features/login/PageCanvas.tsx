@@ -48,14 +48,7 @@ function Frame() {
       <Render3D path="pc" x={0} y={-1.5} z={-0.85} rotY={3.15} />
       <Render3D path="keyboard" x={-0.3} y={0.08} z={0} rotY={1.5} />
       <Render3D path="mouse_better" x={-0.3} y={0.08} z={0.8} rotY={3} />
-      <Render3D
-        path="lamp"
-        x={-0.3}
-        y={0.08}
-        z={-0.8}
-        rotY={-1.5}
-        scale={0.6}
-      />
+      <Render3D path="lamp2" x={-0.3} y={0.08} z={-0.8} rotY={-1.5} scale={1} />
       <mesh
         position={new THREE.Vector3(-1, -1.5, 0)}
         geometry={new THREE.BoxGeometry(4, 0.1, 5)}

@@ -1,29 +1,22 @@
 "use client";
 
-import Input from "@/components/ui/Input";
 import TextLink from "@/components/ui/TextLink";
-import React, { FormEvent, useEffect, useState } from "react";
-
+import React from "react";
 
 import PageCanvas from "@/components/features/login/PageCanvas";
+import InputBox from "@/components/ui/InputBox";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 export default function LogIn() {
-  const [email, setEmail] = useState<string | number>("");
-  const [password, setPassword] = useState<string | number>("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FieldValues>();
 
-  function onSubmit(e: FormEvent) {
-    e.preventDefault();
-    console.log(email, password);
-  }
-
-  // useEffect(
-  //   function () {
-  //     console.log(email, password);
-  //   },
-  //   [email, password]
-  // );
-
-
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    console.log(data);
+  };
 
   return (
     <div className="min-h-screen w-full h-full">
@@ -35,23 +28,25 @@ export default function LogIn() {
               <p className="text-lg">Login to your account</p>
             </div>
             <form
-              onSubmit={onSubmit}
+              onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-4 md400:gap-6 md600:gap-8 xs:w-full xs:px-10 md500:w-[450px]"
             >
               <div>
-                <Input
+                <InputBox
                   id="email"
-                  setValue={setEmail}
                   type="email"
                   label="Email"
+                  error={errors?.email?.message}
+                  register={register}
                 />
               </div>
               <div className="mb-6">
-                <Input
+                <InputBox
                   id="password"
-                  setValue={setPassword}
                   type="password"
                   label="Password"
+                  error={errors?.password?.message}
+                  register={register}
                 />
               </div>
               <button className="w-full bg-gradient-to-r to-main1 via-main2 from-main1 bg-size-200 bg-pos-0 hover:bg-pos-100 py-2 text-white uppercase tracking-widest font-light rounded-full transition-all duration-300">
@@ -59,7 +54,7 @@ export default function LogIn() {
               </button>
             </form>
             <p className="text-sm mt-4">
-              Doesn&apos;t have an account yet?
+              Don&apos;t have an account yet?
               <br className="xs:hidden" />
               <span className="xs:ml-2">
                 <TextLink href="/signup">Sign Up</TextLink>

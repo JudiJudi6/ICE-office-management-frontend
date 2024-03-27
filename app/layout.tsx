@@ -36,7 +36,7 @@ export default function RootLayout({
               </p>
             </Link>
             <LoginBtn />
-            <BurgerNav />
+            {/* <BurgerNav /> */}
           </div>
           {children}
         </div>
