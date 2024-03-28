@@ -58,6 +58,12 @@ export default function SignUp() {
                   label="Email"
                   error={errors?.email?.message}
                   register={register}
+                  validateFunction={() => {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(getValues().email))
+                      return "Incorrect e-mail";
+                    else return true;
+                  }}
                 />
               </div>
               <div>

@@ -1,9 +1,7 @@
 import React, { Suspense, useState } from "react";
 
 import Render3D from "@/components/models3d/Render3D";
-import AxesHelper from "@/components/models3d/AxesHelper";
-import { BoxGeometry, Mesh } from "three";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, PerformanceMonitor, Stats } from "@react-three/drei";
 
 import * as THREE from "three";
@@ -48,7 +46,7 @@ function Frame() {
       <Render3D path="pc" x={0} y={-1.5} z={-0.85} rotY={3.15} />
       <Render3D path="keyboard" x={-0.3} y={0.08} z={0} rotY={1.5} />
       <Render3D path="mouse_better" x={-0.3} y={0.08} z={0.8} rotY={3} />
-      <Render3D path="lamp2" x={-0.3} y={0.08} z={-0.8} rotY={-1.5} scale={1} />
+      <Render3D path="lamp3" x={-0.3} y={0.08} z={-0.8} rotY={-1.5} scale={1} />
       <mesh
         position={new THREE.Vector3(-1, -1.5, 0)}
         geometry={new THREE.BoxGeometry(4, 0.1, 5)}
