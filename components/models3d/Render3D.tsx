@@ -1,6 +1,6 @@
 import { useLoader } from "@react-three/fiber";
-import React, { useEffect, useRef } from "react";
-import { Mesh } from "three";
+import React, { useEffect, useMemo, useRef } from "react";
+import { Mesh, MeshPhongMaterial } from "three";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
 
 interface ModelProps {
@@ -26,9 +26,10 @@ export default function Render3D({
 }: ModelProps) {
   const fileUrl = `/assets3d/${path}.glb`;
   const mesh = useRef<Mesh>(null!);
-  const gltf = useLoader(GLTFLoader, fileUrl);
+  const { scene } = useLoader(GLTFLoader, fileUrl);
+  const copiedScene = useMemo(() => scene.clone(), [scene]);
 
-  gltf.scene.traverse((child) => {
+  scene.traverse((child) => {
     if (child instanceof Mesh) {
       child.receiveShadow = true;
       child.castShadow = true;
@@ -44,7 +45,7 @@ export default function Render3D({
       receiveShadow
       castShadow={true}
     >
-      <primitive object={gltf.scene} />
+      <primitive object={copiedScene} />
     </mesh>
   );
 }
