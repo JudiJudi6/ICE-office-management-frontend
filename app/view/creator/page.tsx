@@ -5,10 +5,10 @@ import AxesHelper from "@/components/models3d/AxesHelper";
 import Desk3D from "@/components/models3d/Desk3D";
 import Render3D from "@/components/models3d/Render3D";
 import RenderFloor from "@/components/models3d/RenderFloor";
-import { Box, OrbitControls, OrthographicCamera } from "@react-three/drei";
+import RenderWall from "@/components/models3d/RenderWall";
+import { Box, OrbitControls, Stats } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import React, { useEffect, useRef, useState } from "react";
-import { createRoot } from "react-dom/client";
 import { Vector3 } from "three";
 
 export interface elementInterface {
@@ -37,9 +37,10 @@ export interface floorInterface {
 interface SpyProps {
   setX: React.Dispatch<React.SetStateAction<number>>;
   setY: React.Dispatch<React.SetStateAction<number>>;
+  freeCamera: boolean;
 }
 
-function Spy({ setX, setY }: SpyProps) {
+function Spy({ setX, setY, freeCamera }: SpyProps) {
   useFrame(({ mouse, viewport, camera }) => {
     const position = new Vector3();
     const x =
@@ -50,30 +51,34 @@ function Spy({ setX, setY }: SpyProps) {
       camera.getWorldPosition(position).z;
     setX(x);
     setY(-y);
-
-    // console.log(x, y);
-    // console.log(camera., camera.rotateY, camera.rotateZ);
   });
 
-  return <Box />;
+  return (
+    <gridHelper visible={!freeCamera} args={[50, 50, 0x000000, "lightgray"]} />
+  );
 }
 
 export default function Creator(): JSX.Element {
   const [elements, setElements] = useState<elementInterface[]>([]);
   const [floor, setFloor] = useState<floorInterface[]>([]);
+  const [walls, setWalls] = useState<floorInterface[]>([]);
   const [activeElement, setActiveElement] = useState("");
   const [clientX, setClientX] = useState(0);
   const [clientZ, setClientZ] = useState(0);
 
+  const [mouseDown, setMouseDown] = useState(false);
+  const [freeCamera, setFreeCamera] = useState(false);
+
   const [floorSize, setFloorSize] = useState({ x: 0, z: 0, endX: 0, endZ: 0 });
+  const [wallSize, setWallSize] = useState({ x: 0, z: 0, endX: 0, endZ: 0 });
 
   const [rotY, setRotY] = useState(0);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const controlsRef = useRef<any>(null);
 
   useEffect(
     function () {
-      console.log("effect");
       function clearActive() {
         setActiveElement("");
         setRotY(0);
@@ -81,18 +86,25 @@ export default function Creator(): JSX.Element {
 
       function rotate(e: KeyboardEvent) {
         if (e.key === "ArrowRight") {
-          setRotY((s) => (s += 0.335));
+          setRotY((s) => (s += Math.PI / 8));
         }
         if (e.key === "ArrowLeft") {
-          setRotY((s) => (s -= 0.335));
+          setRotY((s) => (s -= Math.PI / 8));
         }
         if (e.key === "Escape") {
           if (activeElement) {
-            setElements((s) => s.slice(0, -1));
+            if (activeElement.includes("floor")) {
+              setFloor((s) => s.slice(0, -1));
+            } else if (activeElement.includes("wall")) {
+              setWalls((s) => s.slice(0, -1));
+            } else {
+              setElements((s) => s.slice(0, -1));
+            }
             setActiveElement("");
             setRotY(0);
           }
           console.log(floorSize);
+          console.log(floor);
         }
       }
 
@@ -116,15 +128,15 @@ export default function Creator(): JSX.Element {
       clientX,
       clientZ,
       floorSize,
+      floor,
     ]
   );
 
   useEffect(
     function () {
-      console.log(floorSize);
-      console.log(floor);
       function startPos() {
-        console.log(clientX, clientZ);
+        console.log("dupa");
+        setMouseDown(true);
         setFloorSize((s) => ({
           ...s,
           x: clientX,
@@ -132,6 +144,21 @@ export default function Creator(): JSX.Element {
         }));
       }
 
+      if (canvasRef && canvasRef.current) {
+        canvasRef.current.addEventListener("mousedown", startPos);
+      }
+
+      return () => {
+        if (canvasRef && canvasRef.current) {
+          canvasRef.current.removeEventListener("mousedown", startPos);
+        }
+      };
+    },
+    [clientX, clientZ]
+  );
+
+  useEffect(
+    function () {
       function endPos() {
         console.log(clientX, clientZ);
         setFloorSize((s) => ({
@@ -139,20 +166,31 @@ export default function Creator(): JSX.Element {
           endX: clientX,
           endZ: clientZ,
         }));
+        setActiveElement("");
+        setFloorSize({ x: 0, z: 0, endX: 0, endZ: 0 });
+        setMouseDown(false);
       }
+
       if (canvasRef && canvasRef.current) {
-        canvasRef.current.addEventListener("mousedown", startPos);
         canvasRef.current.addEventListener("mouseup", endPos);
       }
 
       return () => {
         if (canvasRef && canvasRef.current) {
-          canvasRef.current.removeEventListener("mousedown", startPos);
           canvasRef.current.removeEventListener("mouseup", endPos);
         }
       };
     },
     [clientZ, clientX]
+  );
+
+  useEffect(
+    function () {
+      if (!freeCamera && controlsRef.current) {
+        controlsRef.current.reset();
+      }
+    },
+    [freeCamera]
   );
 
   return (
@@ -162,6 +200,8 @@ export default function Creator(): JSX.Element {
         setActiveElement={setActiveElement}
         setElements={setElements}
         setFloor={setFloor}
+        setWalls={setWalls}
+        setFreeCamera={setFreeCamera}
       />
       <Canvas
         ref={canvasRef}
@@ -169,7 +209,7 @@ export default function Creator(): JSX.Element {
         camera={{ zoom: 30, position: [0, 200, 0] }}
         shadows={true}
       >
-        <Spy setX={setClientX} setY={setClientZ} />
+        <Spy setX={setClientX} setY={setClientZ} freeCamera={freeCamera} />
         {elements.map((element) => {
           if (element.id === activeElement) {
             if (element.type === "desk") {
@@ -216,38 +256,100 @@ export default function Creator(): JSX.Element {
           if (element.id === activeElement) {
             element.x = floorSize.x;
             element.z = floorSize.z;
+            element.endZ = clientZ;
+            element.endX = clientX;
 
+            if (mouseDown) {
+              return (
+                <RenderFloor
+                  id={element.id}
+                  key={element.id}
+                  x={floorSize.x}
+                  y={element.y}
+                  z={floorSize.z}
+                  endX={clientX}
+                  endZ={clientZ}
+                  endY={element.endY}
+                />
+              );
+            } else {
+              return (
+                <Box
+                  key={1}
+                  position={
+                    new Vector3(clientX + 0.5, element.y, clientZ + 0.5)
+                  }
+                />
+              );
+            }
+          } else {
             return (
               <RenderFloor
                 id={element.id}
                 key={element.id}
-                x={clientX}
+                x={element.x}
                 y={element.y}
-                z={clientZ}
-                endX={clientX}
-                endZ={clientZ}
+                z={element.z}
+                endX={element.endX}
+                endZ={element.endZ}
                 endY={element.y}
               />
             );
           }
         })}
-        {/* {elements.map((element) => {
-          return (
-            <Render3D
-              key={element.id}
-              path={element.path}
-              x={element.x}
-              y={element.y}
-              z={element.z}
-              rotX={element.rotX}
-              rotY={element.rotY}
-              rotZ={element.rotZ}
-              scale={element.scale}
-            />
-          );
-        })} */}
-        {/* <OrbitControls /> */}
-        <OrbitControls enableRotate={false} />
+        {walls.map((element) => {
+          if (element.id === activeElement) {
+            element.x = floorSize.x;
+            element.z = floorSize.z;
+            element.endZ = clientZ;
+            element.endX = clientX;
+
+            if (mouseDown) {
+              return (
+                <RenderWall
+                  id={element.id}
+                  key={element.id}
+                  x={floorSize.x}
+                  y={element.y}
+                  z={floorSize.z}
+                  endX={clientX}
+                  endZ={clientZ}
+                  endY={element.endY}
+                />
+              );
+            } else {
+              return (
+                <mesh
+                  key={2}
+                  position={new Vector3(clientX + 0.25, 2, clientZ + 0.25)}
+                >
+                  <boxGeometry args={[0.5, 5, 0.5]} />
+                  <meshPhongMaterial color={0x87b6d6} />
+                </mesh>
+              );
+            }
+          } else {
+            return (
+              <RenderWall
+                id={element.id}
+                key={element.id}
+                x={element.x}
+                y={element.y}
+                z={element.z}
+                endX={element.endX}
+                endZ={element.endZ}
+                endY={element.y}
+              />
+            );
+          }
+        })}
+        <OrbitControls
+          ref={controlsRef}
+          enableRotate={freeCamera}
+          enableDamping={false}
+          minPolarAngle={0}
+          maxPolarAngle={Math.PI / 2 - 0.1}
+        />
         <ambientLight intensity={4} />
         <directionalLight
           castShadow={true}
@@ -257,8 +359,8 @@ export default function Creator(): JSX.Element {
           shadow-mapSize-width={1024}
           shadow-mapSize-height={1024}
         />
-        <gridHelper args={[50, 50, 0x000000, "lightgray"]} />
-        <AxesHelper />
+
+        <Stats />
       </Canvas>
     </div>
   );

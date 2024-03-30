@@ -1,5 +1,4 @@
 import { floorInterface } from "@/app/view/creator/page";
-import { Box } from "@react-three/drei";
 import React from "react";
 
 export default function RenderFloor({
@@ -10,5 +9,18 @@ export default function RenderFloor({
   endY,
   endZ,
 }: floorInterface) {
-  return <Box />;
+  const width = Math.abs(endX - x);
+  const depth = Math.abs(endZ - z);
+
+  const centerX = (x + endX) / 2;
+  const centerZ = (z + endZ) / 2;
+
+  return (
+    <>
+      <mesh position={[centerX, -0.24, centerZ]} receiveShadow castShadow>
+        <boxGeometry args={[width, 0.5, depth]} />
+        <meshPhongMaterial color={0xf3ebe6} />
+      </mesh>
+    </>
+  );
 }

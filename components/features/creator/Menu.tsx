@@ -18,6 +18,8 @@ interface MenuProps {
   setActiveElement: Dispatch<SetStateAction<string>>;
   setElements: Dispatch<SetStateAction<elementInterface[]>>;
   setFloor: Dispatch<SetStateAction<floorInterface[]>>;
+  setWalls: Dispatch<SetStateAction<floorInterface[]>>;
+  setFreeCamera: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function Menu({
@@ -25,6 +27,8 @@ export default function Menu({
   setActiveElement,
   setElements,
   setFloor,
+  setFreeCamera,
+  setWalls,
 }: MenuProps) {
   function appendElement(
     e: React.MouseEvent<HTMLButtonElement>,
@@ -73,6 +77,25 @@ export default function Menu({
     console.log("append");
   }
 
+  function appendWall(e: React.MouseEvent<HTMLButtonElement>) {
+    const id = `${new Date().getTime().toString()}-wall`;
+    setWalls((elements) => [
+      ...elements,
+      {
+        id: id,
+        x: e.clientX,
+        y: 0,
+        z: e.clientY,
+        endX: 0,
+        endY: 0,
+        endZ: 0,
+      },
+    ]);
+    setActiveElement(id);
+
+    console.log("append");
+  }
+
   return (
     <div className="flex flex-col">
       <button onClick={(e) => appendElement(e, "pot_cactus", "static", 1)}>
@@ -91,6 +114,8 @@ export default function Menu({
         choinka
       </button>
       <button onClick={(e) => appendFloor(e)}>floor</button>
+      <button onClick={(e) => appendWall(e)}>wall</button>
+      <button onClick={() => setFreeCamera((s) => !s)}>free camera</button>
     </div>
   );
 }
