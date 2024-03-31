@@ -6,9 +6,10 @@ import Desk3D from "@/components/models3d/Desk3D";
 import Render3D from "@/components/models3d/Render3D";
 import RenderFloor from "@/components/models3d/RenderFloor";
 import RenderWall from "@/components/models3d/RenderWall";
+import Spinner from "@/components/ui/Spinner";
 import { Box, OrbitControls, Stats, useHelper } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import {
   DirectionalLight,
   DirectionalLightHelper,
@@ -64,45 +65,6 @@ function Spy({ setX, setY, freeCamera }: SpyProps) {
   );
 }
 
-const Light = () => {
-  const lights = [];
-  const spotLight = useRef<DirectionalLight>(null);
-  useHelper(spotLight, SpotLightHelper, "hotpink");
-
-  const DISTANCEBETWEENLIGHTS = 5;
-
-  for (let i = -25; i < 25; i += DISTANCEBETWEENLIGHTS) {
-    for (let j = -25; j < 25; j += DISTANCEBETWEENLIGHTS) {
-      lights.push(
-        <spotLight
-          key={`id-${i}-${j}`}
-          ref={spotLight}
-          color="#fff"
-          castShadow={true}
-          position={[i, 6, j]}
-          intensity={10}
-          angle={0.5}
-          distance={20}
-        />
-      );
-    }
-  }
-  return (
-    <>
-      {" "}
-      <spotLight
-        ref={spotLight}
-        color="#fff"
-        castShadow={true}
-        position={[10, 6, 10]}
-        intensity={10}
-        angle={0.5}
-        distance={20}
-      />
-    </>
-  );
-};
-
 export default function Creator(): JSX.Element {
   const [elements, setElements] = useState<elementInterface[]>([]);
   const [floor, setFloor] = useState<floorInterface[]>([]);
@@ -115,15 +77,11 @@ export default function Creator(): JSX.Element {
   const [freeCamera, setFreeCamera] = useState(false);
 
   const [floorSize, setFloorSize] = useState({ x: 0, z: 0, endX: 0, endZ: 0 });
-  // const [wallSize, setWallSize] = useState({ x: 0, z: 0, endX: 0, endZ: 0 });
 
   const [rotY, setRotY] = useState(0);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const controlsRef = useRef<any>(null);
-
-  const dirLight = useRef<DirectionalLight>(null);
-  // useHelper(dirLight, DirectionalLightHelper, "red");
 
   useEffect(
     function () {
@@ -157,14 +115,14 @@ export default function Creator(): JSX.Element {
       }
 
       if (canvasRef && canvasRef.current) {
-        canvasRef.current.addEventListener("click", clearActive);
-        document.addEventListener("keydown", rotate);
+        canvasRef.current?.addEventListener("click", clearActive);
+        document?.addEventListener("keydown", rotate);
       }
 
       return () => {
         if (canvasRef && canvasRef.current) {
-          canvasRef.current.removeEventListener("click", clearActive);
-          document.removeEventListener("keydown", rotate);
+          canvasRef.current?.removeEventListener("click", clearActive);
+          document?.removeEventListener("keydown", rotate);
         }
       };
     },
@@ -193,12 +151,12 @@ export default function Creator(): JSX.Element {
       }
 
       if (canvasRef && canvasRef.current) {
-        canvasRef.current.addEventListener("mousedown", startPos);
+        canvasRef.current?.addEventListener("mousedown", startPos);
       }
 
       return () => {
         if (canvasRef && canvasRef.current) {
-          canvasRef.current.removeEventListener("mousedown", startPos);
+          canvasRef.current?.removeEventListener("mousedown", startPos);
         }
       };
     },
@@ -220,12 +178,12 @@ export default function Creator(): JSX.Element {
       }
 
       if (canvasRef && canvasRef.current) {
-        canvasRef.current.addEventListener("mouseup", endPos);
+        canvasRef.current?.addEventListener("mouseup", endPos);
       }
 
       return () => {
         if (canvasRef && canvasRef.current) {
-          canvasRef.current.removeEventListener("mouseup", endPos);
+          canvasRef.current?.removeEventListener("mouseup", endPos);
         }
       };
     },
@@ -243,6 +201,7 @@ export default function Creator(): JSX.Element {
 
   return (
     <div className="flex pt-[80px] h-screen p-4">
+      {/* <Suspense fallback={<Spinner />}> */}
       <Menu
         canvasRef={canvasRef}
         setActiveElement={setActiveElement}
@@ -401,19 +360,20 @@ export default function Creator(): JSX.Element {
         <ambientLight intensity={4} />
         <directionalLight
           castShadow={true}
-          position={[5, 100, 0]} 
-          intensity={4} 
-          color="#fff" 
+          position={[5, 100, 0]}
+          intensity={4}
+          color="#fff"
           shadow-mapSize-width={1024}
           shadow-mapSize-height={1024}
           shadow-camera-left={-30}
-          shadow-camera-right={20} 
-          shadow-camera-top={25} 
-          shadow-camera-bottom={-25} 
-          shadow-camera-far={200} 
+          shadow-camera-right={20}
+          shadow-camera-top={25}
+          shadow-camera-bottom={-25}
+          shadow-camera-far={200}
         />
         <Stats />
       </Canvas>
+      {/* </Suspense> */}
     </div>
   );
 }

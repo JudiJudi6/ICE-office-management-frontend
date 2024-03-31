@@ -24,7 +24,7 @@ const config: Config = {
 
         white: "#fefefe", //kolor tła
         bgWhite1: "#f1f5fc", //kolor tla elementu
-        bgWhite1Hover: "#f1f5f9", //kolor tla elementu ale hover
+        bgWhite1Hover: "#e2e2e2", //kolor tla elementu ale hover
 
         dark: "#0a0b0d", //kolor tła
         bgDark1: "#141519", //kolor tla elementu

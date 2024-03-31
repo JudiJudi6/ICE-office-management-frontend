@@ -13,6 +13,19 @@ import ReactDOM from "react-dom";
 import { createRoot } from "react-dom/client";
 import { Vector3 } from "three";
 
+import { RiArrowGoBackFill } from "react-icons/ri";
+import { MdOutlinePartyMode } from "react-icons/md";
+import { CiSquarePlus } from "react-icons/ci";
+import { CiSquareMinus } from "react-icons/ci";
+import { IoIosHelpCircleOutline } from "react-icons/io";
+import { Canvas } from "@react-three/fiber";
+import DesksSection from "./DesksSection";
+import FloorSection from "./FloorSection";
+import WallsSection from "./WallsSection";
+import ChairsSection from "./ChairsSection";
+import FurnitureSection from "./FurnitureSection";
+import DecorationSection from "./DecorationSection";
+
 interface MenuProps {
   canvasRef: MutableRefObject<HTMLElement | null>;
   setActiveElement: Dispatch<SetStateAction<string>>;
@@ -37,7 +50,7 @@ export default function Menu({
     scale: number
   ) {
     const id = `${new Date().getTime().toString()}-${path}`;
-    console.log(id);
+    setFreeCamera(false);
     setElements((elements) => [
       ...elements,
       {
@@ -54,12 +67,11 @@ export default function Menu({
       },
     ]);
     setActiveElement(id);
-
-    console.log("append");
   }
 
   function appendFloor(e: React.MouseEvent<HTMLButtonElement>) {
     const id = `${new Date().getTime().toString()}-floor`;
+    setFreeCamera(false);
     setFloor((elements) => [
       ...elements,
       {
@@ -73,12 +85,11 @@ export default function Menu({
       },
     ]);
     setActiveElement(id);
-
-    console.log("append");
   }
 
   function appendWall(e: React.MouseEvent<HTMLButtonElement>) {
     const id = `${new Date().getTime().toString()}-wall`;
+    setFreeCamera(false);
     setWalls((elements) => [
       ...elements,
       {
@@ -92,30 +103,45 @@ export default function Menu({
       },
     ]);
     setActiveElement(id);
-
-    console.log("append");
   }
 
   return (
-    <div className="flex flex-col">
-      <button onClick={(e) => appendElement(e, "pot_cactus", "static", 1)}>
-        cactus
-      </button>{" "}
-      <button onClick={(e) => appendElement(e, "chair2", "static", 1)}>
-        chair
+    <div className="flex flex-col w-72 pr-4">
+      <button className="p-2  hover:bg-bgWhite1 rounded-xl text-lg transition-colors duration-300 my-2 flex justify-center items-center gap-3">
+        Office <span className="text-main2 ">Creator</span>{" "}
+        <span className="text-xl">
+          <IoIosHelpCircleOutline />
+        </span>
       </button>
-      <button onClick={(e) => appendElement(e, "desk", "static", 1)}>
-        desk
-      </button>
-      <button onClick={(e) => appendElement(e, "sofa", "static", 1)}>
-        sofa
-      </button>
-      <button onClick={(e) => appendElement(e, "pot_leaves", "static", 1)}>
-        choinka
-      </button>
-      <button onClick={(e) => appendFloor(e)}>floor</button>
-      <button onClick={(e) => appendWall(e)}>wall</button>
-      <button onClick={() => setFreeCamera((s) => !s)}>free camera</button>
+      <div className="flex w-full justify-between my-2 bg-bgWhite1 p-1 rounded-xl">
+        <button className="p-2  hover:text-main2 rounded-xl text-xl transition-colors duration-300">
+          <RiArrowGoBackFill />
+        </button>
+        <button
+          onClick={() => setFreeCamera((s) => !s)}
+          className="p-2 hover:text-main2 rounded-xl text-xl transition-colors duration-300"
+        >
+          <MdOutlinePartyMode />
+        </button>
+        <button className="p-2 hover:text-main2 rounded-xl text-xl transition-colors duration-300">
+          <CiSquarePlus />
+        </button>
+        <button className="p-2 hover:text-main2 rounded-xl text-xl transition-colors duration-300">
+          <CiSquareMinus />
+        </button>
+      </div>
+      <div
+        className="overflow-y-auto"
+        id="scrollBarLeft"
+        // style={{ scrollbarColor: "#007 #fff" }}
+      >
+        <FloorSection appendFloor={appendFloor} />
+        <WallsSection appendWall={appendWall} />
+        <DesksSection appendElement={appendElement} />
+        <ChairsSection appendElement={appendElement} />
+        <FurnitureSection appendElement={appendElement} />
+        <DecorationSection appendElement={appendElement} />
+      </div>
     </div>
   );
 }
