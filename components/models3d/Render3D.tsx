@@ -1,5 +1,11 @@
 import { useLoader } from "@react-three/fiber";
-import React, { useEffect, useMemo, useRef } from "react";
+import React, {
+  Suspense,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+} from "react";
 import { Mesh, MeshPhongMaterial } from "three";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
 
@@ -27,8 +33,6 @@ export default function Render3D({
   const fileUrl = `/assets3d/${path}.glb`;
   const mesh = useRef<Mesh>(null!);
   const { scene } = useLoader(GLTFLoader, fileUrl);
-  const copiedScene = useMemo(() => scene.clone(), [scene]);
-
   scene.traverse((child) => {
     if (child instanceof Mesh) {
       child.receiveShadow = true;
@@ -36,16 +40,20 @@ export default function Render3D({
     }
   });
 
+  const copiedScene = useMemo(() => scene.clone(), [scene]);
+
   return (
-    <mesh
-      ref={mesh}
-      position={[x, y, z]}
-      scale={scale}
-      rotation={[rotX, rotY, rotZ]}
-      receiveShadow
-      castShadow={true}
-    >
-      <primitive object={copiedScene} />
-    </mesh>
+    <Suspense fallback={null}>
+      <mesh
+        ref={mesh}
+        position={[x, y, z]}
+        scale={scale}
+        rotation={[rotX, rotY, rotZ]}
+        receiveShadow
+        castShadow={true}
+      >
+        <primitive object={copiedScene} />
+      </mesh>
+    </Suspense>
   );
 }

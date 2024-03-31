@@ -17,7 +17,7 @@ export default function RenderFloor({
 
   return (
     <>
-      <mesh position={[centerX, -0.24, centerZ]} receiveShadow castShadow>
+      <mesh position={[centerX, -0.26, centerZ]} receiveShadow castShadow>
         <boxGeometry args={[width, 0.5, depth]} />
         <meshPhongMaterial color={0xf3ebe6} />
       </mesh>

@@ -6,10 +6,16 @@ import Desk3D from "@/components/models3d/Desk3D";
 import Render3D from "@/components/models3d/Render3D";
 import RenderFloor from "@/components/models3d/RenderFloor";
 import RenderWall from "@/components/models3d/RenderWall";
-import { Box, OrbitControls, Stats } from "@react-three/drei";
+import { Box, OrbitControls, Stats, useHelper } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import React, { useEffect, useRef, useState } from "react";
-import { Vector3 } from "three";
+import {
+  DirectionalLight,
+  DirectionalLightHelper,
+  PointLightHelper,
+  SpotLightHelper,
+  Vector3,
+} from "three";
 
 export interface elementInterface {
   id: string;
@@ -58,6 +64,45 @@ function Spy({ setX, setY, freeCamera }: SpyProps) {
   );
 }
 
+const Light = () => {
+  const lights = [];
+  const spotLight = useRef<DirectionalLight>(null);
+  useHelper(spotLight, SpotLightHelper, "hotpink");
+
+  const DISTANCEBETWEENLIGHTS = 5;
+
+  for (let i = -25; i < 25; i += DISTANCEBETWEENLIGHTS) {
+    for (let j = -25; j < 25; j += DISTANCEBETWEENLIGHTS) {
+      lights.push(
+        <spotLight
+          key={`id-${i}-${j}`}
+          ref={spotLight}
+          color="#fff"
+          castShadow={true}
+          position={[i, 6, j]}
+          intensity={10}
+          angle={0.5}
+          distance={20}
+        />
+      );
+    }
+  }
+  return (
+    <>
+      {" "}
+      <spotLight
+        ref={spotLight}
+        color="#fff"
+        castShadow={true}
+        position={[10, 6, 10]}
+        intensity={10}
+        angle={0.5}
+        distance={20}
+      />
+    </>
+  );
+};
+
 export default function Creator(): JSX.Element {
   const [elements, setElements] = useState<elementInterface[]>([]);
   const [floor, setFloor] = useState<floorInterface[]>([]);
@@ -70,12 +115,15 @@ export default function Creator(): JSX.Element {
   const [freeCamera, setFreeCamera] = useState(false);
 
   const [floorSize, setFloorSize] = useState({ x: 0, z: 0, endX: 0, endZ: 0 });
-  const [wallSize, setWallSize] = useState({ x: 0, z: 0, endX: 0, endZ: 0 });
+  // const [wallSize, setWallSize] = useState({ x: 0, z: 0, endX: 0, endZ: 0 });
 
   const [rotY, setRotY] = useState(0);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const controlsRef = useRef<any>(null);
+
+  const dirLight = useRef<DirectionalLight>(null);
+  // useHelper(dirLight, DirectionalLightHelper, "red");
 
   useEffect(
     function () {
@@ -353,13 +401,17 @@ export default function Creator(): JSX.Element {
         <ambientLight intensity={4} />
         <directionalLight
           castShadow={true}
-          position={[100, 10, 0]}
-          intensity={10}
-          color="#fff"
+          position={[5, 100, 0]} 
+          intensity={4} 
+          color="#fff" 
           shadow-mapSize-width={1024}
           shadow-mapSize-height={1024}
+          shadow-camera-left={-30}
+          shadow-camera-right={20} 
+          shadow-camera-top={25} 
+          shadow-camera-bottom={-25} 
+          shadow-camera-far={200} 
         />
-
         <Stats />
       </Canvas>
     </div>
