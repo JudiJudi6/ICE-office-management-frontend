@@ -1,6 +1,6 @@
 import { floorInterface } from "@/app/view/creator/page";
 import { Box } from "@react-three/drei";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Vector3 } from "three";
 
 export default function RenderWall({
@@ -10,7 +10,13 @@ export default function RenderWall({
   endX,
   endY,
   endZ,
+  color,
+  id,
+  destroyElement,
+  mouseInteractions,
 }: floorInterface) {
+  const [enter, setEnter] = useState(false);
+
   const width = Math.abs(endX - x);
   const depth = Math.abs(endZ - z);
 
@@ -19,13 +25,29 @@ export default function RenderWall({
 
   return (
     <>
-      <mesh position={[centerX, 2, centerZ]} receiveShadow castShadow>
+      <mesh
+        position={[centerX, y === 5 ? 2 : 0.75, centerZ]}
+        receiveShadow
+        castShadow
+        onPointerEnter={(e) => {
+          e.stopPropagation();
+          setEnter(true);
+        }}
+        onPointerLeave={() => setEnter(false)}
+        onClick={(e) => {
+          destroyElement && id && destroyElement(e, id);
+        }}
+      >
         {width > depth ? (
-          <boxGeometry args={[width, 5, 0.5]} />
+          <boxGeometry args={[width, y, 0.5]} />
         ) : (
-          <boxGeometry args={[0.5, 5, depth]} />
+          <boxGeometry args={[0.5, y, depth]} />
         )}
-        <meshPhongMaterial color={0x87b6d6} />
+        {mouseInteractions && enter ? (
+          <meshStandardMaterial color={0xff0000} opacity={0.5} transparent />
+        ) : (
+          <meshPhongMaterial color={color} />
+        )}
       </mesh>
     </>
   );

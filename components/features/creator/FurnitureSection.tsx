@@ -19,10 +19,10 @@ export default function FurnitureSection({
       <p className="text-lg w-full pl-2">Furniture</p>
       <button
         onClick={(e) => appendElement(e, "sofa", "static", 1.3)}
-        className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 "
+        className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
       >
         <div className="h-[50px]">
-          <Canvas>
+          <Canvas frameloop="demand">
             <Render3D
               path="sofa"
               x={0}
@@ -41,10 +41,10 @@ export default function FurnitureSection({
       </button>
       <button
         onClick={(e) => appendElement(e, "table", "static", 1.3)}
-        className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 "
+        className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
       >
         <div className="h-[50px]">
-          <Canvas>
+          <Canvas frameloop="demand">
             <Render3D
               path="table"
               x={0}

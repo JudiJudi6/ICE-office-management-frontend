@@ -1,5 +1,6 @@
 import Render3D from "@/components/models3d/Render3D";
 import { Canvas } from "@react-three/fiber";
+import Image from "next/image";
 import React from "react";
 
 interface DesksSectionProps {
@@ -17,13 +18,10 @@ export default function DesksSection({ appendElement }: DesksSectionProps) {
       <p className="text-lg w-full pl-2">Desks</p>
       <button
         onClick={(e) => appendElement(e, "desk", "static", 1.3)}
-        className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 "
+        className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
       >
-        <div className="h-[50px]">
-          <Canvas>
-            <Render3D path="desk" x={0} y={-2} z={0} scale={1.5} rotY={1} />
-            <ambientLight intensity={4} />
-          </Canvas>
+        <div className="flex justify-center items-center h-[50px]">
+          <Image src="/creatorImages/desk.jpg" alt="" width={35} height={35} />
         </div>
         <div>
           <p className="text-sm">Desk v.1</p>

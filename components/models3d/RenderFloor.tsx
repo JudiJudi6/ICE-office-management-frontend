@@ -1,5 +1,5 @@
 import { floorInterface } from "@/app/view/creator/page";
-import React from "react";
+import React, { useState } from "react";
 
 export default function RenderFloor({
   x,
@@ -8,7 +8,13 @@ export default function RenderFloor({
   endX,
   endY,
   endZ,
+  id,
+  destroyElement,
+  mouseInteractions,
+  color,
 }: floorInterface) {
+  const [enter, setEnter] = useState(false);
+
   const width = Math.abs(endX - x);
   const depth = Math.abs(endZ - z);
 
@@ -17,9 +23,27 @@ export default function RenderFloor({
 
   return (
     <>
-      <mesh position={[centerX, -0.26, centerZ]} receiveShadow castShadow>
-        <boxGeometry args={[width, 0.5, depth]} />
-        <meshPhongMaterial color={0xf3ebe6} />
+      <mesh
+        position={[centerX, -0.26, centerZ]}
+        receiveShadow
+        castShadow
+        onPointerEnter={(e) => {
+          e.stopPropagation();
+          setEnter(true);
+        }}
+        onPointerLeave={() => setEnter(false)}
+        onClick={(e) => {
+          destroyElement && id && destroyElement(e, id);
+        }}
+      >
+        <boxGeometry
+          args={[width, 0.5 - +("0.000" + id.slice(10, 13)), depth]}
+        />
+        {mouseInteractions && enter ? (
+          <meshStandardMaterial color={0xff0000} opacity={0.5} transparent />
+        ) : (
+          <meshPhongMaterial color={color} />
+        )}
       </mesh>
     </>
   );

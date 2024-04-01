@@ -17,7 +17,7 @@ export default function ChairsSection({ appendElement }: ChairsSectionProps) {
       <p className="text-lg w-full pl-2">Seat</p>
       <button
         onClick={(e) => appendElement(e, "chair2", "static", 1.3)}
-        className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 "
+        className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
       >
         <div className="h-[50px]">
           <Canvas>
@@ -39,7 +39,7 @@ export default function ChairsSection({ appendElement }: ChairsSectionProps) {
       </button>
       <button
         onClick={(e) => appendElement(e, "chair_black", "static", 1.3)}
-        className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 "
+        className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none "
       >
         <div className="h-[50px]">
           <Canvas>
@@ -61,7 +61,7 @@ export default function ChairsSection({ appendElement }: ChairsSectionProps) {
       </button>
       <button
         onClick={(e) => appendElement(e, "chair", "static", 1.3)}
-        className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 "
+        className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
       >
         <div className="h-[50px]">
           <Canvas>

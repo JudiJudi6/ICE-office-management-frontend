@@ -18,6 +18,9 @@ import { MdOutlinePartyMode } from "react-icons/md";
 import { CiSquarePlus } from "react-icons/ci";
 import { CiSquareMinus } from "react-icons/ci";
 import { IoIosHelpCircleOutline } from "react-icons/io";
+import { TfiHummer } from "react-icons/tfi";
+import { RxCross2 } from "react-icons/rx";
+
 import { Canvas } from "@react-three/fiber";
 import DesksSection from "./DesksSection";
 import FloorSection from "./FloorSection";
@@ -33,6 +36,12 @@ interface MenuProps {
   setFloor: Dispatch<SetStateAction<floorInterface[]>>;
   setWalls: Dispatch<SetStateAction<floorInterface[]>>;
   setFreeCamera: Dispatch<SetStateAction<boolean>>;
+  freeCamera: boolean;
+  setDestroyer: Dispatch<SetStateAction<boolean>>;
+  destroyer: boolean;
+  setHistory: Dispatch<SetStateAction<string[]>>;
+  backChanges: () => void;
+  clearWorkspace: () => void;
 }
 
 export default function Menu({
@@ -41,7 +50,13 @@ export default function Menu({
   setElements,
   setFloor,
   setFreeCamera,
+  setHistory,
   setWalls,
+  backChanges,
+  setDestroyer,
+  destroyer,
+  freeCamera,
+  clearWorkspace,
 }: MenuProps) {
   function appendElement(
     e: React.MouseEvent<HTMLButtonElement>,
@@ -67,9 +82,10 @@ export default function Menu({
       },
     ]);
     setActiveElement(id);
+    setHistory((his) => [...his, "element"]);
   }
 
-  function appendFloor(e: React.MouseEvent<HTMLButtonElement>) {
+  function appendFloor(e: React.MouseEvent<HTMLButtonElement>, color: string) {
     const id = `${new Date().getTime().toString()}-floor`;
     setFreeCamera(false);
     setFloor((elements) => [
@@ -82,12 +98,18 @@ export default function Menu({
         endX: 0,
         endY: 0,
         endZ: 0,
+        color: color,
       },
     ]);
     setActiveElement(id);
+    setHistory((his) => [...his, "floor"]);
   }
 
-  function appendWall(e: React.MouseEvent<HTMLButtonElement>) {
+  function appendWall(
+    e: React.MouseEvent<HTMLButtonElement>,
+    color: string,
+    height: number
+  ) {
     const id = `${new Date().getTime().toString()}-wall`;
     setFreeCamera(false);
     setWalls((elements) => [
@@ -95,14 +117,16 @@ export default function Menu({
       {
         id: id,
         x: e.clientX,
-        y: 0,
+        y: height,
         z: e.clientY,
         endX: 0,
         endY: 0,
         endZ: 0,
+        color: color,
       },
     ]);
     setActiveElement(id);
+    setHistory((his) => [...his, "wall"]);
   }
 
   return (
@@ -114,27 +138,36 @@ export default function Menu({
         </span>
       </button>
       <div className="flex w-full justify-between my-2 bg-bgWhite1 p-1 rounded-xl">
-        <button className="p-2  hover:text-main2 rounded-xl text-xl transition-colors duration-300">
-          <RiArrowGoBackFill />
+        <button
+          onClick={clearWorkspace}
+          className="p-2 hover:text-main2 rounded-xl text-xl transition-colors duration-300"
+        >
+          <RxCross2 />
         </button>
         <button
           onClick={() => setFreeCamera((s) => !s)}
-          className="p-2 hover:text-main2 rounded-xl text-xl transition-colors duration-300"
+          className={`p-2 hover:text-main2 rounded-xl text-xl transition-colors duration-300  ${
+            freeCamera && "text-main2"
+          }`}
         >
           <MdOutlinePartyMode />
         </button>
-        <button className="p-2 hover:text-main2 rounded-xl text-xl transition-colors duration-300">
-          <CiSquarePlus />
+        <button
+          onClick={() => setDestroyer((s) => !s)}
+          className={`p-2 hover:text-main2 rounded-xl text-xl transition-colors duration-300  ${
+            destroyer && "text-main2"
+          }`}
+        >
+          <TfiHummer />
         </button>
-        <button className="p-2 hover:text-main2 rounded-xl text-xl transition-colors duration-300">
-          <CiSquareMinus />
+        <button
+          onClick={backChanges}
+          className="p-2  hover:text-main2 rounded-xl text-xl transition-colors duration-300"
+        >
+          <RiArrowGoBackFill />
         </button>
       </div>
-      <div
-        className="overflow-y-auto"
-        id="scrollBarLeft"
-        // style={{ scrollbarColor: "#007 #fff" }}
-      >
+      <div className="overflow-y-auto mt-2">
         <FloorSection appendFloor={appendFloor} />
         <WallsSection appendWall={appendWall} />
         <DesksSection appendElement={appendElement} />

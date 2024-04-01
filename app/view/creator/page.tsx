@@ -1,5 +1,7 @@
 "use client";
 
+import * as THREE from "three";
+
 import Menu from "@/components/features/creator/Menu";
 import AxesHelper from "@/components/models3d/AxesHelper";
 import Desk3D from "@/components/models3d/Desk3D";
@@ -8,15 +10,9 @@ import RenderFloor from "@/components/models3d/RenderFloor";
 import RenderWall from "@/components/models3d/RenderWall";
 import Spinner from "@/components/ui/Spinner";
 import { Box, OrbitControls, Stats, useHelper } from "@react-three/drei";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, ThreeEvent, useFrame } from "@react-three/fiber";
 import React, { Suspense, useEffect, useRef, useState } from "react";
-import {
-  DirectionalLight,
-  DirectionalLightHelper,
-  PointLightHelper,
-  SpotLightHelper,
-  Vector3,
-} from "three";
+import { Vector3 } from "three";
 
 export interface elementInterface {
   id: string;
@@ -39,6 +35,9 @@ export interface floorInterface {
   endX: number;
   endY: number;
   endZ: number;
+  color: string;
+  mouseInteractions?: boolean;
+  destroyElement?: (e: ThreeEvent<MouseEvent>, id: string) => void;
 }
 
 interface SpyProps {
@@ -69,19 +68,30 @@ export default function Creator(): JSX.Element {
   const [elements, setElements] = useState<elementInterface[]>([]);
   const [floor, setFloor] = useState<floorInterface[]>([]);
   const [walls, setWalls] = useState<floorInterface[]>([]);
+
   const [activeElement, setActiveElement] = useState("");
   const [clientX, setClientX] = useState(0);
   const [clientZ, setClientZ] = useState(0);
 
   const [mouseDown, setMouseDown] = useState(false);
   const [freeCamera, setFreeCamera] = useState(false);
+  const [destroyer, setDestroyer] = useState(false);
 
   const [floorSize, setFloorSize] = useState({ x: 0, z: 0, endX: 0, endZ: 0 });
 
   const [rotY, setRotY] = useState(0);
 
+  const [history, setHistory] = useState<string[]>([]);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const controlsRef = useRef<any>(null);
+
+  useEffect(
+    function () {
+      console.log(history);
+    },
+    [history]
+  );
 
   useEffect(
     function () {
@@ -109,7 +119,8 @@ export default function Creator(): JSX.Element {
             setActiveElement("");
             setRotY(0);
           }
-          console.log(floorSize);
+          // console.log(floorSize);
+          console.log(history);
           console.log(floor);
         }
       }
@@ -135,6 +146,7 @@ export default function Creator(): JSX.Element {
       clientZ,
       floorSize,
       floor,
+      history,
     ]
   );
 
@@ -199,6 +211,40 @@ export default function Creator(): JSX.Element {
     [freeCamera]
   );
 
+  function backChanges() {
+    if (history.length > 0) {
+      if (history.at(history.length - 1) === "floor") {
+        setFloor((s) => s.slice(0, -1));
+      } else if (history.at(history.length - 1) === "wall") {
+        setWalls((s) => s.slice(0, -1));
+      } else if (history.at(history.length - 1) === "element") {
+        setElements((s) => s.slice(0, -1));
+      }
+      history.pop();
+    }
+  }
+
+  function destroyElement(e: ThreeEvent<MouseEvent>, id: string) {
+    e.stopPropagation();
+
+    if (destroyer) {
+      if (id.includes("floor")) {
+        setFloor((floor) => floor.filter((item) => item.id !== id));
+      } else if (id.includes("wall")) {
+        setWalls((wall) => wall.filter((item) => item.id !== id));
+      } else {
+        setElements((element) => element.filter((item) => item.id !== id));
+      }
+      console.log(id);
+    }
+  }
+
+  function clearWorkspace() {
+    setFloor([]);
+    setWalls([]);
+    setElements([]);
+  }
+
   return (
     <div className="flex pt-[80px] h-screen p-4">
       {/* <Suspense fallback={<Spinner />}> */}
@@ -209,6 +255,12 @@ export default function Creator(): JSX.Element {
         setFloor={setFloor}
         setWalls={setWalls}
         setFreeCamera={setFreeCamera}
+        setHistory={setHistory}
+        backChanges={backChanges}
+        setDestroyer={setDestroyer}
+        destroyer={destroyer}
+        freeCamera={freeCamera}
+        clearWorkspace={clearWorkspace}
       />
       <Canvas
         ref={canvasRef}
@@ -227,6 +279,7 @@ export default function Creator(): JSX.Element {
               element.rotY = rotY;
               return (
                 <Render3D
+                  id={element.id}
                   key={element.id}
                   path={element.path}
                   x={clientX}
@@ -245,6 +298,7 @@ export default function Creator(): JSX.Element {
             } else {
               return (
                 <Render3D
+                  id={element.id}
                   key={element.id}
                   path={element.path}
                   x={element.x}
@@ -254,6 +308,8 @@ export default function Creator(): JSX.Element {
                   rotY={element.rotY}
                   rotZ={element.rotZ}
                   scale={element.scale}
+                  destroyElement={destroyElement}
+                  mouseInteractions={destroyer}
                 />
               );
             }
@@ -277,6 +333,7 @@ export default function Creator(): JSX.Element {
                   endX={clientX}
                   endZ={clientZ}
                   endY={element.endY}
+                  color={element.color}
                 />
               );
             } else {
@@ -285,6 +342,9 @@ export default function Creator(): JSX.Element {
                   key={1}
                   position={
                     new Vector3(clientX + 0.5, element.y, clientZ + 0.5)
+                  }
+                  material={
+                    new THREE.MeshPhongMaterial({ color: element.color })
                   }
                 />
               );
@@ -300,6 +360,9 @@ export default function Creator(): JSX.Element {
                 endX={element.endX}
                 endZ={element.endZ}
                 endY={element.y}
+                color={element.color}
+                destroyElement={destroyElement}
+                mouseInteractions={destroyer}
               />
             );
           }
@@ -322,6 +385,7 @@ export default function Creator(): JSX.Element {
                   endX={clientX}
                   endZ={clientZ}
                   endY={element.endY}
+                  color={element.color}
                 />
               );
             } else {
@@ -331,7 +395,7 @@ export default function Creator(): JSX.Element {
                   position={new Vector3(clientX + 0.25, 2, clientZ + 0.25)}
                 >
                   <boxGeometry args={[0.5, 5, 0.5]} />
-                  <meshPhongMaterial color={0x87b6d6} />
+                  <meshPhongMaterial color={element.color} />
                 </mesh>
               );
             }
@@ -346,6 +410,9 @@ export default function Creator(): JSX.Element {
                 endX={element.endX}
                 endZ={element.endZ}
                 endY={element.y}
+                color={element.color}
+                destroyElement={destroyElement}
+                mouseInteractions={destroyer}
               />
             );
           }

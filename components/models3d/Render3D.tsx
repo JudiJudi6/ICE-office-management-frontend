@@ -1,15 +1,18 @@
-import { useLoader } from "@react-three/fiber";
+import * as THREE from "three";
+import { ThreeEvent, useLoader } from "@react-three/fiber";
 import React, {
   Suspense,
   useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
+  useState,
 } from "react";
 import { Mesh, MeshPhongMaterial } from "three";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
-
+import { Clone } from "@react-three/drei";
 interface ModelProps {
+  id?: string;
   path: string;
   x: number;
   y: number;
@@ -18,9 +21,12 @@ interface ModelProps {
   rotX?: number;
   rotY?: number;
   rotZ?: number;
+  mouseInteractions?: boolean;
+  destroyElement?: (e: ThreeEvent<MouseEvent>, id: string) => void;
 }
 
 export default function Render3D({
+  id,
   x,
   y,
   z,
@@ -29,18 +35,22 @@ export default function Render3D({
   rotY = 0,
   rotZ = 0,
   path,
+  mouseInteractions = false,
+  destroyElement,
 }: ModelProps) {
+  const [enter, setEnter] = useState(false);
   const fileUrl = `/assets3d/${path}.glb`;
   const mesh = useRef<Mesh>(null!);
   const { scene } = useLoader(GLTFLoader, fileUrl);
-  scene.traverse((child) => {
-    if (child instanceof Mesh) {
-      child.receiveShadow = true;
-      child.castShadow = true;
-    }
-  });
+  // scene.traverse((child) => {
+  //   if (child instanceof Mesh) {
+  //     child.receiveShadow = true;
+  //     child.castShadow = true;
+  //     // child.material.opacity = 0.5
+  //   }
+  // });
 
-  const copiedScene = useMemo(() => scene.clone(), [scene]);
+  // const copiedScene = useMemo(() => scene.clone(), [scene]);
 
   return (
     <Suspense fallback={null}>
@@ -52,7 +62,29 @@ export default function Render3D({
         receiveShadow
         castShadow={true}
       >
-        <primitive object={copiedScene} />
+        <Clone
+          object={scene}
+          castShadow
+          receiveShadow
+          onPointerEnter={(e) => {
+            e.stopPropagation();
+            setEnter(true);
+          }}
+          onPointerLeave={() => setEnter(false)}
+          onClick={(e) => {
+            destroyElement && id && destroyElement(e, id);
+          }}
+          inject={
+            mouseInteractions &&
+            enter && (
+              <meshStandardMaterial
+                color={0xff0000}
+                opacity={0.5}
+                transparent
+              />
+            )
+          }
+        />
       </mesh>
     </Suspense>
   );
