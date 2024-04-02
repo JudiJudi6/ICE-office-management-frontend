@@ -1,6 +1,7 @@
 import Render3D from "@/components/models3d/Render3D";
 import { Canvas } from "@react-three/fiber";
 import React from "react";
+import { SectionsToolTip } from "./SectionsToolTip";
 
 interface DecorationSectionProps {
   appendElement: (
@@ -83,28 +84,40 @@ export default function DecorationSection({
           <p className="text-sm">Cactus</p>
         </div>
       </button>
-      <button
-        onClick={(e) => appendElement(e, "pot_leaves", "static", 0.8)}
-        className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
+
+      <SectionsToolTip
+        title={
+          <>
+            <h1 className="text-xs text-main2">Fancy Plant</h1>
+            <ul className="mt-1">
+              <li>Plant with beautiful leaves</li>
+            </ul>
+          </>
+        }
       >
-        <div className="h-[50px]">
-          <Canvas frameloop="demand">
-            <Render3D
-              path="pot_leaves"
-              x={0}
-              y={-2}
-              z={0}
-              scale={1}
-              rotX={0}
-              rotY={-0.8}
-            />
-            <ambientLight intensity={4} />
-          </Canvas>
-        </div>
-        <div>
-          <p className="text-sm">Fancy plant</p>
-        </div>
-      </button>
+        <button
+          onClick={(e) => appendElement(e, "pot_leaves", "static", 0.8)}
+          className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
+        >
+          <div className="h-[50px]">
+            <Canvas frameloop="demand">
+              <Render3D
+                path="pot_leaves"
+                x={0}
+                y={-2}
+                z={0}
+                scale={1}
+                rotX={0}
+                rotY={-0.8}
+              />
+              <ambientLight intensity={4} />
+            </Canvas>
+          </div>
+          <div>
+            <p className="text-sm">Fancy plant</p>
+          </div>
+        </button>
+      </SectionsToolTip>
     </div>
   );
 }

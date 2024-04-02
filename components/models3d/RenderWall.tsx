@@ -12,6 +12,7 @@ export default function RenderWall({
   endZ,
   color,
   id,
+  transparent,
   destroyElement,
   mouseInteractions,
 }: floorInterface) {
@@ -45,6 +46,8 @@ export default function RenderWall({
         )}
         {mouseInteractions && enter ? (
           <meshStandardMaterial color={0xff0000} opacity={0.5} transparent />
+        ) : transparent ? (
+          <meshPhongMaterial color={color} opacity={0.5} transparent />
         ) : (
           <meshPhongMaterial color={color} />
         )}

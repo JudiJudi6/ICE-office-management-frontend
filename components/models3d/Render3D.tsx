@@ -42,15 +42,6 @@ export default function Render3D({
   const fileUrl = `/assets3d/${path}.glb`;
   const mesh = useRef<Mesh>(null!);
   const { scene } = useLoader(GLTFLoader, fileUrl);
-  // scene.traverse((child) => {
-  //   if (child instanceof Mesh) {
-  //     child.receiveShadow = true;
-  //     child.castShadow = true;
-  //     // child.material.opacity = 0.5
-  //   }
-  // });
-
-  // const copiedScene = useMemo(() => scene.clone(), [scene]);
 
   return (
     <Suspense fallback={null}>
