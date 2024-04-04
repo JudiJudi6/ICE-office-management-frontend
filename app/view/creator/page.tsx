@@ -136,6 +136,9 @@ export default function Creator(): JSX.Element {
             setRotY(0);
           }
         }
+        if (e.key === " ") {
+          setFreeCamera((s) => !s);
+        }
       }
 
       if (canvasRef && canvasRef.current) {

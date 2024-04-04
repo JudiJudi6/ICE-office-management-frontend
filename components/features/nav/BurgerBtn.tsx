@@ -9,7 +9,7 @@ interface BurgerBtnProps {
 
 export default function BurgerBtn({ onOpen }: BurgerBtnProps) {
   return (
-    <div>
+    <div className="relative z-[60]">
       <Hamburger
         color="#fc4508"
         direction="left"

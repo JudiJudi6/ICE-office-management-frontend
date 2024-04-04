@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={roboto.className}>
-        <div className="text-dark">
+        <div className="relative text-dark z-[1000]">
           <div className="fixed h-[64px] w-full bg-white border-b border-b-slate-200 flex justify-between items-center gap-3 px-4 py-2">
             <Link href="/" className="flex justify-start items-center gap-3">
               <span className="text-4xl text-main2">
@@ -36,7 +36,7 @@ export default function RootLayout({
               </p>
             </Link>
             <LoginBtn />
-            {/* <BurgerNav /> */}
+            <BurgerNav />
           </div>
           {children}
         </div>
