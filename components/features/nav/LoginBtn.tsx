@@ -3,13 +3,17 @@
 import Link from "next/link";
 import React from "react";
 
-export default function LoginBtn() {
+interface LoginBtnProps {
+  isInNav: boolean;
+}
+
+export default function LoginBtn({ isInNav }: LoginBtnProps) {
   const isAuth = false;
 
   return (
-    <div>
+    <div className={`${isInNav ? "hidden md600:block" : ""}`}>
       {isAuth ? (
-        <div></div>
+        <div>username</div>
       ) : (
         <div className="flex justify-center items-center gap-4">
           <Link

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
-import Logo from "@/components/ui/Logo";
 import { FaFire } from "react-icons/fa";
 import LoginBtn from "@/components/features/nav/LoginBtn";
 import Link from "next/link";
@@ -25,8 +24,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={roboto.className}>
-        <div className="relative text-dark z-[1000]">
-          <div className="fixed h-[64px] w-full bg-white border-b border-b-slate-200 flex justify-between items-center gap-3 px-4 py-2">
+        <div className="relative text-dark overflow-x-hidden" id="app">
+          <div className="fixed h-[64px] w-full bg-white border-b border-b-slate-200 flex justify-between items-center gap-3 px-4 py-2 z-50">
             <Link href="/" className="flex justify-start items-center gap-3">
               <span className="text-4xl text-main2">
                 <FaFire />
@@ -35,7 +34,7 @@ export default function RootLayout({
                 Fire<span className="text-main2 font-medium">Desk</span>
               </p>
             </Link>
-            <LoginBtn />
+            <LoginBtn isInNav={true} />
             <BurgerNav />
           </div>
           {children}
