@@ -4,7 +4,11 @@ import LoginBtn from "./LoginBtn";
 import { MdOutlineViewInAr } from "react-icons/md";
 import NavItem from "./NavItem";
 
-export default function NavMobile() {
+interface NavMobileProps {
+  closeNav: () => void;
+}
+
+export default function NavMobile({ closeNav }: NavMobileProps) {
   const isAuth = true;
 
   return (
@@ -13,10 +17,36 @@ export default function NavMobile() {
         <div className="w-full flex flex-col  flex-grow justify-center items-center">
           <LoginBtn isInNav={false} />
           <div className="mt-10 w-full flex flex-col justify-center items-center">
-            <NavItem href="view" title="View" icon={<MdOutlineViewInAr />} />
-            <NavItem href="view" title="Reservations" icon={<MdOutlineViewInAr />} />
-            <NavItem href="view" title="Office" icon={<MdOutlineViewInAr />} />
-            <NavItem href="view" title="View" icon={<MdOutlineViewInAr />} />
+            <NavItem
+              href="view"
+              title="View"
+              icon={<MdOutlineViewInAr />}
+              onClick={closeNav}
+            />
+            <NavItem
+              href="reservations"
+              title="Reservations"
+              icon={<MdOutlineViewInAr />}
+              onClick={closeNav}
+            />
+            <NavItem
+              href="/view/creator"
+              title="Office Creator"
+              icon={<MdOutlineViewInAr />}
+              onClick={closeNav}
+            />
+            <NavItem
+              href="settings"
+              title="Settings"
+              icon={<MdOutlineViewInAr />}
+              onClick={closeNav}
+            />
+            <NavItem
+              href="/"
+              title="Log out"
+              icon={<MdOutlineViewInAr />}
+              onClick={closeNav}
+            />
           </div>
         </div>
       ) : (
