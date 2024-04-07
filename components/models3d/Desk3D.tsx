@@ -32,11 +32,14 @@ export default function Desk3D({
   const [enter, setEnter] = useState(false);
   const deskUrl = `/assets3d/${deskPath}.glb`;
   const epuipUrl = `/assets3d/${equipPath}.glb`;
+  const pcUrl = `/assets3d/pc.glb`;
   const mesh = useRef<Mesh>(null!);
   const gltf1 = useLoader(GLTFLoader, deskUrl);
   const gltf2 = useLoader(GLTFLoader, epuipUrl);
+  const gltf3 = useLoader(GLTFLoader, pcUrl);
   const scene1 = gltf1.scene;
   const scene2 = gltf2.scene;
+  const scene3 = gltf3.scene;
 
   return (
     <Suspense fallback={null}>
@@ -50,6 +53,39 @@ export default function Desk3D({
       >
         <Clone
           object={scene1}
+          castShadow
+          receiveShadow
+          onPointerEnter={(e) => {
+            e.stopPropagation();
+            setEnter(true);
+          }}
+          rotation={[0, equipment.includes("desk 90deg") ? 3.15 : 0, 0]}
+          onPointerLeave={() => setEnter(false)}
+          onClick={(e) => {
+            destroyElement && id && destroyElement(e, id);
+            console.log(equipment);
+          }}
+          inject={
+            mouseInteractions && enter ? (
+              <meshStandardMaterial
+                color={0xff0000}
+                opacity={0.5}
+                transparent
+              />
+            ) : (
+              transparent && (
+                <meshStandardMaterial
+                  color={0x00ab1b}
+                  opacity={0.8}
+                  transparent
+                />
+              )
+            )
+          }
+        />
+        <Clone
+          object={scene2}
+          position={new THREE.Vector3(0.3, 1.6, 0)}
           castShadow
           receiveShadow
           onPointerEnter={(e) => {
@@ -80,7 +116,15 @@ export default function Desk3D({
           }
         />
         <Clone
-          object={scene2}
+          object={scene3}
+          position={
+            new THREE.Vector3(
+              0,
+              0,
+              equipment.includes("big desk") ? 1.38 : 0.88
+            )
+          }
+          rotation={[0, 3.15, 0]}
           castShadow
           receiveShadow
           onPointerEnter={(e) => {

@@ -21,22 +21,21 @@ export default function DesksSection({ appendDesk }: DesksSectionProps) {
   return (
     <div className="flex flex-wrap gap-3 mt-3 w-full">
       <p className="text-lg w-full pl-2">Desks</p>
+
       <SectionsToolTip
         title={
           <>
             <h1 className="text-xs text-main2">Desk Equipment:</h1>
             <ul className="mt-1">
               <li>- Basic PC Set</li>
-              <li>- Second monitor</li>
             </ul>
           </>
         }
       >
         <button
           onClick={(e) =>
-            appendDesk(e, "desk", "pc", "static", 1.3, [
+            appendDesk(e, "desk", "pc_setup_single_monitor", "static", 1.6, [
               "basic pc set",
-              "second monitor, ",
             ])
           }
           className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
@@ -61,6 +60,154 @@ export default function DesksSection({ appendDesk }: DesksSectionProps) {
             <h1 className="text-xs text-main2">Desk Equipment:</h1>
             <ul className="mt-1">
               <li>- Basic PC Set</li>
+              <li>- Second Monitor</li>
+            </ul>
+          </>
+        }
+      >
+        <button
+          onClick={(e) =>
+            appendDesk(e, "desk", "pc_setup_dual_monitor", "static", 1.6, [
+              "basic pc set",
+              "second monitor",
+            ])
+          }
+          className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
+        >
+          <div className="flex justify-center items-center h-[50px]">
+            <Image
+              src="/creatorImages/desk.jpg"
+              alt=""
+              width={35}
+              height={35}
+            />
+          </div>
+          <div>
+            <p className="text-sm">Desk v.2</p>
+          </div>
+        </button>
+      </SectionsToolTip>
+
+      <SectionsToolTip
+        title={
+          <>
+            <h1 className="text-xs text-main2">Desk Equipment:</h1>
+            <ul className="mt-1">
+              <li>- Basic PC Set</li>
+              <li>- Big Desk</li>
+            </ul>
+          </>
+        }
+      >
+        <button
+          onClick={(e) =>
+            appendDesk(
+              e,
+              "desk_bigger",
+              "pc_setup_single_monitor",
+              "static",
+              1.6,
+              ["basic pc set", "big desk"]
+            )
+          }
+          className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
+        >
+          <div className="flex justify-center items-center h-[50px]">
+            <Image
+              src="/creatorImages/desk.jpg"
+              alt=""
+              width={35}
+              height={35}
+            />
+          </div>
+          <div>
+            <p className="text-sm">Desk v.3</p>
+          </div>
+        </button>
+      </SectionsToolTip>
+
+      <SectionsToolTip
+        title={
+          <>
+            <h1 className="text-xs text-main2">Desk Equipment:</h1>
+            <ul className="mt-1">
+              <li>- Basic PC Set</li>
+              <li>- Second Monitor</li>
+              <li>- Big Desk</li>
+            </ul>
+          </>
+        }
+      >
+        <button
+          onClick={(e) =>
+            appendDesk(
+              e,
+              "desk_bigger",
+              "pc_setup_dual_monitor",
+              "static",
+              1.6,
+              ["basic pc set", "second monitor", "big desk"]
+            )
+          }
+          className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
+        >
+          <div className="flex justify-center items-center h-[50px]">
+            <Image
+              src="/creatorImages/desk.jpg"
+              alt=""
+              width={35}
+              height={35}
+            />
+          </div>
+          <div>
+            <p className="text-sm">Desk v.4</p>
+          </div>
+        </button>
+      </SectionsToolTip>
+
+      <SectionsToolTip
+        title={
+          <>
+            <h1 className="text-xs text-main2">Desk Equipment:</h1>
+            <ul className="mt-1">
+              <li>- Basic PC Set</li>
+              <li>- Second monitor</li>
+              <li>- Desk 90deg</li>
+            </ul>
+          </>
+        }
+      >
+        <button
+          onClick={(e) =>
+            appendDesk(e, "desk90", "pc_setup_dual_monitor", "static", 1.6, [
+              "basic pc set",
+              "second monitor",
+              "desk 90deg",
+            ])
+          }
+          className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
+        >
+          <div className="flex justify-center items-center h-[50px]">
+            <Image
+              src="/creatorImages/desk.jpg"
+              alt=""
+              width={35}
+              height={35}
+            />
+          </div>
+          <div>
+            <p className="text-sm">Desk 90</p>
+          </div>
+        </button>
+      </SectionsToolTip>
+
+
+      {/* <SectionsToolTip
+        title={
+          <>
+            <h1 className="text-xs text-main2">Desk Equipment:</h1>
+            <ul className="mt-1">
+              <li>- Basic PC Set</li>
               <li>- Second monitor</li>
               <li>- Lamp</li>
               <li>- Laptop</li>
@@ -70,7 +217,7 @@ export default function DesksSection({ appendDesk }: DesksSectionProps) {
       >
         <button
           onClick={(e) =>
-            appendDesk(e, "desk", "lamp", "static", 1.3, [
+            appendDesk(e, "desk", "lamp", "static", 1.6, [
               "second monitor",
               "lamp",
               "laptop",
@@ -91,6 +238,43 @@ export default function DesksSection({ appendDesk }: DesksSectionProps) {
           </div>
         </button>
       </SectionsToolTip>
+
+      <SectionsToolTip
+        title={
+          <>
+            <h1 className="text-xs text-main2">Desk Equipment:</h1>
+            <ul className="mt-1">
+              <li>- Basic PC Set</li>
+              <li>- Second monitor</li>
+              <li>- Lamp</li>
+              <li>- Laptop</li>
+            </ul>
+          </>
+        }
+      >
+        <button
+          onClick={(e) =>
+            appendDesk(e, "desk", "lamp", "static", 1.6, [
+              "second monitor",
+              "lamp",
+              "laptop",
+            ])
+          }
+          className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
+        >
+          <div className="flex justify-center items-center h-[50px]">
+            <Image
+              src="/creatorImages/desk.jpg"
+              alt=""
+              width={35}
+              height={35}
+            />
+          </div>
+          <div>
+            <p className="text-sm">Desk v.2</p>
+          </div>
+        </button>
+      </SectionsToolTip> */}
     </div>
   );
 }
