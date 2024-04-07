@@ -21,6 +21,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <html lang="en">
       <body className={roboto.className}>
@@ -34,7 +35,7 @@ export default function RootLayout({
                 Fire<span className="text-main2 font-medium">Desk</span>
               </p>
             </Link>
-            <LoginBtn isInNav={true} />
+             <LoginBtn isInNav={true} />
             <BurgerNav />
           </div>
           {children}

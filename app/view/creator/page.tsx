@@ -265,7 +265,6 @@ export default function Creator(): JSX.Element {
 
   return (
     <div className="flex pt-[80px] h-screen p-4">
-      {/* <Suspense fallback={<Spinner />}> */}
       <Menu
         canvasRef={canvasRef}
         setActiveElement={setActiveElement}

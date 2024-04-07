@@ -6,8 +6,11 @@ import BurgerBtn from "./BurgerBtn";
 import { createPortal } from "react-dom";
 import LoginBtn from "./LoginBtn";
 import NavMobile from "./NavMobile";
+import { usePathname } from "next/navigation";
 
 export default function BurgerNav() {
+  const pathName = usePathname();
+
   const app = typeof window !== "undefined" && document.querySelector("#app");
   const [open, setOpen] = useState<boolean>(false);
   const [domReady, setDomReady] = useState(false);
@@ -52,7 +55,7 @@ export default function BurgerNav() {
   }
 
   return (
-    <div className="md600:hidden">
+    <div className={`${pathName !== "/view/creator" && "lg:hidden"}`}>
       <button
         onClick={() => setOpen((s) => !s)}
         className="flex justify-center items-center w-10 h-10 rounded-full text-xl transition-colors duration-500 m-1"
@@ -89,15 +92,19 @@ export default function BurgerNav() {
               animate={open ? { translateX: "0%" } : { translateX: "100%" }}
               initial={{ translateX: "100%" }}
               transition={{ ease: "easeInOut" }}
-              className="absolute w-full h-full z-[9] top-0 left-0  flex justify-center items-center overflow-hidden md600:hidden"
+              className={`absolute w-full h-full z-[9] top-0 left-0  flex justify-center items-center overflow-hidden ${
+                pathName !== "/view/creator" && "lg:hidden"
+              }`}
             ></motion.div>
             <motion.div
               animate={open ? { translateX: "0%" } : { translateX: "100%" }}
               initial={{ translateX: "100%" }}
               transition={{ ease: "easeInOut" }}
-              className="absolute right-0 top-0 z-[9] -translate-x-full h-full w-[280px] bg-white border-l border-l-slate-200 border-solid p-6 pt-[88px] flex flex-col md600:hidden"
+              className={`absolute right-0 top-0 z-[9] -translate-x-full h-full w-[280px] bg-white border-l border-l-slate-200 border-solid p-6 pt-[88px] flex flex-col ${
+                pathName !== "/view/creator" && "lg:hidden"
+              }`}
             >
-              <NavMobile closeNav={closeNav}/>
+              <NavMobile closeNav={closeNav} />
             </motion.div>
           </>,
           app
