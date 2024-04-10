@@ -41,7 +41,7 @@ export default function Home() {
       {greetingDiv}
       {subtitle}
       <br />
-      <div className="flex mx-20 my-8">
+      <div className=" xl:grid  grid-cols-2 justify-center mx-20 my-8 px-5 ">
         <InfoBox
           boxTitle="What is FireDesk?"
           text="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic atque veniam nisi iure molestias voluptate fuga deleniti ipsa aperiam."
@@ -50,7 +50,12 @@ export default function Home() {
         <InfoBox
           boxTitle="New to FireDesk?"
           text="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic atque veniam nisi iure molestias voluptate fuga deleniti ipsa aperiam. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic atque veniam nisi iure molestias voluptate fuga deleniti ipsa aperiam."
-          image="/images/image.png"
+          image="/images/office.jpg"
+        />
+        <InfoBox
+          boxTitle="New to FireDesk?"
+          text="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic atque veniam nisi iure molestias voluptate fuga deleniti ipsa aperiam. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic atque veniam nisi iure molestias voluptate fuga deleniti ipsa aperiam."
+          image="/images/office.jpg"
         />
       </div>
     </div>
