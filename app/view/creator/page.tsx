@@ -539,12 +539,10 @@ export default function Creator(): JSX.Element {
                 shadow-camera-bottom={-25}
                 shadow-camera-far={200}
               />
-              {/* <Stats /> */}
             </Canvas>
           </Suspense>
         </div>
       </div>
-      {/* </Suspense> */}
     </div>
   );
 }
