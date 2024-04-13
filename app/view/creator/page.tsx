@@ -44,6 +44,7 @@ export interface floorInterface {
 
 export interface deskInterface {
   id: string;
+  deskName: string;
   deskPath: string;
   equipPath: string;
   x: number;
@@ -377,6 +378,7 @@ export default function Creator(): JSX.Element {
                   return (
                     <Desk3D
                       id={element.id}
+                      deskName={element.deskName}
                       key={element.id}
                       deskPath={element.deskPath}
                       equipPath={element.equipPath}
@@ -394,6 +396,7 @@ export default function Creator(): JSX.Element {
                   return (
                     <Desk3D
                       id={element.id}
+                      deskName={element.deskName}
                       key={element.id}
                       deskPath={element.deskPath}
                       equipPath={element.equipPath}
