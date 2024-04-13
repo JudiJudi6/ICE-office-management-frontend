@@ -3,8 +3,11 @@
 import Render3D from "@/components/models3d/Render3D";
 import { Canvas } from "@react-three/fiber";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { SectionsToolTip } from "./SectionsToolTip";
+import Modal from "@/components/ui/Modal";
+import Desk3D from "@/components/models3d/Desk3D";
+import ShowSelectedDesk from "./ShowSelectedDesk";
 
 interface DesksSectionProps {
   appendDesk: (
@@ -13,268 +16,284 @@ interface DesksSectionProps {
     equipPath: string,
     type: "desk" | "static",
     scale: number,
-    equipment: string[]
+    equipment: string[],
+    inputValue: string
   ) => void;
 }
 
+export interface selectedDeskType {
+  e: React.MouseEvent<HTMLButtonElement> | null;
+  deskPath: string;
+  equipPath: string;
+  type: "desk" | "static";
+  scale: number;
+  equipment: string[];
+}
+
 export default function DesksSection({ appendDesk }: DesksSectionProps) {
+  const [selectedDesk, setSelectedDesk] = useState<selectedDeskType>({
+    e: null,
+    deskPath: "desk",
+    equipPath: "pc_setup_single_monitor",
+    type: "static",
+    scale: 1.6,
+    equipment: ["basic pc set"],
+  });
+
   return (
     <div className="flex flex-wrap gap-3 mt-3 w-full">
       <p className="text-lg w-full pl-2">Desks</p>
 
-      <SectionsToolTip
-        title={
-          <>
-            <h1 className="text-xs text-main2">Desk Equipment:</h1>
-            <ul className="mt-1">
-              <li>- Basic PC Set</li>
-            </ul>
-          </>
-        }
-      >
-        <button
-          onClick={(e) =>
-            appendDesk(e, "desk", "pc_setup_single_monitor", "static", 1.6, [
-              "basic pc set",
-            ])
-          }
-          className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
+      <Modal>
+        <Modal.Open
+          opens="desk1"
+          additionalFn={(e) => {
+            setSelectedDesk({
+              e: e,
+              deskPath: "desk",
+              equipPath: "pc_setup_single_monitor",
+              type: "static",
+              scale: 1.6,
+              equipment: ["basic pc set"],
+            });
+          }}
         >
-          <div className="flex justify-center items-center h-[50px]">
-            <Image
-              src="/creatorImages/desk.jpg"
-              alt=""
-              width={35}
-              height={35}
-            />
-          </div>
-          <div>
-            <p className="text-sm">Desk v.1</p>
-          </div>
-        </button>
-      </SectionsToolTip>
+          <SectionsToolTip
+            title={
+              <>
+                <h1 className="text-xs text-main2">Desk Equipment:</h1>
+                <ul className="mt-1">
+                  <li>- Basic PC Set</li>
+                </ul>
+              </>
+            }
+          >
+            <button className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none">
+              <div className="flex justify-center items-center h-[50px]">
+                <Image
+                  src="/creatorImages/desk.jpg"
+                  alt=""
+                  width={35}
+                  height={35}
+                />
+              </div>
+              <div>
+                <p className="text-sm">Desk v.1</p>
+              </div>
+            </button>
+          </SectionsToolTip>
+        </Modal.Open>
+        <Modal.Window name="desk1">
+          <ShowSelectedDesk
+            selectedDesk={selectedDesk}
+            appendDesk={appendDesk}
+            onCloseModal={undefined as never}
+            setSelectedDesk={setSelectedDesk}
+          />
+        </Modal.Window>
+      </Modal>
 
-      <SectionsToolTip
-        title={
-          <>
-            <h1 className="text-xs text-main2">Desk Equipment:</h1>
-            <ul className="mt-1">
-              <li>- Basic PC Set</li>
-              <li>- Second Monitor</li>
-            </ul>
-          </>
-        }
-      >
-        <button
-          onClick={(e) =>
-            appendDesk(e, "desk", "pc_setup_dual_monitor", "static", 1.6, [
-              "basic pc set",
-              "second monitor",
-            ])
-          }
-          className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
+      <Modal>
+        <Modal.Open
+          opens="desk2"
+          additionalFn={(e) => {
+            setSelectedDesk({
+              e: e,
+              deskPath: "desk",
+              equipPath: "pc_setup_dual_monitor",
+              type: "static",
+              scale: 1.6,
+              equipment: ["basic pc set", "second monitor"],
+            });
+          }}
         >
-          <div className="flex justify-center items-center h-[50px]">
-            <Image
-              src="/creatorImages/desk.jpg"
-              alt=""
-              width={35}
-              height={35}
-            />
-          </div>
-          <div>
-            <p className="text-sm">Desk v.2</p>
-          </div>
-        </button>
-      </SectionsToolTip>
+          <SectionsToolTip
+            title={
+              <>
+                <h1 className="text-xs text-main2">Desk Equipment:</h1>
+                <ul className="mt-1">
+                  <li>- Basic PC Set</li>
+                  <li>- Second Monitor</li>
+                </ul>
+              </>
+            }
+          >
+            <button className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none">
+              <div className="flex justify-center items-center h-[50px]">
+                <Image
+                  src="/creatorImages/desk.jpg"
+                  alt=""
+                  width={35}
+                  height={35}
+                />
+              </div>
+              <div>
+                <p className="text-sm">Desk v.2</p>
+              </div>
+            </button>
+          </SectionsToolTip>
+        </Modal.Open>
+        <Modal.Window name="desk2">
+          <ShowSelectedDesk
+            selectedDesk={selectedDesk}
+            appendDesk={appendDesk}
+            onCloseModal={undefined as never}
+            setSelectedDesk={setSelectedDesk}
+          />
+        </Modal.Window>
+      </Modal>
 
-      <SectionsToolTip
-        title={
-          <>
-            <h1 className="text-xs text-main2">Desk Equipment:</h1>
-            <ul className="mt-1">
-              <li>- Basic PC Set</li>
-              <li>- Big Desk</li>
-            </ul>
-          </>
-        }
-      >
-        <button
-          onClick={(e) =>
-            appendDesk(
-              e,
-              "desk_bigger",
-              "pc_setup_single_monitor",
-              "static",
-              1.6,
-              ["basic pc set", "big desk"]
-            )
-          }
-          className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
+      <Modal>
+        <Modal.Open
+          opens="desk3"
+          additionalFn={(e) => {
+            setSelectedDesk({
+              e: e,
+              deskPath: "desk_bigger",
+              equipPath: "pc_setup_single_monitor",
+              type: "static",
+              scale: 1.6,
+              equipment: ["basic pc set", "big desk"],
+            });
+          }}
         >
-          <div className="flex justify-center items-center h-[50px]">
-            <Image
-              src="/creatorImages/desk.jpg"
-              alt=""
-              width={35}
-              height={35}
-            />
-          </div>
-          <div>
-            <p className="text-sm">Desk v.3</p>
-          </div>
-        </button>
-      </SectionsToolTip>
+          <SectionsToolTip
+            title={
+              <>
+                <h1 className="text-xs text-main2">Desk Equipment:</h1>
+                <ul className="mt-1">
+                  <li>- Basic PC Set</li>
+                  <li>- Big Desk</li>
+                </ul>
+              </>
+            }
+          >
+            <button className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none">
+              <div className="flex justify-center items-center h-[50px]">
+                <Image
+                  src="/creatorImages/desk.jpg"
+                  alt=""
+                  width={35}
+                  height={35}
+                />
+              </div>
+              <div>
+                <p className="text-sm">Desk v.3</p>
+              </div>
+            </button>
+          </SectionsToolTip>
+        </Modal.Open>
+        <Modal.Window name="desk3">
+          <ShowSelectedDesk
+            selectedDesk={selectedDesk}
+            appendDesk={appendDesk}
+            onCloseModal={undefined as never}
+            setSelectedDesk={setSelectedDesk}
+          />
+        </Modal.Window>
+      </Modal>
 
-      <SectionsToolTip
-        title={
-          <>
-            <h1 className="text-xs text-main2">Desk Equipment:</h1>
-            <ul className="mt-1">
-              <li>- Basic PC Set</li>
-              <li>- Second Monitor</li>
-              <li>- Big Desk</li>
-            </ul>
-          </>
-        }
-      >
-        <button
-          onClick={(e) =>
-            appendDesk(
-              e,
-              "desk_bigger",
-              "pc_setup_dual_monitor",
-              "static",
-              1.6,
-              ["basic pc set", "second monitor", "big desk"]
-            )
-          }
-          className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
+      <Modal>
+        <Modal.Open
+          opens="desk4"
+          additionalFn={(e) => {
+            setSelectedDesk({
+              e: e,
+              deskPath: "desk_bigger",
+              equipPath: "pc_setup_dual_monitor",
+              type: "static",
+              scale: 1.6,
+              equipment: ["basic pc set", "second monitor", "big desk"],
+            });
+          }}
         >
-          <div className="flex justify-center items-center h-[50px]">
-            <Image
-              src="/creatorImages/desk.jpg"
-              alt=""
-              width={35}
-              height={35}
-            />
-          </div>
-          <div>
-            <p className="text-sm">Desk v.4</p>
-          </div>
-        </button>
-      </SectionsToolTip>
+          <SectionsToolTip
+            title={
+              <>
+                <h1 className="text-xs text-main2">Desk Equipment:</h1>
+                <ul className="mt-1">
+                  <li>- Basic PC Set</li>
+                  <li>- Second Monitor</li>
+                  <li>- Big Desk</li>
+                </ul>
+              </>
+            }
+          >
+            <button className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none">
+              <div className="flex justify-center items-center h-[50px]">
+                <Image
+                  src="/creatorImages/desk.jpg"
+                  alt=""
+                  width={35}
+                  height={35}
+                />
+              </div>
+              <div>
+                <p className="text-sm">Desk v.4</p>
+              </div>
+            </button>
+          </SectionsToolTip>
+        </Modal.Open>
+        <Modal.Window name="desk4">
+          <ShowSelectedDesk
+            selectedDesk={selectedDesk}
+            appendDesk={appendDesk}
+            onCloseModal={undefined as never}
+            setSelectedDesk={setSelectedDesk}
+          />
+        </Modal.Window>
+      </Modal>
 
-      <SectionsToolTip
-        title={
-          <>
-            <h1 className="text-xs text-main2">Desk Equipment:</h1>
-            <ul className="mt-1">
-              <li>- Basic PC Set</li>
-              <li>- Second monitor</li>
-              <li>- Desk 90deg</li>
-            </ul>
-          </>
-        }
-      >
-        <button
-          onClick={(e) =>
-            appendDesk(e, "desk90", "pc_setup_dual_monitor", "static", 1.6, [
-              "basic pc set",
-              "second monitor",
-              "desk 90deg",
-            ])
-          }
-          className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
+      <Modal>
+        <Modal.Open
+          opens="desk5"
+          additionalFn={(e) => {
+            setSelectedDesk({
+              e: e,
+              deskPath: "desk90",
+              equipPath: "pc_setup_dual_monitor",
+              type: "static",
+              scale: 1.6,
+              equipment: ["basic pc set", "second monitor", "desk 90deg"],
+            });
+          }}
         >
-          <div className="flex justify-center items-center h-[50px]">
-            <Image
-              src="/creatorImages/desk.jpg"
-              alt=""
-              width={35}
-              height={35}
-            />
-          </div>
-          <div>
-            <p className="text-sm">Desk 90</p>
-          </div>
-        </button>
-      </SectionsToolTip>
-
-
-      {/* <SectionsToolTip
-        title={
-          <>
-            <h1 className="text-xs text-main2">Desk Equipment:</h1>
-            <ul className="mt-1">
-              <li>- Basic PC Set</li>
-              <li>- Second monitor</li>
-              <li>- Lamp</li>
-              <li>- Laptop</li>
-            </ul>
-          </>
-        }
-      >
-        <button
-          onClick={(e) =>
-            appendDesk(e, "desk", "lamp", "static", 1.6, [
-              "second monitor",
-              "lamp",
-              "laptop",
-            ])
-          }
-          className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
-        >
-          <div className="flex justify-center items-center h-[50px]">
-            <Image
-              src="/creatorImages/desk.jpg"
-              alt=""
-              width={35}
-              height={35}
-            />
-          </div>
-          <div>
-            <p className="text-sm">Desk v.2</p>
-          </div>
-        </button>
-      </SectionsToolTip>
-
-      <SectionsToolTip
-        title={
-          <>
-            <h1 className="text-xs text-main2">Desk Equipment:</h1>
-            <ul className="mt-1">
-              <li>- Basic PC Set</li>
-              <li>- Second monitor</li>
-              <li>- Lamp</li>
-              <li>- Laptop</li>
-            </ul>
-          </>
-        }
-      >
-        <button
-          onClick={(e) =>
-            appendDesk(e, "desk", "lamp", "static", 1.6, [
-              "second monitor",
-              "lamp",
-              "laptop",
-            ])
-          }
-          className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
-        >
-          <div className="flex justify-center items-center h-[50px]">
-            <Image
-              src="/creatorImages/desk.jpg"
-              alt=""
-              width={35}
-              height={35}
-            />
-          </div>
-          <div>
-            <p className="text-sm">Desk v.2</p>
-          </div>
-        </button>
-      </SectionsToolTip> */}
+          <SectionsToolTip
+            title={
+              <>
+                <h1 className="text-xs text-main2">Desk Equipment:</h1>
+                <ul className="mt-1">
+                  <li>- Basic PC Set</li>
+                  <li>- Second monitor</li>
+                  <li>- Desk 90deg</li>
+                </ul>
+              </>
+            }
+          >
+            <button className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none">
+              <div className="flex justify-center items-center h-[50px]">
+                <Image
+                  src="/creatorImages/desk.jpg"
+                  alt=""
+                  width={35}
+                  height={35}
+                />
+              </div>
+              <div>
+                <p className="text-sm">Desk v.5</p>
+              </div>
+            </button>
+          </SectionsToolTip>
+        </Modal.Open>
+        <Modal.Window name="desk5">
+          <ShowSelectedDesk
+            selectedDesk={selectedDesk}
+            appendDesk={appendDesk}
+            onCloseModal={undefined as never}
+            setSelectedDesk={setSelectedDesk}
+          />
+        </Modal.Window>
+      </Modal>
     </div>
   );
 }
