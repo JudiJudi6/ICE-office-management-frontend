@@ -23,6 +23,7 @@ type ModalProps = {
 type OpenProps = {
   children: React.ReactNode;
   opens: string;
+  additionalFn?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 type WindowProps = {
@@ -47,10 +48,15 @@ export default function Modal({ children }: ModalProps) {
   );
 }
 
-function Open({ children, opens }: OpenProps) {
+function Open({ children, opens, additionalFn }: OpenProps) {
   const { open } = useContext(ModalContext)!;
   return cloneElement(children as React.ReactElement, {
-    onClick: () => open(opens),
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
+      open(opens);
+      if (additionalFn) {
+        additionalFn(e);
+      }
+    },
   });
 }
 

@@ -118,6 +118,29 @@ export default function DecorationSection({
           </div>
         </button>
       </SectionsToolTip>
+
+      <button
+        onClick={(e) => appendElement(e, "blackboard", "static", 1)}
+        className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
+      >
+        <div className="h-[50px]">
+          <Canvas frameloop="demand">
+            <Render3D
+              path="blackboard"
+              x={0}
+              y={-2}
+              z={0}
+              scale={1}
+              rotX={0}
+              rotY={-0.8}
+            />
+            <ambientLight intensity={4} />
+          </Canvas>
+        </div>
+        <div>
+          <p className="text-sm">Blackboard</p>
+        </div>
+      </button>
     </div>
   );
 }

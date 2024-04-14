@@ -61,6 +61,28 @@ export default function FurnitureSection({
           <p className="text-sm">Table</p>
         </div>
       </button>
+      <button
+        onClick={(e) => appendElement(e, "conf_table", "static", 1.3)}
+        className="w-[90px] h-[90px] border border-solid border-slate-200 rounded-lg p-2 hover:bg-bgWhite1 hover:text-main2 transition-colors duration-300 focus:outline-none"
+      >
+        <div className="h-[50px]">
+          <Canvas frameloop="demand">
+            <Render3D
+              path="conf_table"
+              x={0}
+              y={-1}
+              z={0}
+              scale={1.2}
+              rotX={0.4}
+              rotY={2}
+            />
+            <ambientLight intensity={4} />
+          </Canvas>
+        </div>
+        <div>
+          <p className="text-sm">Table</p>
+        </div>
+      </button>
     </div>
   );
 }

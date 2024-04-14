@@ -14,6 +14,8 @@ import { Canvas, ThreeEvent, useFrame } from "@react-three/fiber";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Vector3 } from "three";
 import { SectionsToolTip } from "@/components/features/creator/SectionsToolTip";
+import Modal from "@/components/ui/Modal";
+import SaveOffice from "@/components/features/creator/SaveOffice";
 
 export interface elementInterface {
   id: string;
@@ -44,6 +46,7 @@ export interface floorInterface {
 
 export interface deskInterface {
   id: string;
+  deskName: string;
   deskPath: string;
   equipPath: string;
   x: number;
@@ -303,20 +306,19 @@ export default function Creator(): JSX.Element {
               </button>
             </SectionsToolTip>
           </div>
-          <button
-            onClick={() => {
-              const officeBuild = {
-                floor,
-                walls,
-                elements,
-                desks,
-              };
-              console.log(officeBuild);
-            }}
-            className="w-[110px] text-sm text-center bg-gradient-to-r to-main1 via-main2 from-main1 bg-size-200 bg-pos-0 hover:bg-pos-100 py-2 text-white  tracking-wide rounded-full transition-all duration-300 px-6"
-          >
-            Save
-          </button>
+          <Modal>
+            <Modal.Open opens="saveWindow">
+              <button className="w-[110px] text-sm text-center bg-gradient-to-r to-main1 via-main2 from-main1 bg-size-200 bg-pos-0 hover:bg-pos-100 py-2 text-white  tracking-wide rounded-full transition-all duration-300 px-6">
+                Save
+              </button>
+            </Modal.Open>
+            <Modal.Window name="saveWindow">
+              <SaveOffice
+                onCloseModal={undefined as never}
+                officeBuild={{ elements, walls, floor, desks }}
+              />
+            </Modal.Window>
+          </Modal>
         </div>
         <div className="h-[calc(100%-52px)]">
           <Suspense fallback={<Spinner />}>
@@ -377,6 +379,7 @@ export default function Creator(): JSX.Element {
                   return (
                     <Desk3D
                       id={element.id}
+                      deskName={element.deskName}
                       key={element.id}
                       deskPath={element.deskPath}
                       equipPath={element.equipPath}
@@ -394,6 +397,7 @@ export default function Creator(): JSX.Element {
                   return (
                     <Desk3D
                       id={element.id}
+                      deskName={element.deskName}
                       key={element.id}
                       deskPath={element.deskPath}
                       equipPath={element.equipPath}
@@ -539,12 +543,10 @@ export default function Creator(): JSX.Element {
                 shadow-camera-bottom={-25}
                 shadow-camera-far={200}
               />
-              {/* <Stats /> */}
             </Canvas>
           </Suspense>
         </div>
       </div>
-      {/* </Suspense> */}
     </div>
   );
 }
