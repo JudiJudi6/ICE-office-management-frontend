@@ -22,7 +22,7 @@ export default function NavMobile({
   const isAuth = true;
 
   return (
-    <div className="w-full ">
+    <div className="w-full">
       {isAuth ? (
         <div className="w-full flex flex-col  flex-grow justify-center items-center">
           {loginBtns && <LoginBtn isInNav={false} />}

@@ -211,6 +211,7 @@ export default function ShowSelectedDesk({
                   type="text"
                   onChange={(e) => setInputValue(e.target.value)}
                   value={inputValue}
+                  autoComplete="off"
                 />
                 <div className="absolute h-[1.5px] w-full bg-gradient-to-r from-main1 to-main2"></div>
                 {!inputValue && (
