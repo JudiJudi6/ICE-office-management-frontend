@@ -106,7 +106,8 @@ export default function Menu({
     equipPath: string,
     type: "desk" | "static",
     scale: number,
-    equipment: string[]
+    equipment: string[],
+    inputValue: string
   ) {
     if (activeElement) {
       backChanges();
@@ -118,6 +119,7 @@ export default function Menu({
       ...elements,
       {
         id: id,
+        deskName: inputValue,
         deskPath: deskPath,
         equipPath: equipPath,
         rotX: 0,
