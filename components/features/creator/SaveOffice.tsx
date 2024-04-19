@@ -32,7 +32,26 @@ export default function SaveOffice({
     return result;
   }
 
-  function sendOffice() {
+  async function sendOffice() {
+    async function pushOffice() {
+      const response = await fetch("http://localhost:3000/api/v1/office/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...officeData,
+        }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      } else {
+        const bodyText = await response.text();
+        throw new Error(`${bodyText}`);
+      }
+    }
+
     const officeId = `${new Date().getTime().toString()}-${officeName}`;
     let desks = officeBuild.desks.map((item) => {
       return {
@@ -53,6 +72,12 @@ export default function SaveOffice({
       users: [{ name: "tutaj", surname: "tez" }],
       invitationCode: generateInvitationCode(),
     };
+    try {
+      const response = await pushOffice();
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
     console.log(officeData);
   }
 
