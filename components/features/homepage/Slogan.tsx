@@ -1,6 +1,6 @@
 export default function Slogan() {
   return (
-    <div className=" md800:flex justify-center ">
+    <div className="  justify-center ">
       <h1 className=" mx-16 text-xl md800:my-5 flex justify-center items-centre text-center">
         Reserve your desk and do not worry about place to work!
       </h1>
