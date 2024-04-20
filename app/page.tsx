@@ -6,13 +6,15 @@ import InfoBox from "@/components/features/homepage/InfoBox";
 import Greeting from "@/components/features/homepage/Greeting";
 import DescriptionBox from "@/components/features/homepage/DescriptionBox";
 import Footer from "@/components/features/homepage/Footer";
+import CreatorPanel from "@/components/features/homepage/CreatorPanel";
+import RegisterAd from "@/components/features/homepage/RegisterAd";
 
 export default function Home() {
   return (
     <div className="  static z-[-1]   overflow-hidden bg-bgWhite1  ">
       <Greeting />
 
-      <div className="  justify-center mt-2 px-5 py-1">
+      <div className="  justify-center my-20 px-5 py-1">
         <div className="lg:grid 2xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 m-20 items-stretch">
           <div className=" m-16 ">
             <DescriptionBox
@@ -37,7 +39,8 @@ export default function Home() {
           </div>
         </div>
       </div>
-
+      <CreatorPanel />
+      <RegisterAd />
       <Footer />
     </div>
   );

@@ -4,8 +4,8 @@ import Image from "next/image";
 
 export default function Greeting() {
   return (
-    <div className="static lg:grid grid-cols-2  py-8 mx-10 z-[0] h-screen  text-black rounded-3xl bg-gradient-to-r bg-white ">
-      <div className=" mt-32 lg:mt-80 lg:ml-20 ">
+    <div className="static lg:grid grid-cols-2  py-8 mx-10 z-[0] h-screen shadow-2xl  text-black rounded-3xl bg-cover  bg-center bg-[url('/images/plan.jpg')]">
+      <div className=" mt-32 lg:mt-64 lg:ml-20 ">
         <div className="justify-center items-center  py-12 ">
           <h1 className="z-[0] font-bold text-6xl text-center lg:text-left items-center justify-center ">
             <span className="lg:ml-32">Welcome to</span>
@@ -16,9 +16,16 @@ export default function Greeting() {
             </span>
           </h1>
         </div>
-        <h1 className=" mx-16 text-2xl md800:my-5 flex  items-centre text-center lg:text-left">
+        <h1 className=" lg:ml-32 2xl:mr-64 text-2xl md800:my-5 flex  items-centre text-center lg:text-left">
           Reserve your desk and do not worry about place to work!
         </h1>
+
+        <a
+          href="/login"
+          className=" my-5 py-2 px-10 lg:ml-32 bg-gradient-to-r to-main1 via-main2 from-main1 bg-size-200 bg-pos-0 hover:bg-pos-100  text-white uppercase tracking-widest font-light rounded-full transition-all duration-300"
+        >
+          Log in
+        </a>
       </div>
 
       <div className="flex lg:m-40 justify-center items-center lg:grid grid-cols-1">
