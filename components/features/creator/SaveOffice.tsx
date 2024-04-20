@@ -3,6 +3,8 @@ import {
   elementInterface,
   floorInterface,
 } from "@/app/view/creator/page";
+import { useSendOffice } from "@/hooks/creator/useSendOffice";
+import OfficeDataInterface from "@/interfaces/OfficeInterface";
 import React, { useState } from "react";
 
 interface SaveOfficeProps {
@@ -21,6 +23,7 @@ export default function SaveOffice({
 }: SaveOfficeProps) {
   const [officeAddress, setOfficeAddress] = useState("");
   const [officeName, setOfficeName] = useState("");
+  const { sendOffice: sendOfficeMutation, isSuccess } = useSendOffice();
 
   function generateInvitationCode() {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -32,37 +35,18 @@ export default function SaveOffice({
     return result;
   }
 
-  async function sendOffice() {
-    async function pushOffice() {
-      const response = await fetch("http://localhost:3000/api/v1/office/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...officeData,
-        }),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        return data;
-      } else {
-        const bodyText = await response.text();
-        throw new Error(`${bodyText}`);
-      }
-    }
-
+  function sendOffice() {
     const officeId = `${new Date().getTime().toString()}-${officeName}`;
     let desks = officeBuild.desks.map((item) => {
       return {
         deskId: item.id,
-        deskname: item.deskName,
+        deskName: item.deskName,
         equipment: item.equipment,
         reservationData: [],
         active: true,
       };
     });
-    const officeData = {
+    const officeData: OfficeDataInterface = {
       id: officeId,
       name: officeName,
       address: officeAddress,
@@ -72,13 +56,8 @@ export default function SaveOffice({
       users: [{ name: "tutaj", surname: "tez" }],
       invitationCode: generateInvitationCode(),
     };
-    try {
-      const response = await pushOffice();
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
-    console.log(officeData);
+
+    sendOfficeMutation(officeData);
   }
 
   return (

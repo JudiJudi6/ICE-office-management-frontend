@@ -49,6 +49,7 @@ export interface deskInterface {
   deskName: string;
   deskPath: string;
   equipPath: string;
+  type: "static" | "desk";
   x: number;
   y: number;
   z: number;
@@ -383,6 +384,7 @@ export default function Creator(): JSX.Element {
                       key={element.id}
                       deskPath={element.deskPath}
                       equipPath={element.equipPath}
+                      type={element.type}
                       x={clientX}
                       y={element.y}
                       z={clientZ}
@@ -399,6 +401,7 @@ export default function Creator(): JSX.Element {
                       id={element.id}
                       deskName={element.deskName}
                       key={element.id}
+                      type={element.type}
                       deskPath={element.deskPath}
                       equipPath={element.equipPath}
                       x={element.x}

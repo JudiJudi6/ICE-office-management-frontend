@@ -1,6 +1,7 @@
 "use client";
 
 import NavMobile from "@/components/features/nav/NavMobile";
+import MainApp from "@/components/ui/MainApp";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { usePathname } from "next/navigation";
@@ -8,7 +9,7 @@ import React, { useEffect } from "react";
 import toast, { Toaster, useToasterStore } from "react-hot-toast";
 
 interface AppLayoutProps {
-  children: React.ReactNode;
+  children: React.ReactElement;
 }
 
 export default function AppLayout({ children }: AppLayoutProps) {
@@ -41,7 +42,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
             <NavMobile loginBtns={false} />
           </div>
         )}
-        <div className="overflow-x-auto flex-grow h-screen">{children}</div>
+        <MainApp>{children}</MainApp>
       </div>
       <Toaster
         position="top-center"
@@ -60,8 +61,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
             maxWidth: "500px",
             padding: "16px 24px",
           },
-          className:
-            "text-dark",
+          className: "text-dark",
         }}
       />
       <ReactQueryDevtools initialIsOpen={false} />

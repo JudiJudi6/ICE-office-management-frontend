@@ -3,7 +3,7 @@ interface OfficeDataInterface {
   name: string;
   address: string;
   renderData: OfficeRenderData;
-  deskList: Desks;
+  deskList: Desks[];
   authorId: string;
   users: { name: string; surname: string }[];
   invitationCode: string;
