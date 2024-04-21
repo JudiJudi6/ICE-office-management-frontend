@@ -28,12 +28,13 @@ export async function getOffice() {
       "Content-Type": "application/json",
     },
   });
+  console.log("data");
   if (response.ok) {
     const data = await response.json();
     return data;
   } else {
     const bodyText = await response.text();
-    console.error(bodyText);
+    console.error(response);
     throw new Error(`${bodyText}`);
   }
 }

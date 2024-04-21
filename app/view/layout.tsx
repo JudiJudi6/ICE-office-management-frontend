@@ -12,6 +12,14 @@ interface AppLayoutProps {
   children: React.ReactElement;
 }
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 0,
+    },
+  },
+});
+
 export default function AppLayout({ children }: AppLayoutProps) {
   const pathName = usePathname();
 
@@ -25,14 +33,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
       .filter((_, i) => i >= TOAST_LIMIT)
       .forEach((t) => toast.dismiss(t.id));
   }, [toasts]);
-
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: 0,
-      },
-    },
-  });
 
   return (
     <QueryClientProvider client={queryClient}>

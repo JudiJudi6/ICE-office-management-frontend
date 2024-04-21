@@ -12,6 +12,8 @@ interface MainAppProps {
 export default function MainApp({ children }: MainAppProps) {
   const { data, isLoading } = useGetOffices();
 
+  console.log(data);
+
   return (
     <>
       {isLoading ? (

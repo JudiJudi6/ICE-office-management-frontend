@@ -14,13 +14,16 @@ import React, { Suspense, useContext, useEffect, useState } from "react";
 
 export default function App() {
   const [selectedOffice, setSelectedOffice] = useState("");
+  const [selectedDay, setSelectedDay] = useState("");
+  const [selectedDateFrom, setSelectedDateFrom] = useState("");
+  const [selectedDateTo, setSelectedDateTo] = useState("");
   const officeData = useContext(OfficesContext);
   const [selectedOfficeBuild, setSelectedOfficeBuild] = useState<
     OfficeDataInterface | undefined
   >(officeData?.data.offices.at(0) || undefined);
 
   useEffect(() => {
-    const foundOffice = officeData.data.offices.find(
+    const foundOffice = officeData?.data.offices.find(
       (item) => item.id === selectedOffice
     );
     if (foundOffice) {
@@ -33,8 +36,14 @@ export default function App() {
       <SecondNav
         setSelectedOffice={setSelectedOffice}
         selectedOffice={selectedOffice}
+        setSelectedDay={setSelectedDay}
+        selectedDay={selectedDay}
+        setSelectedDateFrom={setSelectedDateFrom}
+        selectedDateFrom={selectedDateFrom}
+        setSelectedDateTo={setSelectedDateTo}
+        selectedDateTo={selectedDateTo}
       />
-      <div className="h-[calc(100%-52px)]">
+      <div className="h-[calc(100%-64px)]">
         <Suspense fallback={<Spinner />}>
           <Canvas
             orthographic
@@ -104,6 +113,7 @@ export default function App() {
                   endZ={element.endZ}
                   endY={element.y}
                   color={element.color}
+                  // transparent={element.transparent}
                 />
               );
             })}
