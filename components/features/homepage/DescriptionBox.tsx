@@ -9,7 +9,7 @@ export default function InfoBox({
 }: boxText) {
   let icon;
   if (image === "FaRegQuestionCircle") {
-    icon = <FaRegQuestionCircle />;
+    icon = <FaRegQuestionCircle  />;
   }
   if (image === "RiShakeHandsLine") {
     icon = <RiShakeHandsLine />;
@@ -18,11 +18,13 @@ export default function InfoBox({
     icon = <FiTool />;
   }
 
+  const anim="transitions-all duration-300 hover:scale-110";
+
   return (
-    <div className=" m-3 w-full h-96 p-10 shadow-2xl border-2 border-main1 text-black bg-white rounded-3xl font-light content-center text-center">
-      <h1 className="font-bold text-3xl ">{boxTitle}</h1>
-      <p className="text-1xl text-black">{text}</p>
-      <span className=" mt-10 text-8xl flex justify-self-end place-content-center text-main2 ">
+    <div className="static z-0    2xl:h-[60vh] h-[80vh] 2xl:p-10 p-10 shadow-2xl border-2 border-main1 text-black bg-white rounded-3xl font-light content-center text-center">
+      <h1 className="font-bold 2xl:text-3xl text-4xl ">{boxTitle}</h1>
+      <p className="2xl:text-1xl text-xl text-black mt-8">{text}</p>
+      <span className=" 2xl:mt-10 2xl:text-8xl flex  place-content-center mt-10 text-8xl text-main2 ">
         {icon}
       </span>
     </div>
