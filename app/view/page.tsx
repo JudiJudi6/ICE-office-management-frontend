@@ -8,8 +8,11 @@ import RenderWall from "@/components/models3d/RenderWall";
 import Spinner from "@/components/ui/Spinner";
 import { OfficesContext } from "@/context/OfficesContext";
 import OfficeDataInterface from "@/interfaces/OfficeInterface";
+import UserInterface from "@/interfaces/UserInterface";
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import React, { Suspense, useContext, useEffect, useState } from "react";
 
 export default function App() {
@@ -21,6 +24,19 @@ export default function App() {
   const [selectedOfficeBuild, setSelectedOfficeBuild] = useState<
     OfficeDataInterface | undefined
   >(officeData?.data.offices.at(0) || undefined);
+  const queryClient = useQueryClient();
+  const user: UserInterface | undefined = queryClient.getQueryData(["user"]);
+  const isAuth = user?.data.user;
+  const router = useRouter();
+
+  useEffect(
+    function () {
+      if (isAuth === undefined) {
+        router.push("/login");
+      }
+    },
+    [isAuth, router]
+  );
 
   useEffect(() => {
     const foundOffice = officeData?.data.offices.find(
@@ -30,6 +46,10 @@ export default function App() {
       setSelectedOfficeBuild(foundOffice);
     }
   }, [officeData, selectedOffice]);
+
+  if (!isAuth) {
+    return null;
+  }
 
   return (
     <div className="text-black pt-16 h-screen">

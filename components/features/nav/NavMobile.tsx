@@ -9,6 +9,8 @@ import { TbReservedLine } from "react-icons/tb";
 import { SiSpringCreators } from "react-icons/si";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FiLogOut } from "react-icons/fi";
+import { useQueryClient } from "@tanstack/react-query";
+import UserInterface from "@/interfaces/UserInterface";
 
 interface NavMobileProps {
   loginBtns?: boolean;
@@ -19,13 +21,15 @@ export default function NavMobile({
   closeNav,
   loginBtns = true,
 }: NavMobileProps) {
-  const isAuth = true;
+  const queryClient = useQueryClient();
+  const user: UserInterface | undefined = queryClient.getQueryData(["user"]);
+  const isAuth = user?.data.user;
 
   return (
     <div className="w-full">
       {isAuth ? (
         <div className="w-full flex flex-col  flex-grow justify-center items-center">
-          {loginBtns && <LoginBtn isInNav={false} />}
+          {loginBtns && <LoginBtn isInNav={false} onCloseNav={closeNav} />}
           <div className="mt-10 w-full flex flex-col justify-center items-center gap-3">
             <NavItem
               href="/view"
@@ -71,7 +75,7 @@ export default function NavMobile({
         </div>
       ) : (
         <>
-          <LoginBtn isInNav={false} />
+          <LoginBtn isInNav={false} onCloseNav={closeNav} />
           <p className="self-start mt-10 text-center text-sm">
             Create <span className="text-main2">a free account</span>, build
             your <span className="text-main2">office</span> and organize{" "}

@@ -6,6 +6,7 @@ import React from "react";
 import PageCanvas from "@/components/features/login/PageCanvas";
 import InputBox from "@/components/ui/InputBox";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useLogin } from "@/hooks/user/useLogin";
 
 export default function LogIn() {
   const {
@@ -13,9 +14,11 @@ export default function LogIn() {
     handleSubmit,
     formState: { errors },
   } = useForm<FieldValues>();
+  const { login, isSuccess } = useLogin();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
+    login({ mail: data.email, password: data.password });
   };
 
   return (
