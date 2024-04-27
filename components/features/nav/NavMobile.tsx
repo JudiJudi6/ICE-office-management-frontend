@@ -29,7 +29,7 @@ export default function NavMobile({
           <div className="mt-10 w-full flex flex-col justify-center items-center gap-3">
             <NavItem
               href="/view"
-              title="View"
+              title="Office Map"
               icon={<MdOutlineViewInAr />}
               onClick={() => {
                 closeNav && closeNav();
