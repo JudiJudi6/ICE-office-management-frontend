@@ -3,34 +3,49 @@ import { FaFire } from "react-icons/fa";
 
 export default function CreatorPanel() {
   return (
-    <div className="lg:flex justify-center content-center items-center grid grid-cols-1 my-10 text-white bg-dark">
-      <div className=" lg:basis-1/2 grid grid-cols-1 items-center h-screen bg-cover  lg:align-start text-center lg:text-right xl:justify-end ">
-        <h1 className=" mx-10 sm:mx-20 md:mx-24 lg:ml-24 2xl:mx-24 2xl:text-8xl xl:text-7xl lg:text-5xl text-6xl sm:text-7xl md:text-8xl lg:text-left items-center lg:justify-start  justify-center font-bold ">
-          <span className=" static z-[0] lg:justify-start justify-center flex 2xl:ml-5 my-5 ">
-            <FaFire className="  text-main2 " />
-            <span className=" font-normal">Fire</span>
-            <span className=" font-normal text-main2 lg:mr-10 ">Desk</span>
-          </span>
-          <span className="ml-5">Creator</span>
-        </h1>
-        <h2 className=" items-center mx-10 sm:mx-20 md:mx-24 justify-center  2xl:mx-32 text-center lg:text-left xl:text-2xl lg:text-xl text-2xl mb-20 ">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic atque
-          veniam nisi iure molestias voluptate fuga deleniti ipsa aperiam.
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic atque
-          veniam nisi iure molestias voluptate fuga deleniti ipsa aperiam.
-        </h2>
-      </div>
+    <div className=" bg-dark py-6">
+      <div className="flex flex-col md800:flex-row justify-center items-center text-white max-w-7xl mx-auto">
+        <div className="mb-5  md800:w-1/2">
+          <h1 className="text-5xl font-bold flex justify-center items-center flex-col gap-3 my-10">
+            <span className="flex justify-center items-center gap-2">
+              <FaFire className="text-main2 " />
+              <span>
+                <span className="font-normal">Fire</span>
+                <span className="font-normal text-main2 lg:mr-10 ">Desk</span>
+              </span>
+            </span>
+            <span className="text-center">Creator</span>
+          </h1>
+          <h2 className=" items-center mx-10 md800:p-8 justify-center  text-center text-base sm:">
+            FireDesk&apos;s 3D office creator empowers users to design their
+            ideal workspace with ease. With intuitive drag-and-drop
+            functionality, users can effortlessly arrange desks, chairs, and
+            other office elements to create a customized layout. The creator
+            tool provides a realistic visualization of the office environment,
+            allowing for precise planning and optimization of space. Whether
+            rearranging existing setups or designing from scratch,
+            FireDesk&apos;s creator simplifies the process, ensuring efficient
+            and ergonomic workspaces tailored to individual needs.
+          </h2>
+        </div>
 
-<div className=" w-full justify-self-center items-center place-content-center flex lg:basis-1/2 max-w-96 lg:max-w-none  m-10 ">
-      <Image
-        src="/images/image2.png"
-        alt="blueprint"
-        width={1000}
-        height={1000}
-        className="rounded-3xl m-5 md:m-0 "
-      />
+        <div className="relative my-5 md800:w-1/2 px-10 mx-auto">
+          <Image
+            src="/images/creator.jpg"
+            alt="blueprint"
+            width={400}
+            height={400}
+            className="rounded-3xl  "
+          />
+          <Image
+            src="/images/creator2.jpg"
+            alt="blueprint"
+            width={400}
+            height={400}
+            className="rounded-3xl sm:ml-20 md800:ml-0 xl:ml-20 mt-4"
+          />
+        </div>
       </div>
-      </div>
-
+    </div>
   );
 }
