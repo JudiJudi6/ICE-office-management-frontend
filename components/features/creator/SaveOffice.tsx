@@ -3,6 +3,8 @@ import {
   elementInterface,
   floorInterface,
 } from "@/app/view/creator/page";
+import { useSendOffice } from "@/hooks/creator/useSendOffice";
+import OfficeDataInterface from "@/interfaces/OfficeInterface";
 import React, { useState } from "react";
 
 interface SaveOfficeProps {
@@ -21,6 +23,7 @@ export default function SaveOffice({
 }: SaveOfficeProps) {
   const [officeAddress, setOfficeAddress] = useState("");
   const [officeName, setOfficeName] = useState("");
+  const { sendOffice: sendOfficeMutation, isSuccess } = useSendOffice();
 
   function generateInvitationCode() {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -37,13 +40,13 @@ export default function SaveOffice({
     let desks = officeBuild.desks.map((item) => {
       return {
         deskId: item.id,
-        deskname: item.deskName,
+        deskName: item.deskName,
         equipment: item.equipment,
         reservationData: [],
         active: true,
       };
     });
-    const officeData = {
+    const officeData: OfficeDataInterface = {
       id: officeId,
       name: officeName,
       address: officeAddress,
@@ -53,7 +56,8 @@ export default function SaveOffice({
       users: [{ name: "tutaj", surname: "tez" }],
       invitationCode: generateInvitationCode(),
     };
-    console.log(officeData);
+
+    sendOfficeMutation(officeData);
   }
 
   return (
