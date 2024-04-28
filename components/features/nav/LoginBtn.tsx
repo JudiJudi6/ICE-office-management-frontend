@@ -15,7 +15,7 @@ interface LoginBtnProps {
 export default function LoginBtn({ isInNav, onCloseNav }: LoginBtnProps) {
   const queryClient = useQueryClient();
   const user: UserInterface | undefined = queryClient.getQueryData(["user"]);
-  const isAuth = user?.data.user;
+  const isAuth = localStorage.getItem("sessionToken") !== null;
   const pathName = usePathname();
 
   if (pathName !== "/view/creator") {
@@ -39,7 +39,7 @@ export default function LoginBtn({ isInNav, onCloseNav }: LoginBtnProps) {
               </div>
             )}
             <p>
-              {user.data.user.name} {user.data.user.surname}
+              {user?.data.user.name} {user?.data.user.surname}
             </p>
             {isInNav && (
               <div>

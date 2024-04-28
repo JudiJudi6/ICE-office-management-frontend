@@ -16,6 +16,11 @@ import { useRouter } from "next/navigation";
 import React, { Suspense, useContext, useEffect, useState } from "react";
 
 export default function App() {
+  const [activeDesk, setActiveDesk] = useState("");
+  const [selectedDesk, setSelectedDesk] = useState("");
+  const [freeCamera, setFreeCamera] = useState(false);
+  const [highlightDesks, setHighlightDesks] = useState(false);
+
   const [selectedOffice, setSelectedOffice] = useState("");
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedDateFrom, setSelectedDateFrom] = useState("");
@@ -26,16 +31,24 @@ export default function App() {
   >(officeData?.data.offices.at(0) || undefined);
   const queryClient = useQueryClient();
   const user: UserInterface | undefined = queryClient.getQueryData(["user"]);
-  const isAuth = user?.data.user;
+  const isAuth =
+    localStorage.getItem("sessionToken") !== null && user?.data.user;
   const router = useRouter();
 
   useEffect(
     function () {
-      if (isAuth === undefined) {
+      if (!isAuth) {
         router.push("/login");
       }
     },
     [isAuth, router]
+  );
+
+  useEffect(
+    function () {
+      console.log(selectedDesk);
+    },
+    [selectedDesk]
   );
 
   useEffect(() => {
@@ -67,7 +80,7 @@ export default function App() {
         <Suspense fallback={<Spinner />}>
           <Canvas
             orthographic
-            camera={{ zoom: 10, position: [0, 200, 0] }}
+            camera={{ zoom: 15, position: [0, 200, 0] }}
             shadows={true}
           >
             {selectedOfficeBuild?.renderData.elements.map((element) => {
@@ -103,6 +116,10 @@ export default function App() {
                   rotZ={element.rotZ}
                   scale={element.scale}
                   equipment={element.equipment}
+                  activeDesk={activeDesk}
+                  setActiveDesk={setActiveDesk}
+                  setSelectedDesk={setSelectedDesk}
+                  selectedDesk={selectedDesk}
                 />
               );
             })}
@@ -133,7 +150,7 @@ export default function App() {
                   endZ={element.endZ}
                   endY={element.y}
                   color={element.color}
-                  // transparent={element.transparent}
+                  transparent={element.transparent}
                 />
               );
             })}

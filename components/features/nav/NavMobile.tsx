@@ -11,6 +11,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { FiLogOut } from "react-icons/fi";
 import { useQueryClient } from "@tanstack/react-query";
 import UserInterface from "@/interfaces/UserInterface";
+import { useLogout } from "@/hooks/user/useLogout";
 
 interface NavMobileProps {
   loginBtns?: boolean;
@@ -21,9 +22,8 @@ export default function NavMobile({
   closeNav,
   loginBtns = true,
 }: NavMobileProps) {
-  const queryClient = useQueryClient();
-  const user: UserInterface | undefined = queryClient.getQueryData(["user"]);
-  const isAuth = user?.data.user;
+  const logout = useLogout();
+  const isAuth = localStorage.getItem("sessionToken") !== null;
 
   return (
     <div className="w-full">
@@ -68,6 +68,7 @@ export default function NavMobile({
               title="Log out"
               icon={<FiLogOut />}
               onClick={() => {
+                logout();
                 closeNav && closeNav();
               }}
             />

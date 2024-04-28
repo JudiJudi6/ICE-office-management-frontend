@@ -5,6 +5,8 @@ import {
 } from "@/app/view/creator/page";
 import { useSendOffice } from "@/hooks/creator/useSendOffice";
 import OfficeDataInterface from "@/interfaces/OfficeInterface";
+import UserInterface from "@/interfaces/UserInterface";
+import { useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 
 interface SaveOfficeProps {
@@ -24,6 +26,8 @@ export default function SaveOffice({
   const [officeAddress, setOfficeAddress] = useState("");
   const [officeName, setOfficeName] = useState("");
   const { sendOffice: sendOfficeMutation, isSuccess } = useSendOffice();
+  const queryClient = useQueryClient();
+  const user: UserInterface | undefined = queryClient.getQueryData(["user"]);
 
   function generateInvitationCode() {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -52,11 +56,14 @@ export default function SaveOffice({
       address: officeAddress,
       renderData: officeBuild,
       deskList: desks,
-      authorId: "cza tu uzupełnic",
-      users: [{ name: "tutaj", surname: "tez" }],
+      authorId: user?.data.user._id!,
+      users: [
+        { name: user?.data.user.name!, surname: user?.data.user.surname! },
+      ],
       invitationCode: generateInvitationCode(),
     };
 
+    console.log(officeData);
     sendOfficeMutation(officeData);
   }
 

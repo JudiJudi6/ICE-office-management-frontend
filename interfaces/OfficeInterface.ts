@@ -55,6 +55,7 @@ type WallRenderData = {
   endY: number;
   endZ: number;
   id: string;
+  transparent?: boolean;
   x: number;
   y: number;
   z: number;
