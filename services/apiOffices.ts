@@ -28,7 +28,23 @@ export async function getOffice() {
       "Content-Type": "application/json",
     },
   });
-  console.log("data");
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  } else {
+    const bodyText = await response.text();
+    console.error(response);
+    throw new Error(`${bodyText}`);
+  }
+}
+
+export async function getUserOffice(userId: string | null) {
+  const response = await fetch(API_KEY + "/api/v1/user/" + userId, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   if (response.ok) {
     const data = await response.json();
     return data;
