@@ -1,5 +1,6 @@
 "use client";
 
+import { useGetUser } from "@/hooks/user/useGetUser";
 import UserInterface from "@/interfaces/UserInterface";
 import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
@@ -16,6 +17,7 @@ export default function LoginBtn({ isInNav, onCloseNav }: LoginBtnProps) {
   const queryClient = useQueryClient();
   const user: UserInterface | undefined = queryClient.getQueryData(["user"]);
   const isAuth = localStorage.getItem("sessionToken") !== null;
+  const { data } = useGetUser(localStorage.getItem("sessionToken"));
   const pathName = usePathname();
 
   if (pathName !== "/view/creator") {
@@ -39,7 +41,7 @@ export default function LoginBtn({ isInNav, onCloseNav }: LoginBtnProps) {
               </div>
             )}
             <p>
-              {user?.data.user.name} {user?.data.user.surname}
+              {data?.data?.user?.name} {data?.data?.user?.surname}
             </p>
             {isInNav && (
               <div>

@@ -53,8 +53,31 @@ export async function login(userData: userLoginInterface) {
     }),
   });
   if (response.ok) {
-    const userData = response.json();
+    const userData = await response.json();
     return userData;
+  } else {
+    const bodyText = await response.json();
+    throw new Error(bodyText.message);
+  }
+}
+
+export async function getUser(userToken: string | null) {
+  console.log(userToken);
+  if (!userToken) return null;
+
+  const response = await fetch(API_KEY + "/api/v1/login/getUser", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: userToken,
+    }),
+  });
+  if (response.ok) {
+    const userData = await response.json();
+    console.log(userData);
+    return { status: "success", data: { user: userData } };
   } else {
     const bodyText = await response.json();
     throw new Error(bodyText.message);
