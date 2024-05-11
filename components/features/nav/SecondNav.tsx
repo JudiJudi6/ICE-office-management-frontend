@@ -14,6 +14,7 @@ interface SecondNavProps {
   selectedDateFrom: string;
   setSelectedDateTo: Dispatch<SetStateAction<string>>;
   selectedDateTo: string;
+  setDeskId: Dispatch<SetStateAction<string>>;
 }
 
 export default function SecondNav({
@@ -25,6 +26,7 @@ export default function SecondNav({
   setSelectedDateFrom,
   setSelectedDateTo,
   setSelectedDay,
+  setDeskId,
 }: SecondNavProps) {
   const officeData = useContext(OfficesContext);
   const searchParams = useSearchParams();
@@ -50,20 +52,15 @@ export default function SecondNav({
     "Dec",
   ];
 
-  // Dla każdego dnia w następnych dwóch tygodniach
   for (let i = 0; i < 14; i++) {
-    // Dodaj dzień do dzisiejszej daty
     const date = new Date(today);
     date.setDate(today.getDate() + i);
 
-    // Pobierz nazwę miesiąca i dzień
     const monthName = months[date.getMonth()];
     const day = date.getDate();
 
-    // Utwórz datę w formacie "Month Day" (np. "Aug 21")
     const formattedDate = `${monthName} ${day}`;
 
-    // Dodaj opcję do tablicy options
     options.push(
       <option key={formattedDate} value={formattedDate}>
         {formattedDate}
@@ -73,12 +70,10 @@ export default function SecondNav({
 
   for (let hour = 8; hour <= 21; hour++) {
     for (let minute of ["00", "30"]) {
-      // Utwórz godzinę w formacie "HH:MM AM/PM"
       const formattedHour = hour > 12 ? hour - 12 : hour;
       const ampm = hour < 12 ? "AM" : "PM";
       const formattedTime = `From: ${formattedHour}:${minute} ${ampm}`;
 
-      // Dodaj opcję do tablicy options
       from.push(
         <option key={formattedTime} value={formattedTime}>
           {formattedTime}
@@ -89,12 +84,10 @@ export default function SecondNav({
 
   for (let hour = 9; hour < 22; hour++) {
     for (let minute of ["00", "30"]) {
-      // Utwórz godzinę w formacie "HH:MM AM/PM"
       const formattedHour = hour > 12 ? hour - 12 : hour;
       const ampm = hour < 12 ? "AM" : "PM";
       const formattedTime = `To: ${formattedHour}:${minute} ${ampm}`;
 
-      // Dodaj opcję do tablicy options
       to.push(
         <option key={formattedTime} value={formattedTime}>
           {formattedTime}
@@ -116,9 +109,12 @@ export default function SecondNav({
   return (
     <div className="flex">
       <select
+        className="bg-transparent border border-gray text-bgDark1 rounded-lg focus:ring-main2 focus:border-main2 block w-full p-2.5 transition-colors duration-300 outline-none cursor-pointer"
         value={selectedOffice}
-        onChange={(e) => setSelectedOffice(e.target.value)}
-        className="border-none text-2xl p-2 m-2 cursor-pointer"
+        onChange={(e) => {
+          setSelectedOffice(e.target.value);
+          setDeskId("");
+        }}
       >
         {officeData?.data?.offices.length === 0 && (
           <option value="">Create some office</option>
@@ -131,18 +127,21 @@ export default function SecondNav({
       </select>
       <div>
         <select
+          className="bg-transparent border border-gray text-bgDark1 rounded-lg focus:ring-main2 focus:border-main2 block w-full p-2.5 transition-colors duration-300 outline-none cursor-pointer"
           value={selectedDay}
           onChange={(e) => setSelectedDay(e.target.value)}
         >
           {options}
         </select>
         <select
+          className="bg-transparent border border-gray text-bgDark1 rounded-lg focus:ring-main2 focus:border-main2 block w-full p-2.5 transition-colors duration-300 outline-none cursor-pointer"
           value={selectedDateFrom}
           onChange={(e) => setSelectedDateFrom(e.target.value)}
         >
           {from}
         </select>
         <select
+          className="bg-transparent border border-gray text-bgDark1 rounded-lg focus:ring-main2 focus:border-main2 block w-full p-2.5 transition-colors duration-300 outline-none cursor-pointer"
           value={selectedDateTo}
           onChange={(e) => setSelectedDateTo(e.target.value)}
         >
