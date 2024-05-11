@@ -1,5 +1,6 @@
 "use client";
 
+import SelectedDeskModal from "@/components/features/mainView/SelectedDeskModal";
 import SecondNav from "@/components/features/nav/SecondNav";
 import Desk3D from "@/components/models3d/Desk3D";
 import Render3D from "@/components/models3d/Render3D";
@@ -28,7 +29,7 @@ export default function App() {
   const officeData = useContext(OfficesContext);
   const [selectedOfficeBuild, setSelectedOfficeBuild] = useState<
     OfficeDataInterface | undefined
-  >(officeData?.data.offices.at(0) || undefined);
+  >(officeData?.data.offices.at(0));
   const queryClient = useQueryClient();
   const user: UserInterface | undefined = queryClient.getQueryData(["user"]);
   const isAuth =
@@ -42,13 +43,6 @@ export default function App() {
       }
     },
     [isAuth, router]
-  );
-
-  useEffect(
-    function () {
-      console.log(selectedDesk);
-    },
-    [selectedDesk]
   );
 
   useEffect(() => {
@@ -65,7 +59,21 @@ export default function App() {
   }
 
   return (
-    <div className="text-black pt-16 h-screen">
+    <div className="text-black pt-16 h-screen relative overflow-x-hidden">
+      {selectedDesk && (
+        <SelectedDeskModal
+          deskId={selectedDesk}
+          setDeskId={setSelectedDesk}
+          selectedOfficeBuild={selectedOfficeBuild}
+          officeId={selectedOfficeBuild?.id}
+          setSelectedDay={setSelectedDay}
+          selectedDay={selectedDay}
+          setSelectedDateFrom={setSelectedDateFrom}
+          selectedDateFrom={selectedDateFrom}
+          setSelectedDateTo={setSelectedDateTo}
+          selectedDateTo={selectedDateTo}
+        />
+      )}
       <SecondNav
         setSelectedOffice={setSelectedOffice}
         selectedOffice={selectedOffice}
@@ -75,6 +83,7 @@ export default function App() {
         selectedDateFrom={selectedDateFrom}
         setSelectedDateTo={setSelectedDateTo}
         selectedDateTo={selectedDateTo}
+        setDeskId={setSelectedDesk}
       />
       <div className="h-[calc(100%-64px)]">
         <Suspense fallback={<Spinner />}>
