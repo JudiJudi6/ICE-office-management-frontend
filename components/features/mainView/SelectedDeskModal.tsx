@@ -7,6 +7,8 @@ import { FaCheck } from "react-icons/fa6";
 import { VscError } from "react-icons/vsc";
 import Modal from "@/components/ui/Modal";
 import MakeReservationConfirmModal from "./MakeReservationConfirmModal";
+import DeskAdminModal from "./DeskAdminModal";
+import { convertTo12HourFormat } from "@/utils/helpers";
 
 interface SelectedDeskModalProps {
   deskId: string;
@@ -19,6 +21,7 @@ interface SelectedDeskModalProps {
   selectedDateFrom: string;
   setSelectedDateTo: Dispatch<SetStateAction<string>>;
   selectedDateTo: string;
+  isAdmin: boolean;
 }
 
 export default function SelectedDeskModal({
@@ -32,6 +35,7 @@ export default function SelectedDeskModal({
   setSelectedDateFrom,
   setSelectedDateTo,
   setSelectedDay,
+  isAdmin,
 }: SelectedDeskModalProps) {
   const { data, isLoading } = useGetDeskReservation(deskId, officeId);
   const deskArr = useMemo(
@@ -41,10 +45,7 @@ export default function SelectedDeskModal({
   );
 
   const desk = deskArr && deskArr[0];
-
-  console.log(data);
-  console.log(desk?.deskName);
-
+  console.log(desk?.reservationData);
   const today = new Date();
   const options = [];
   const from = [];
@@ -83,31 +84,27 @@ export default function SelectedDeskModal({
   }
 
   for (let hour = 8; hour <= 21; hour++) {
-    for (let minute of ["00", "30"]) {
-      const formattedHour = hour > 12 ? hour - 12 : hour;
-      const ampm = hour < 12 ? "AM" : "PM";
-      const formattedTime = `From: ${formattedHour}:${minute} ${ampm}`;
+    const formattedHour = hour > 12 ? hour - 12 : hour;
+    const ampm = hour < 12 ? "AM" : "PM";
+    const formattedTime = `From: ${formattedHour}:00 ${ampm}`;
 
-      from.push(
-        <option key={formattedTime} value={formattedTime}>
-          {formattedTime}
-        </option>
-      );
-    }
+    from.push(
+      <option key={formattedTime} value={formattedTime}>
+        {formattedTime}
+      </option>
+    );
   }
 
-  for (let hour = 9; hour < 22; hour++) {
-    for (let minute of ["00", "30"]) {
-      const formattedHour = hour > 12 ? hour - 12 : hour;
-      const ampm = hour < 12 ? "AM" : "PM";
-      const formattedTime = `To: ${formattedHour}:${minute} ${ampm}`;
+  for (let hour = 9; hour <= 22; hour++) {
+    const formattedHour = hour > 12 ? hour - 12 : hour;
+    const ampm = hour < 12 ? "AM" : "PM";
+    const formattedTime = `To: ${formattedHour}:00 ${ampm}`;
 
-      to.push(
-        <option key={formattedTime} value={formattedTime}>
-          {formattedTime}
-        </option>
-      );
-    }
+    to.push(
+      <option key={formattedTime} value={formattedTime}>
+        {formattedTime}
+      </option>
+    );
   }
 
   return (
@@ -115,7 +112,7 @@ export default function SelectedDeskModal({
       animate={deskId ? { translateX: "0%" } : { translateX: "100%" }}
       initial={{ translateX: "100%" }}
       transition={{ ease: "easeInOut" }}
-      className="absolute right-0 top-0 z-[9] -translate-x-full h-full w-[280px] bg-white border-l border-l-slate-200 border-solid p-6 pt-[88px] flex flex-col"
+      className="absolute right-0 top-0 z-[11] -translate-x-full h-full w-[280px] bg-white border-l border-l-slate-200 border-solid p-6 pt-[88px] flex flex-col"
     >
       <div className="flex w-full justify-between items-center">
         <p className="text-xl">Desk name: {desk?.deskName}</p>
@@ -142,6 +139,14 @@ export default function SelectedDeskModal({
           Desk disabled
         </p>
       )}
+      <div className="mb-3">
+        <p>Desk Equipment:</p>
+        {desk?.equipment.map((item, i) => (
+          <p key={i} className="font-medium">
+            - {item}
+          </p>
+        ))}
+      </div>
       <div>
         <div className="flex flex-col justify-between items-start">
           <p>Select Day: </p>
@@ -149,17 +154,40 @@ export default function SelectedDeskModal({
             className="bg-transparent border border-gray text-bgDark1 rounded-lg focus:ring-main2 focus:border-main2 block w-full p-2.5 transition-colors duration-300 outline-none cursor-pointer my-2"
             value={selectedDay}
             onChange={(e) => setSelectedDay(e.target.value)}
+            disabled={!desk?.active}
           >
             {options}
           </select>
         </div>
         <p>Desk reservations {selectedDay ? "at " + selectedDay : "today"}:</p>
         {desk?.reservationData.length !== 0 ? (
-          <div className="flex justify-center items-center gap-2">
+          <div className="flex justify-center items-center flex-col gap-2 overflow-y-auto max-h-52 py-2">
             {desk?.reservationData.map((item) => (
-              <p key={item.createdAt.getTime()}>
-                {item.startTime.getTime()} {item.endTime.getTime()}
-              </p>
+              <div
+                className="bg-bgWhite1 rounded-lg w-full p-2"
+                key={new Date(item?.createdAt).getTime()}
+              >
+                <div className="flex justify-between items-center mb-4">
+                  <p>
+                    From:
+                    {convertTo12HourFormat(
+                      new Date(item?.startTime).getHours().toString()
+                    )}{" "}
+                  </p>
+                  <p>
+                    To:
+                    {convertTo12HourFormat(
+                      new Date(item?.endTime).getHours().toString()
+                    )}
+                  </p>
+                </div>
+                <p>
+                  Created at{" "}
+                  {convertTo12HourFormat(
+                    new Date(item?.createdAt).getHours().toString()
+                  )}
+                </p>
+              </div>
             ))}
           </div>
         ) : (
@@ -175,6 +203,7 @@ export default function SelectedDeskModal({
             className="bg-transparent border border-gray text-bgDark1 rounded-lg focus:ring-main2 focus:border-main2 block w-full p-2.5 transition-colors duration-300 outline-none cursor-pointer"
             value={selectedDateFrom}
             onChange={(e) => setSelectedDateFrom(e.target.value)}
+            disabled={!desk?.active}
           >
             {from}
           </select>
@@ -182,6 +211,7 @@ export default function SelectedDeskModal({
             className="bg-transparent border border-gray text-bgDark1 rounded-lg focus:ring-main2 focus:border-main2 block w-full p-2.5 transition-colors duration-300 outline-none cursor-pointer"
             value={selectedDateTo}
             onChange={(e) => setSelectedDateTo(e.target.value)}
+            disabled={!desk?.active}
           >
             {to}
           </select>
@@ -189,13 +219,17 @@ export default function SelectedDeskModal({
       </div>
       <Modal>
         <Modal.Open opens="confirm">
-          <button className="w-full text-sm text-center bg-gradient-to-r to-main1 via-main2 from-main1 bg-size-200 bg-pos-0 hover:bg-pos-100 py-3 text-white  tracking-wide rounded-full transition-all duration-300 px-6 my-2">
+          <button
+            className="w-full text-sm text-center bg-gradient-to-r to-main1 via-main2 from-main1 bg-size-200 bg-pos-0 hover:bg-pos-100 py-3 text-white  tracking-wide rounded-full transition-all duration-300 px-6 my-2"
+            disabled={!desk?.active}
+          >
             Make reservation
           </button>
         </Modal.Open>
         <Modal.Window name="confirm">
           <MakeReservationConfirmModal
             desk={desk}
+            officeId={officeId!}
             selectedDateFrom={selectedDateFrom}
             selectedDateTo={selectedDateTo}
             selectedDay={selectedDay}
@@ -203,9 +237,18 @@ export default function SelectedDeskModal({
           />
         </Modal.Window>
       </Modal>
-      <button className="w-full text-sm text-center hover:bg-gradient-to-r  bg-size-200 bg-pos-0 hover:bg-pos-100 py-3 text-main1 hover:text-main2  tracking-wide  rounded-full transition-all duration-300 px-6">
-        Admin options
-      </button>
+      {isAdmin && (
+        <Modal>
+          <Modal.Open opens="confirm">
+            <button className="w-full text-sm text-center hover:bg-gradient-to-r  bg-size-200 bg-pos-0 hover:bg-pos-100 py-3 text-main1 hover:text-main2  tracking-wide  rounded-full transition-all duration-300 px-6">
+              Admin options
+            </button>
+          </Modal.Open>
+          <Modal.Window name="confirm">
+            <DeskAdminModal />
+          </Modal.Window>
+        </Modal>
+      )}
     </motion.div>
   );
 }

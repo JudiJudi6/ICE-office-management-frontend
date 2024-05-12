@@ -68,7 +68,7 @@ type OfficeRenderData = {
   walls: WallRenderData[];
 };
 
-type ReservationData = {
+export type ReservationData = {
   reservationId: string;
   userId: string;
   user: { name: string; surname: string };

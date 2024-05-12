@@ -14,7 +14,9 @@ import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { MdOutlinePartyMode } from "react-icons/md";
 import React, { Suspense, useContext, useEffect, useState } from "react";
+import { SectionsToolTip } from "@/components/features/creator/SectionsToolTip";
 
 export default function App() {
   const [activeDesk, setActiveDesk] = useState("");
@@ -35,6 +37,9 @@ export default function App() {
   const isAuth =
     localStorage.getItem("sessionToken") !== null && user?.data.user;
   const router = useRouter();
+  const [isAdmin, setIsAdmin] = useState(
+    selectedOfficeBuild?.authorId === user?.data.user._id
+  );
 
   useEffect(
     function () {
@@ -51,8 +56,9 @@ export default function App() {
     );
     if (foundOffice) {
       setSelectedOfficeBuild(foundOffice);
+      setIsAdmin(foundOffice.authorId === user?.data.user._id);
     }
-  }, [officeData, selectedOffice]);
+  }, [officeData, selectedOffice, user?.data.user._id]);
 
   if (!isAuth) {
     return null;
@@ -72,6 +78,7 @@ export default function App() {
           selectedDateFrom={selectedDateFrom}
           setSelectedDateTo={setSelectedDateTo}
           selectedDateTo={selectedDateTo}
+          isAdmin={isAdmin}
         />
       )}
       <SecondNav
@@ -85,11 +92,31 @@ export default function App() {
         selectedDateTo={selectedDateTo}
         setDeskId={setSelectedDesk}
       />
-      <div className="h-[calc(100%-64px)]">
+      <div className="relative h-full">
+        <SectionsToolTip
+          title={
+            <>
+              <h1 className="text-xs text-main2">Lock Map Rotating</h1>
+            </>
+          }
+        >
+          <button
+            onClick={() => setFreeCamera((s) => !s)}
+            className={`absolute top-[276px] md500:top-[152px] lg:top-[96px] left-0 pl-4 md500:pl-6 z-50 hover:text-main2 rounded-xl text-lg transition-colors duration-300  ${
+              freeCamera && "text-main2"
+            }`}
+          >
+            <MdOutlinePartyMode />
+          </button>
+        </SectionsToolTip>
         <Suspense fallback={<Spinner />}>
           <Canvas
             orthographic
-            camera={{ zoom: 15, position: [0, 200, 0] }}
+            camera={
+              freeCamera
+                ? { zoom: 15, position: [0, 200, 0] }
+                : { zoom: 15, position: [0, 200, 0] }
+            }
             shadows={true}
           >
             {selectedOfficeBuild?.renderData.elements.map((element) => {
@@ -164,7 +191,7 @@ export default function App() {
               );
             })}
             <OrbitControls
-              enableRotate={true}
+              enableRotate={!freeCamera}
               enableDamping={false}
               minPolarAngle={0}
               maxPolarAngle={Math.PI / 2 - 0.1}

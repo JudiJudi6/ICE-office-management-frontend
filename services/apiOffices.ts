@@ -1,4 +1,4 @@
-import OfficeDataInterface from "@/interfaces/OfficeInterface";
+import OfficeDataInterface, { ReservationData } from "@/interfaces/OfficeInterface";
 
 const API_KEY = "http://localhost:3000";
 
@@ -55,13 +55,44 @@ export async function getUserOffice(userId: string | undefined) {
   }
 }
 
-export async function getDeskReservations(deskId: string, officeId: string | undefined) {
-  const response = await fetch(API_KEY + "/api/v1/reservations/" + officeId + "/" + deskId, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+export async function getDeskReservations(
+  deskId: string,
+  officeId: string | undefined
+) {
+  const response = await fetch(
+    API_KEY + "/api/v1/reservations/" + officeId + "/" + deskId,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  } else {
+    const bodyText = await response.text();
+    console.error(response);
+    throw new Error(`${bodyText}`);
+  }
+}
+
+export async function makeReservation(
+  deskId: string,
+  officeId: string | undefined,
+  reservation: ReservationData
+) {
+  const response = await fetch(
+    API_KEY + "/api/v1/reservations/" + officeId + "/" + deskId,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(reservation)
+    }
+  );
   if (response.ok) {
     const data = await response.json();
     return data;
