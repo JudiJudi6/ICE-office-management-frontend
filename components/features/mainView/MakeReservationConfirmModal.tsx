@@ -95,12 +95,28 @@ export default function MakeReservationConfirmModal({
   }
 
   return (
-    <div>
-      You want to make reservation of desk: {desk?.deskName} at {day}, from{" "}
-      {timeFromSliced} to {timeToSliced}{" "}
-      <div>
-        <button onClick={onCloseModal}>Cancel</button>
-        <button onClick={handleReservation}>Confirm</button>
+    <div className="">
+      <p className="mb-5">
+        You want to make reservation of desk:{" "}
+        <span className="font-medium">{desk?.deskName}</span>
+        {/* <p className="my-5"> */}
+        , at <span className="font-medium">{day}</span>, from{" "}
+        <span className="font-medium">{timeFromSliced}</span> to{" "}
+        <span className="font-medium">{timeToSliced}</span> {/* </p> */}
+      </p>
+      <div className="flex justify-center items-center gap-3">
+        <button
+          className="w-[115px] text-sm text-center  py-2 text-red-500 border-2 border-solid border-red-500  tracking-wide rounded-full transition-all duration-300 px-6 hover:text-white hover:bg-red-500"
+          onClick={onCloseModal}
+        >
+          Cancel
+        </button>
+        <button
+          className="w-[115px] text-sm text-center bg-gradient-to-r to-main1 via-main2 from-main1 bg-size-200 bg-pos-0 hover:bg-pos-100 py-[10px] text-white  tracking-wide rounded-full transition-all duration-300 px-6"
+          onClick={handleReservation}
+        >
+          Confirm
+        </button>
       </div>
     </div>
   );
