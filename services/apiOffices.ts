@@ -1,4 +1,6 @@
-import OfficeDataInterface, { ReservationData } from "@/interfaces/OfficeInterface";
+import OfficeDataInterface, {
+  ReservationData,
+} from "@/interfaces/OfficeInterface";
 
 const API_KEY = "http://localhost:3000";
 
@@ -90,7 +92,32 @@ export async function makeReservation(
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(reservation)
+      body: JSON.stringify(reservation),
+    }
+  );
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  } else {
+    const bodyText = await response.text();
+    console.error(response);
+    throw new Error(`${bodyText}`);
+  }
+}
+
+export async function changeAvailibility(
+  deskId: string | undefined,
+  officeId: string | undefined,
+  active: boolean
+) {
+  const response = await fetch(
+    API_KEY + "/api/v1/office/" + officeId + "/" + deskId,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ active }),
     }
   );
   if (response.ok) {

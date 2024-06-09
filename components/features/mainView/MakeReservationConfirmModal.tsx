@@ -50,26 +50,25 @@ export default function MakeReservationConfirmModal({
   const timeFromSliced = timeFrom.slice(-8, -6).trim() + timeFrom.slice(-6);
   const timeToSliced = timeTo.slice(-8, -6).trim() + timeFrom.slice(-6);
 
-  const timeFromConverted = convertStringToDate(timeFromSliced);
-  const timeToConverted = convertStringToDate(timeToSliced);
+  const timeFromConverted = convertStringToDate(timeFromSliced, new Date(day));
+  const timeToConverted = convertStringToDate(timeToSliced, new Date(day));
+  console.log(timeFromConverted, timeToConverted);
 
-  function convertStringToDate(timeString: string) {
-    const [time, ampm] = timeString.split(" ");
+  function convertStringToDate(timeString: string, selectedDay: Date) {
+    const timeArray = timeString.split(":");
+    let hours = parseInt(timeArray[0]);
+    let minutes = parseInt(timeArray[1]);
+    const ampm = timeArray[2];
 
-    const [hours, minutes] = time.split(":");
-
-    let hours24 = parseInt(hours, 10);
-    if (ampm === "PM" && hours24 < 12) {
-      hours24 += 12;
-    } else if (ampm === "AM" && hours24 === 12) {
-      hours24 = 0;
+    if (ampm === "PM" && hours < 12) {
+      hours += 12;
+    } else if (ampm === "AM" && hours === 12) {
+      hours = 0;
     }
 
-    const date = new Date();
-    date.setHours(hours24);
-    date.setMinutes(parseInt(minutes, 10));
-    date.setSeconds(0);
-    date.setMilliseconds(0);
+    const date = new Date(selectedDay);
+    date.setHours(hours);
+    date.setMinutes(minutes);
 
     return date;
   }
@@ -99,8 +98,8 @@ export default function MakeReservationConfirmModal({
       <p className="mb-5">
         You want to make reservation of desk:{" "}
         <span className="font-medium">{desk?.deskName}</span>
-        {/* <p className="my-5"> */}
-        , at <span className="font-medium">{day}</span>, from{" "}
+        {/* <p className="my-5"> */}, at{" "}
+        <span className="font-medium">{day}</span>, from{" "}
         <span className="font-medium">{timeFromSliced}</span> to{" "}
         <span className="font-medium">{timeToSliced}</span> {/* </p> */}
       </p>

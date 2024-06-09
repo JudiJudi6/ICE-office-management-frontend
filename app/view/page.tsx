@@ -8,7 +8,7 @@ import RenderFloor from "@/components/models3d/RenderFloor";
 import RenderWall from "@/components/models3d/RenderWall";
 import Spinner from "@/components/ui/Spinner";
 import { OfficesContext } from "@/context/OfficesContext";
-import OfficeDataInterface from "@/interfaces/OfficeInterface";
+import OfficeDataInterface, { ReservationData } from "@/interfaces/OfficeInterface";
 import UserInterface from "@/interfaces/UserInterface";
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
@@ -23,6 +23,7 @@ export default function App() {
   const [selectedDesk, setSelectedDesk] = useState("");
   const [freeCamera, setFreeCamera] = useState(false);
   const [highlightDesks, setHighlightDesks] = useState(false);
+  const [availableDesks, setAvailableDesks] = useState<string[]>([]);
 
   const [selectedOffice, setSelectedOffice] = useState("");
   const [selectedDay, setSelectedDay] = useState("");
@@ -63,6 +64,31 @@ export default function App() {
   if (!isAuth) {
     return null;
   }
+
+  // const isDeskAvailable = (
+  //   deskReservationData: ReservationData[] | undefined,
+  //   selectedTimeFrom: string,
+  //   selectedTimeTo: string
+  // ) => {
+  //   // Iterujemy przez rezerwacje biurka
+  //   for (const reservation of deskReservationData) {
+  //     // Pobieramy czasy rozpoczęcia i zakończenia rezerwacji
+  //     const startTime = new Date(reservation.startTime);
+  //     const endTime = new Date(reservation.endTime);
+
+  //     // Sprawdzamy, czy wybrany przedział czasowy koliduje z rezerwacją
+  //     if (
+  //       (selectedTimeFrom >= startTime && selectedTimeFrom < endTime) ||
+  //       (selectedTimeTo > startTime && selectedTimeTo <= endTime) ||
+  //       (selectedTimeFrom <= startTime && selectedTimeTo >= endTime)
+  //     ) {
+  //       // Jeśli istnieje kolizja, biurko jest niedostępne w wybranym przedziale czasowym
+  //       return false;
+  //     }
+  //   }
+  //   // Jeśli nie występuje kolizja, biurko jest dostępne
+  //   return true;
+  // };
 
   return (
     <div className="text-black pt-16 h-screen relative overflow-x-hidden">

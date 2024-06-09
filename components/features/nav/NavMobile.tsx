@@ -41,7 +41,7 @@ export default function NavMobile({
             />
             <NavItem
               href="/view/reservations"
-              title="Reservations"
+              title="My Reservations"
               icon={<TbReservedLine />}
               onClick={() => {
                 closeNav && closeNav();

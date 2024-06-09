@@ -26,7 +26,7 @@ export function useMakeReservation() {
       queryClient.invalidateQueries({ queryKey: ["userOffices"] });
     },
     onError: () => {
-      toast.error("Something went wrong");
+      toast.error("Date already taken");
     },
   });
 

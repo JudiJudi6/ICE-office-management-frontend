@@ -1,5 +1,5 @@
-export function convertTo12HourFormat(time24: string) {
-  let hour = +time24;
+export function convertTo12HourFormat(time24: number) {
+  let hour = time24;
 
   const period = hour >= 12 ? "PM" : "AM";
 
