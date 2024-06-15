@@ -42,13 +42,13 @@ export default function MakeReservationConfirmModal({
   const today = new Date();
   const day = selectedDay
     ? selectedDay
-    : months[today.getMonth()] + " " + today.getDate();
+    : `${months[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`;
 
   const timeFrom = selectedDateFrom ? selectedDateFrom : "From: 8:00 AM";
   const timeTo = selectedDateTo ? selectedDateTo : "To: 9:00 AM";
 
   const timeFromSliced = timeFrom.slice(-8, -6).trim() + timeFrom.slice(-6);
-  const timeToSliced = timeTo.slice(-8, -6).trim() + timeFrom.slice(-6);
+  const timeToSliced = timeTo.slice(-8, -6).trim() + timeTo.slice(-6);
 
   const timeFromConverted = convertStringToDate(timeFromSliced, new Date(day));
   const timeToConverted = convertStringToDate(timeToSliced, new Date(day));
@@ -57,8 +57,9 @@ export default function MakeReservationConfirmModal({
   function convertStringToDate(timeString: string, selectedDay: Date) {
     const timeArray = timeString.split(":");
     let hours = parseInt(timeArray[0]);
-    let minutes = parseInt(timeArray[1]);
-    const ampm = timeArray[2];
+    let helper = timeArray[1].split(" ");
+    let minutes = parseInt(helper[0]);
+    const ampm = helper[1];
 
     if (ampm === "PM" && hours < 12) {
       hours += 12;
@@ -66,9 +67,11 @@ export default function MakeReservationConfirmModal({
       hours = 0;
     }
 
-    const date = new Date(selectedDay);
-    date.setHours(hours);
-    date.setMinutes(minutes);
+    const year = today.getFullYear();
+    const month = selectedDay.getMonth();
+    const day = selectedDay.getDate();
+
+    const date = new Date(year, month, day, hours, minutes);
 
     return date;
   }

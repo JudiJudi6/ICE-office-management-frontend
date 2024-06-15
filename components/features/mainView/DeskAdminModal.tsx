@@ -8,6 +8,7 @@ import { FaCheck } from "react-icons/fa";
 import { VscError } from "react-icons/vsc";
 import Modal from "@/components/ui/Modal";
 import { Button, Menu, MenuItem } from "@mui/material";
+import ConfirmReservationDelete from "./ConfirmReservationDelete";
 interface DeskAdminModalProps {
   desk: Desks | undefined;
   selectedDay: string;
@@ -292,7 +293,12 @@ export default function DeskAdminModal({
               </Modal.Open>
             </Menu>
             <Modal.Window name="delete">
-              <div>delete {selectedReservationId?.reservationId}</div>
+              <ConfirmReservationDelete
+                onCloseModal={undefined as never}
+                reservation={selectedReservationId}
+                officeId={officeId}
+                desk={desk}
+              />
             </Modal.Window>
             <Modal.Window name="edit">
               <div>edit</div>

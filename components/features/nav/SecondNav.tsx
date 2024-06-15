@@ -7,6 +7,9 @@ import { useRouter } from "next/router";
 import React, { Dispatch, SetStateAction, useContext, useEffect } from "react";
 import AddNewOfficeModal from "../mainView/AddNewOfficeModal";
 import { PiCheckSquareOffsetBold } from "react-icons/pi";
+import { cameraInterface } from "@/app/view/page";
+import { PerspectiveCamera } from "three";
+import { Camera } from "@react-three/fiber";
 
 interface SecondNavProps {
   setSelectedOffice: Dispatch<SetStateAction<string>>;
@@ -18,6 +21,7 @@ interface SecondNavProps {
   setSelectedDateTo: Dispatch<SetStateAction<string>>;
   selectedDateTo: string;
   setDeskId: Dispatch<SetStateAction<string>>;
+  setCamera: Dispatch<SetStateAction<cameraInterface>>;
 }
 
 export default function SecondNav({
@@ -30,6 +34,7 @@ export default function SecondNav({
   setSelectedDateTo,
   setSelectedDay,
   setDeskId,
+  setCamera,
 }: SecondNavProps) {
   const officeData = useContext(OfficesContext);
   const searchParams = useSearchParams();
@@ -113,6 +118,10 @@ export default function SecondNav({
           value={selectedOffice}
           onChange={(e) => {
             setSelectedOffice(e.target.value);
+            // setCamera({
+            //   zoom: 30,
+            //   position: [0, 200, 0],
+            // });
             setDeskId("");
           }}
         >

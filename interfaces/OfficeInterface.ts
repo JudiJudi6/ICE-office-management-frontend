@@ -72,9 +72,9 @@ export type ReservationData = {
   reservationId: string;
   userId: string;
   user: { name: string; surname: string };
-  startTime: Date;
-  endTime: Date;
-  createdAt: Date;
+  startTime: string;
+  endTime: string;
+  createdAt: string;
 };
 
 export type Desks = {

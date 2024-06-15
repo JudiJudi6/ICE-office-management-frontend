@@ -53,7 +53,6 @@ export default function SelectedDeskModal({
   const from = [];
   const to = [];
 
-  // Tablica z nazwami miesięcy
   const months = [
     "Jan",
     "Feb",

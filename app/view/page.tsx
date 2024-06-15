@@ -8,20 +8,46 @@ import RenderFloor from "@/components/models3d/RenderFloor";
 import RenderWall from "@/components/models3d/RenderWall";
 import Spinner from "@/components/ui/Spinner";
 import { OfficesContext } from "@/context/OfficesContext";
-import OfficeDataInterface, { ReservationData } from "@/interfaces/OfficeInterface";
+import OfficeDataInterface, {
+  ReservationData,
+} from "@/interfaces/OfficeInterface";
 import UserInterface from "@/interfaces/UserInterface";
 import { OrbitControls } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { MdOutlinePartyMode } from "react-icons/md";
 import React, { Suspense, useContext, useEffect, useState } from "react";
 import { SectionsToolTip } from "@/components/features/creator/SectionsToolTip";
+import { Camera } from "three";
+
+export interface cameraInterface {
+  zoom: number;
+  position: [number, number, number];
+  rotation: [number, number, number];
+}
+
+function CameraComp({ setCamera }) {
+  let change = false;
+  setTimeout(() => {
+    change = !change;
+  }, 2000);
+
+  useFrame(({ camera }) => {
+    // Ustaw rotację kamery
+    if (change) camera.position.set(0, 200, 0);
+    console.log(camera);
+    // camera.rotation.set(0, 0, 0); // Przykładowa rotacja o 45 stopni wokół osi Y
+  });
+
+  return null;
+}
 
 export default function App() {
   const [activeDesk, setActiveDesk] = useState("");
   const [selectedDesk, setSelectedDesk] = useState("");
   const [freeCamera, setFreeCamera] = useState(false);
+  const [camera, setCamera] = useState<Camera>();
   const [highlightDesks, setHighlightDesks] = useState(false);
   const [availableDesks, setAvailableDesks] = useState<string[]>([]);
 
@@ -60,7 +86,8 @@ export default function App() {
       setIsAdmin(foundOffice.authorId === user?.data.user._id);
     }
   }, [officeData, selectedOffice, user?.data.user._id]);
-
+  camera?.rotation.set(Math.PI / 4, Math.PI / 4, 0);
+  camera?.updateMatrix();
   if (!isAuth) {
     return null;
   }
@@ -117,6 +144,7 @@ export default function App() {
         setSelectedDateTo={setSelectedDateTo}
         selectedDateTo={selectedDateTo}
         setDeskId={setSelectedDesk}
+        // setCamera={setCamera}
       />
       <div className="relative h-full">
         <SectionsToolTip
@@ -138,13 +166,13 @@ export default function App() {
         <Suspense fallback={<Spinner />}>
           <Canvas
             orthographic
-            camera={
-              freeCamera
-                ? { zoom: 15, position: [0, 200, 0] }
-                : { zoom: 15, position: [0, 200, 0] }
-            }
+            camera={{
+              zoom: 15,
+              position: [0, 200, 0],
+            }}
             shadows={true}
           >
+            <CameraComp />
             {selectedOfficeBuild?.renderData.elements.map((element) => {
               return (
                 <Render3D
