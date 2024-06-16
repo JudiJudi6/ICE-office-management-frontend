@@ -172,7 +172,7 @@ export default function SelectedDeskModal({
           </select>
         </div>
         <p>Desk reservations {selectedDay ? "at " + selectedDay : "today"}:</p>
-        <div className="flex justify-center items-center flex-col gap-2 overflow-y-auto h-52 my-2 ">
+        <div className="flex justify-start items-center flex-col gap-2 overflow-y-auto max-h-56 my-2 ">
           <div className=" flex flex-col gap-2 h-full w-full">
             {desk?.reservationData.filter((item) => {
               const reservationDate = new Date(item.startTime);
@@ -216,9 +216,11 @@ export default function SelectedDeskModal({
                         </span>
                       </p>
                     </div>
-                    <p className="text-sm">
-                      Created at:{" "}
-                      {formatDateTo12Hour(new Date(item?.createdAt))}
+                    <p className="text-xs">
+                      Created at: {new Date(item?.createdAt).getDate()}{" "}
+                      {months[new Date(item?.createdAt).getMonth()]}{" "}
+                      {new Date(item.createdAt).getFullYear()}{" "}
+                      {formatDateTo12Hour(new Date(item?.createdAt))}{" "}
                     </p>
                   </div>
                 ))

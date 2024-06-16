@@ -16,7 +16,7 @@ import { OrbitControls, OrbitControlsProps } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { MdOutlinePartyMode } from "react-icons/md";
+import { MdOutlineChevronRight, MdOutlinePartyMode } from "react-icons/md";
 import React, {
   MutableRefObject,
   Suspense,
@@ -26,7 +26,12 @@ import React, {
   useState,
 } from "react";
 import { SectionsToolTip } from "@/components/features/creator/SectionsToolTip";
-import { Camera } from "three";
+import { MdOutlineLockOpen } from "react-icons/md";
+import { GrPowerReset } from "react-icons/gr";
+import { PiMapTrifoldLight } from "react-icons/pi";
+import { FaChevronLeft } from "react-icons/fa6";
+import { FaChevronRight } from "react-icons/fa";
+import { MdOutlineChevronLeft } from "react-icons/md";
 
 export interface cameraInterface {
   zoom: number;
@@ -37,27 +42,51 @@ export interface cameraInterface {
 interface CameraRigProps {
   resetTrigger: string;
   controls: MutableRefObject<OrbitControlsProps | undefined>;
+  resetCamera: boolean;
+  isometricView: boolean;
+  isometricViewStep: number;
 }
 
-function CameraRig({ resetTrigger, controls }: CameraRigProps) {
+function CameraRig({
+  resetTrigger,
+  controls,
+  resetCamera,
+  isometricView,
+  isometricViewStep,
+}: CameraRigProps) {
   const { camera } = useThree();
 
+  const targetPositions = [
+    [100, 120, -100],
+    [100, 120, 100],
+    [-100, 120, 100],
+    [-100, 120, -100],
+  ];
+
   useEffect(() => {
-    // Reset the camera position and rotation
     camera.position.set(0, 200, 0);
     camera.rotation.set(0, 0, 0);
     camera.lookAt(0, 0, 0);
 
     if (controls.current) {
-      // controls.current.target.set(0, 0, 0);
-      // controls.current.update();
       controls.current.reset();
     }
-  }, [resetTrigger, camera, controls]);
+  }, [resetTrigger, resetCamera, camera, controls]);
+
+  useFrame(() => {
+    if (isometricView) {
+      const [targetX, targetY, targetZ] =
+        targetPositions[Math.abs(isometricViewStep) % 4];
+      camera.position.lerp({ x: targetX, y: targetY, z: targetZ }, 0.1);
+      camera.lookAt(0, 0, 0);
+      if (controls.current) {
+        controls.current.update();
+      }
+    }
+  });
 
   return null;
 }
-
 export default function App() {
   const control = useRef<OrbitControlsProps>();
   const [activeDesk, setActiveDesk] = useState("");
@@ -65,6 +94,9 @@ export default function App() {
   const [freeCamera, setFreeCamera] = useState(false);
   const [highlightDesks, setHighlightDesks] = useState(false);
   const [availableDesks, setAvailableDesks] = useState<string[]>([]);
+  const [resetCamera, setResetCamera] = useState(false);
+  const [isometricView, setIsometricView] = useState(false);
+  const [isometricViewStep, setIsometricViewStep] = useState(-1000);
 
   const [selectedOffice, setSelectedOffice] = useState("");
   const [selectedDay, setSelectedDay] = useState("");
@@ -162,19 +194,98 @@ export default function App() {
         <SectionsToolTip
           title={
             <>
-              <h1 className="text-xs text-main2">Lock Map Rotating</h1>
+              <p className="text-xs text-main2">Lock Map Rotation</p>
             </>
           }
         >
           <button
-            onClick={() => setFreeCamera((s) => !s)}
-            className={`absolute top-[276px] md500:top-[152px] lg:top-[96px] left-0 pl-4 md500:pl-6 z-50 hover:text-main2 rounded-xl text-lg transition-colors duration-300  ${
+            onClick={() => {
+              setFreeCamera((s) => !s);
+              if (isometricView) {
+                setIsometricView(false);
+              }
+            }}
+            className={`absolute top-[270px] md500:top-[136px] lg:top-[78px] left-4 p-2 z-50 hover:text-main2 rounded-xl text-lg transition-colors duration-300  ${
               freeCamera && "text-main2"
             }`}
           >
-            <MdOutlinePartyMode />
+            <MdOutlineLockOpen />
           </button>
         </SectionsToolTip>
+        <SectionsToolTip
+          title={
+            <>
+              <p className="text-xs text-main2">Reset camera position</p>
+            </>
+          }
+        >
+          <button
+            onClick={() => setResetCamera((s) => !s)}
+            className={`absolute top-[270px] md500:top-[136px] lg:top-[78px] left-12 p-2 z-50 hover:text-main2 rounded-xl text-lg transition-colors duration-300 `}
+          >
+            <GrPowerReset />
+          </button>
+        </SectionsToolTip>
+        <SectionsToolTip
+          title={
+            <>
+              <p className="text-xs text-main2">
+                {isometricView
+                  ? "Disable isometric view"
+                  : "Enable isometric view"}
+              </p>
+            </>
+          }
+        >
+          <button
+            onClick={() => {
+              setIsometricView((s) => !s);
+              if (isometricView) {
+                setFreeCamera(false);
+                setResetCamera((s) => !s);
+              } else {
+                setFreeCamera(true);
+              }
+            }}
+            className={`absolute top-[270px] md500:top-[136px] lg:top-[78px] left-20 p-2 z-50 hover:text-main2 rounded-xl text-lg transition-colors duration-300 ${
+              isometricView && "text-main2"
+            }`}
+          >
+            <PiMapTrifoldLight />
+          </button>
+        </SectionsToolTip>
+        {isometricView && (
+          <>
+            <SectionsToolTip
+              title={
+                <>
+                  <p className="text-xs text-main2">Rotate left</p>
+                </>
+              }
+            >
+              <button
+                onClick={() => setIsometricViewStep((s) => s - 1)}
+                className={`absolute top-[270px] md500:top-[136px] lg:top-[78px] left-28 p-2 z-50 hover:text-main2 rounded-xl text-lg transition-colors duration-300 `}
+              >
+                <MdOutlineChevronLeft />
+              </button>
+            </SectionsToolTip>
+            <SectionsToolTip
+              title={
+                <>
+                  <p className="text-xs text-main2">Rotate right</p>
+                </>
+              }
+            >
+              <button
+                onClick={() => setIsometricViewStep((s) => s + 1)}
+                className={`absolute top-[270px] md500:top-[136px] lg:top-[78px] left-36 p-2 z-50 hover:text-main2 rounded-xl text-lg transition-colors duration-300 `}
+              >
+                <MdOutlineChevronRight />
+              </button>
+            </SectionsToolTip>
+          </>
+        )}
         <Suspense fallback={<Spinner />}>
           <Canvas
             orthographic
@@ -184,7 +295,13 @@ export default function App() {
             }}
             shadows={true}
           >
-            <CameraRig resetTrigger={selectedOffice} controls={control} />
+            <CameraRig
+              resetTrigger={selectedOffice}
+              controls={control}
+              resetCamera={resetCamera}
+              isometricView={isometricView}
+              isometricViewStep={isometricViewStep}
+            />
             {selectedOfficeBuild?.renderData.elements.map((element) => {
               return (
                 <Render3D

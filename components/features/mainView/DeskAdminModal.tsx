@@ -9,6 +9,7 @@ import { VscError } from "react-icons/vsc";
 import Modal from "@/components/ui/Modal";
 import { Button, Menu, MenuItem } from "@mui/material";
 import ConfirmReservationDelete from "./ConfirmReservationDelete";
+import EditReservationModal from "./EditReservationModal";
 interface DeskAdminModalProps {
   desk: Desks | undefined;
   selectedDay: string;
@@ -301,7 +302,12 @@ export default function DeskAdminModal({
               />
             </Modal.Window>
             <Modal.Window name="edit">
-              <div>edit</div>
+              <EditReservationModal
+                onCloseModal={undefined as never}
+                reservation={selectedReservationId}
+                officeId={officeId}
+                desk={desk}
+              />
             </Modal.Window>
           </Modal>
         </div>

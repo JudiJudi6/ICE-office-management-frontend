@@ -3,19 +3,19 @@ import { useDeleteReservation } from "@/hooks/reservations/useDeleteReservation"
 import { Desks, ReservationData } from "@/interfaces/OfficeInterface";
 import React from "react";
 
-interface ConfirmReservationDeleteProps {
+interface EditReservationModalProps {
   desk: Desks | undefined;
   onCloseModal: () => void;
   reservation: ReservationData | undefined;
   officeId: string | undefined;
 }
 
-export default function ConfirmReservationDelete({
+export default function EditReservationModal({
   onCloseModal,
   desk,
   officeId,
   reservation,
-}: ConfirmReservationDeleteProps) {
+}: EditReservationModalProps) {
   const { deleteReservation } = useDeleteReservation();
   const months = [
     "Jan",
@@ -55,8 +55,9 @@ export default function ConfirmReservationDelete({
   return (
     <div className="">
       <p className="mb-5">
-        You want to delete reservation of desk:{" "}
-        <span className="font-medium">{desk?.deskName}</span>, at{" "}
+        You want to edit reservation of desk:{" "}
+        <span className="font-medium">{desk?.deskName}</span>
+        {/* </span>, at{" "}
         <span className="font-medium">
           {convertDayToString(reservation?.startTime)}
         </span>
@@ -67,11 +68,11 @@ export default function ConfirmReservationDelete({
         to{" "}
         <span className="font-medium">
           {formatHoursTo12(new Date(reservation?.endTime ?? ""))}
-        </span>
-        , that is made by{" "}
-        <span className="font-medium">{reservation?.user.name}</span>{" "}
-        <span className="font-medium">{reservation?.user.surname}</span>
+        </span> */}
       </p>
+        {/* , that is made by{" "}
+        <span className="font-medium">{reservation?.user.name}</span>{" "}
+        <span className="font-medium">{reservation?.user.surname}</span> */}
       <div className="flex justify-center items-center gap-3">
         <button
           className="w-[115px] text-sm text-center  py-2 text-red-500 border-2 border-solid border-red-500  tracking-wide rounded-full transition-all duration-300 px-6 hover:text-white hover:bg-red-500"
