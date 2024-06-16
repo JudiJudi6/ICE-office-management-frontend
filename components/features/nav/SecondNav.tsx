@@ -21,7 +21,6 @@ interface SecondNavProps {
   setSelectedDateTo: Dispatch<SetStateAction<string>>;
   selectedDateTo: string;
   setDeskId: Dispatch<SetStateAction<string>>;
-  setCamera: Dispatch<SetStateAction<cameraInterface>>;
 }
 
 export default function SecondNav({
@@ -34,7 +33,6 @@ export default function SecondNav({
   setSelectedDateTo,
   setSelectedDay,
   setDeskId,
-  setCamera,
 }: SecondNavProps) {
   const officeData = useContext(OfficesContext);
   const searchParams = useSearchParams();
@@ -44,7 +42,6 @@ export default function SecondNav({
   const from = [];
   const to = [];
 
-  // Tablica z nazwami miesięcy
   const months = [
     "Jan",
     "Feb",
@@ -118,10 +115,6 @@ export default function SecondNav({
           value={selectedOffice}
           onChange={(e) => {
             setSelectedOffice(e.target.value);
-            // setCamera({
-            //   zoom: 30,
-            //   position: [0, 200, 0],
-            // });
             setDeskId("");
           }}
         >

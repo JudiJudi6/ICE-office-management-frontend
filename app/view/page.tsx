@@ -12,12 +12,19 @@ import OfficeDataInterface, {
   ReservationData,
 } from "@/interfaces/OfficeInterface";
 import UserInterface from "@/interfaces/UserInterface";
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, OrbitControlsProps } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { MdOutlinePartyMode } from "react-icons/md";
-import React, { Suspense, useContext, useEffect, useState } from "react";
+import React, {
+  MutableRefObject,
+  Suspense,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { SectionsToolTip } from "@/components/features/creator/SectionsToolTip";
 import { Camera } from "three";
 
@@ -27,27 +34,35 @@ export interface cameraInterface {
   rotation: [number, number, number];
 }
 
-function CameraComp({ setCamera }) {
-  let change = false;
-  setTimeout(() => {
-    change = !change;
-  }, 2000);
+interface CameraRigProps {
+  resetTrigger: string;
+  controls: MutableRefObject<OrbitControlsProps | undefined>;
+}
 
-  useFrame(({ camera }) => {
-    // Ustaw rotację kamery
-    if (change) camera.position.set(0, 200, 0);
-    console.log(camera);
-    // camera.rotation.set(0, 0, 0); // Przykładowa rotacja o 45 stopni wokół osi Y
-  });
+function CameraRig({ resetTrigger, controls }: CameraRigProps) {
+  const { camera } = useThree();
+
+  useEffect(() => {
+    // Reset the camera position and rotation
+    camera.position.set(0, 200, 0);
+    camera.rotation.set(0, 0, 0);
+    camera.lookAt(0, 0, 0);
+
+    if (controls.current) {
+      // controls.current.target.set(0, 0, 0);
+      // controls.current.update();
+      controls.current.reset();
+    }
+  }, [resetTrigger, camera, controls]);
 
   return null;
 }
 
 export default function App() {
+  const control = useRef<OrbitControlsProps>();
   const [activeDesk, setActiveDesk] = useState("");
   const [selectedDesk, setSelectedDesk] = useState("");
   const [freeCamera, setFreeCamera] = useState(false);
-  const [camera, setCamera] = useState<Camera>();
   const [highlightDesks, setHighlightDesks] = useState(false);
   const [availableDesks, setAvailableDesks] = useState<string[]>([]);
 
@@ -86,8 +101,6 @@ export default function App() {
       setIsAdmin(foundOffice.authorId === user?.data.user._id);
     }
   }, [officeData, selectedOffice, user?.data.user._id]);
-  camera?.rotation.set(Math.PI / 4, Math.PI / 4, 0);
-  camera?.updateMatrix();
   if (!isAuth) {
     return null;
   }
@@ -144,7 +157,6 @@ export default function App() {
         setSelectedDateTo={setSelectedDateTo}
         selectedDateTo={selectedDateTo}
         setDeskId={setSelectedDesk}
-        // setCamera={setCamera}
       />
       <div className="relative h-full">
         <SectionsToolTip
@@ -172,7 +184,7 @@ export default function App() {
             }}
             shadows={true}
           >
-            <CameraComp />
+            <CameraRig resetTrigger={selectedOffice} controls={control} />
             {selectedOfficeBuild?.renderData.elements.map((element) => {
               return (
                 <Render3D
@@ -245,6 +257,7 @@ export default function App() {
               );
             })}
             <OrbitControls
+              ref={control}
               enableRotate={!freeCamera}
               enableDamping={false}
               minPolarAngle={0}
