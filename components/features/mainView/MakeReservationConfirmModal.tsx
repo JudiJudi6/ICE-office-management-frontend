@@ -82,10 +82,10 @@ export default function MakeReservationConfirmModal({
         deskId: desk.deskId,
         officeId: officeId,
         reservation: {
-          createdAt: new Date(),
-          endTime: timeToConverted,
+          createdAt: new Date().toString(),
+          endTime: timeToConverted.toString(),
           reservationId: new Date().getTime() + "-" + desk.deskName,
-          startTime: timeFromConverted,
+          startTime: timeFromConverted.toString(),
           user: {
             name: user?.data.user.name,
             surname: user?.data.user.surname,

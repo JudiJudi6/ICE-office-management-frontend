@@ -8,6 +8,7 @@ interface ConfirmReservationDeleteProps {
   onCloseModal: () => void;
   reservation: ReservationData | undefined;
   officeId: string | undefined;
+  onCloseModalSec?: () => void;
 }
 
 export default function ConfirmReservationDelete({
@@ -15,6 +16,7 @@ export default function ConfirmReservationDelete({
   desk,
   officeId,
   reservation,
+  onCloseModalSec,
 }: ConfirmReservationDeleteProps) {
   const { deleteReservation } = useDeleteReservation();
   const months = [
@@ -88,6 +90,7 @@ export default function ConfirmReservationDelete({
               reservationId: reservation?.reservationId,
             });
             onCloseModal();
+            if (onCloseModalSec) onCloseModalSec();
           }}
         >
           Confirm

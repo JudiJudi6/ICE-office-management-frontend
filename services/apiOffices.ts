@@ -135,7 +135,13 @@ export async function deleteReservation(
   reservationId: string | undefined
 ) {
   const response = await fetch(
-    API_KEY + "/api/v1/reservations/" + officeId + "/" + deskId + "/" + reservationId,
+    API_KEY +
+      "/api/v1/reservations/" +
+      officeId +
+      "/" +
+      deskId +
+      "/" +
+      reservationId,
     {
       method: "DELETE",
       headers: {
@@ -149,6 +155,38 @@ export async function deleteReservation(
   } else {
     const bodyText = await response.text();
     console.error(response);
+    throw new Error(`${bodyText}`);
+  }
+}
+
+export async function modifyReservation(
+  deskId: string | undefined,
+  officeId: string | undefined,
+  reservationId: string | undefined,
+  startTime: string | undefined,
+  endTime: string | undefined
+) {
+  const response = await fetch(
+    API_KEY +
+      "/api/v1/reservations/" +
+      officeId +
+      "/" +
+      deskId +
+      "/" +
+      reservationId,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ startTime, endTime }),
+    }
+  );
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  } else {
+    const bodyText = await response.text();
     throw new Error(`${bodyText}`);
   }
 }

@@ -1,6 +1,6 @@
 import { useChangeActive } from "@/hooks/reservations/useChangeActive";
 import { Desks, ReservationData } from "@/interfaces/OfficeInterface";
-import { convertTo12HourFormat } from "@/utils/helpers";
+import { convertTo12HourFormat, formatDateTo12Hour } from "@/utils/helpers";
 import React, { useState } from "react";
 import { RxCross1 } from "react-icons/rx";
 import { CgUnavailable } from "react-icons/cg";
@@ -76,27 +76,6 @@ export default function DeskAdminModal({
       </option>
     );
   }
-
-  const formatDateTo12Hour = (date: Date) => {
-    let dateDay = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-
-    const formattedDay = dateDay < 10 ? "0" + dateDay : dateDay;
-    const formattedMonth = month < 10 ? "0" + month : month;
-    const formattedDate = `${formattedDay}.${formattedMonth}.${year}`;
-
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
-    const strTime = hours + ":" + formattedMinutes + " " + ampm;
-
-    const createdAt = formattedDate + " " + strTime;
-    return createdAt;
-  };
 
   return (
     <div className="w-[260px] xs:w-[300px] sm:w-[500px] md:w-[600px]">
