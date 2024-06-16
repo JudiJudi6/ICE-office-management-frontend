@@ -1,7 +1,9 @@
-import React from 'react'
+import { useQueryClient } from "@tanstack/react-query";
+import React from "react";
 
 export default function AddNewOfficeModal() {
-  return (
-    <div>AddNewOfficeModal</div>
-  )
+  const queryClient = useQueryClient();
+  const user = queryClient.getQueryData(["user"]);
+  
+  return <div>AddNewOfficeModal</div>;
 }

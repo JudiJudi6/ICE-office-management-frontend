@@ -24,8 +24,9 @@ export function useModifyReservation() {
       queryClient.invalidateQueries({ queryKey: ["userOffices"] });
     },
     onError: (err) => {
-      console.log(err.message);
-      toast.error("Something went wrong");
+      const errorObject = JSON.parse(err.message);
+      const errorMessage = errorObject.error;
+      toast.error(errorMessage);
     },
   });
 
