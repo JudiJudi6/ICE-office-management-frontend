@@ -41,7 +41,7 @@ export async function getOffice() {
 }
 
 export async function getUserOffice(userId: string | undefined) {
-  const response = await fetch(API_KEY + "/api/v1/user/" + userId, {
+  const response = await fetch(API_KEY + "/api/v1/user/" + userId + "/all", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

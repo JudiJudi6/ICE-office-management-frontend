@@ -14,8 +14,8 @@ export function useAddNewOfficeByCode() {
       toast.success("Office added");
       //   router.push()
       console.log(data);
-      queryClient.invalidateQueries({ queryKey: ["userOffices"] });
       queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.invalidateQueries({ queryKey: ["userOffices"] });
     },
     onError: (err) => {
       const errorObject = JSON.parse(err.message);
