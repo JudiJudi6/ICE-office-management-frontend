@@ -189,6 +189,8 @@ export default function App() {
         setSelectedDateTo={setSelectedDateTo}
         selectedDateTo={selectedDateTo}
         setDeskId={setSelectedDesk}
+        selectedOfficeBuild={selectedOfficeBuild}
+        isAdmin={isAdmin}
       />
       <div className="relative h-full">
         <SectionsToolTip
@@ -205,7 +207,7 @@ export default function App() {
                 setIsometricView(false);
               }
             }}
-            className={`absolute top-[270px] md500:top-[136px] lg:top-[78px] left-4 p-2 z-50 hover:text-main2 rounded-xl text-lg transition-colors duration-300  ${
+            className={`absolute top-[270px] md500:top-[136px] lg:top-[78px] left-4 p-2 z-50 hover:text-main2 rounded-xl text-lg transition-colors duration-300 hidden sm:block ${
               freeCamera && "text-main2"
             }`}
           >
@@ -221,7 +223,7 @@ export default function App() {
         >
           <button
             onClick={() => setResetCamera((s) => !s)}
-            className={`absolute top-[270px] md500:top-[136px] lg:top-[78px] left-12 p-2 z-50 hover:text-main2 rounded-xl text-lg transition-colors duration-300 `}
+            className={`absolute top-[270px] md500:top-[136px] lg:top-[78px] left-12 p-2 z-50 hover:text-main2 rounded-xl text-lg transition-colors duration-300 hidden sm:block `}
           >
             <GrPowerReset />
           </button>
@@ -247,7 +249,7 @@ export default function App() {
                 setFreeCamera(true);
               }
             }}
-            className={`absolute top-[270px] md500:top-[136px] lg:top-[78px] left-20 p-2 z-50 hover:text-main2 rounded-xl text-lg transition-colors duration-300 ${
+            className={`absolute top-[270px] md500:top-[136px] lg:top-[78px] left-20 p-2 z-50 hover:text-main2 rounded-xl text-lg transition-colors duration-300 hidden sm:block ${
               isometricView && "text-main2"
             }`}
           >
@@ -279,7 +281,7 @@ export default function App() {
             >
               <button
                 onClick={() => setIsometricViewStep((s) => s + 1)}
-                className={`absolute top-[270px] md500:top-[136px] lg:top-[78px] left-36 p-2 z-50 hover:text-main2 rounded-xl text-lg transition-colors duration-300 `}
+                className={`absolute top-[270px] md500:top-[136px] lg:top-[78px] left-36 p-2 z-50 hover:text-main2 rounded-xl text-lg transition-colors duration-300  hidden sm:block`}
               >
                 <MdOutlineChevronRight />
               </button>

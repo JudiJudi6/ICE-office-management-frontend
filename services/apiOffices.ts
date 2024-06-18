@@ -190,3 +190,20 @@ export async function modifyReservation(
     throw new Error(`${bodyText}`);
   }
 }
+
+export async function addByCode(invCode: string, userId: string) {
+  const response = await fetch(API_KEY + "/api/v1/office/" + invCode, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ userId }),
+  });
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  } else {
+    const bodyText = await response.text();
+    throw new Error(`${bodyText}`);
+  }
+}

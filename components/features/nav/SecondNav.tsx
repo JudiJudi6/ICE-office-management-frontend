@@ -10,6 +10,9 @@ import { PiCheckSquareOffsetBold } from "react-icons/pi";
 import { cameraInterface } from "@/app/view/page";
 import { PerspectiveCamera } from "three";
 import { Camera } from "@react-three/fiber";
+import { IoPersonAddOutline } from "react-icons/io5";
+import { SectionsToolTip } from "../creator/SectionsToolTip";
+import toast from "react-hot-toast";
 
 interface SecondNavProps {
   setSelectedOffice: Dispatch<SetStateAction<string>>;
@@ -21,6 +24,8 @@ interface SecondNavProps {
   setSelectedDateTo: Dispatch<SetStateAction<string>>;
   selectedDateTo: string;
   setDeskId: Dispatch<SetStateAction<string>>;
+  selectedOfficeBuild: OfficeDataInterface | undefined;
+  isAdmin: boolean;
 }
 
 export default function SecondNav({
@@ -33,10 +38,11 @@ export default function SecondNav({
   setSelectedDateTo,
   setSelectedDay,
   setDeskId,
+  isAdmin,
+  selectedOfficeBuild,
 }: SecondNavProps) {
   const officeData = useContext(OfficesContext);
   const searchParams = useSearchParams();
-
   const today = new Date();
   const options = [];
   const from = [];
@@ -127,20 +133,51 @@ export default function SecondNav({
             </option>
           ))}
         </select>
-        <div>
-          <Modal>
-            <Modal.Open opens="addNew">
-              <button className="w-[180px] flex justify-center items-center gap-3 text-sm text-center hover:bg-gradient-to-r  bg-size-200 bg-pos-0 hover:bg-pos-100 py-3 text-main1 hover:text-main2  tracking-wide  rounded-full transition-all duration-300 px-6">
-                <span className="text-lg">
-                  <PiCheckSquareOffsetBold />
-                </span>{" "}
-                Add new office
-              </button>
-            </Modal.Open>
-            <Modal.Window name="addNew">
-              <AddNewOfficeModal />
-            </Modal.Window>
-          </Modal>
+        <div className="flex">
+          <div>
+            <Modal>
+              <Modal.Open opens="addNew">
+                <button className="w-[180px] flex justify-center items-center gap-3 text-sm text-center hover:bg-gradient-to-r  bg-size-200 bg-pos-0 hover:bg-pos-100 py-3 text-main1 hover:text-main2  tracking-wide  rounded-full transition-all duration-300 px-1">
+                  <span className="text-lg">
+                    <PiCheckSquareOffsetBold />
+                  </span>{" "}
+                  Add new office
+                </button>
+              </Modal.Open>
+              <Modal.Window name="addNew">
+                <AddNewOfficeModal onCloseModal={undefined as never} />
+              </Modal.Window>
+            </Modal>
+          </div>
+          {isAdmin && (
+            <div className="flex justify-center items-center">
+              <SectionsToolTip
+                title={
+                  <>
+                    <p className="text-sm">
+                      Your office invitation code:{" "}
+                      <span className="text-main1">
+                        {selectedOfficeBuild?.invitationCode}
+                      </span>
+                      , click to copy
+                    </p>
+                  </>
+                }
+              >
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      selectedOfficeBuild?.invitationCode ?? ""
+                    );
+                    toast.success("Your invitation code copied to clipboard");
+                  }}
+                  className={`p-2 z-50 text-main1 hover:text-main2 rounded-xl text-lg transition-colors duration-300  `}
+                >
+                  <IoPersonAddOutline />
+                </button>
+              </SectionsToolTip>
+            </div>
+          )}
         </div>
       </div>
       <div className="grid gap-2 grid-cols-2 md500:grid-cols-3 ">
