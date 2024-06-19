@@ -12,6 +12,7 @@ import { Camera } from "@react-three/fiber";
 import { IoPersonAddOutline } from "react-icons/io5";
 import { SectionsToolTip } from "../creator/SectionsToolTip";
 import toast from "react-hot-toast";
+import { GoSearch } from "react-icons/go";
 
 interface SecondNavProps {
   setSelectedOffice: Dispatch<SetStateAction<string>>;
@@ -25,6 +26,7 @@ interface SecondNavProps {
   setDeskId: Dispatch<SetStateAction<string>>;
   selectedOfficeBuild: OfficeDataInterface | undefined;
   isAdmin: boolean;
+  setHighlightDesks: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function SecondNav({
@@ -39,6 +41,7 @@ export default function SecondNav({
   setDeskId,
   isAdmin,
   selectedOfficeBuild,
+  setHighlightDesks,
 }: SecondNavProps) {
   const officeData = useContext(OfficesContext);
   const searchParams = useSearchParams();
@@ -174,7 +177,11 @@ export default function SecondNav({
           )}
         </div>
       </div>
-      <div className="grid gap-2 grid-cols-2 md500:grid-cols-3 ">
+      <div
+        className="grid gap-2 grid-cols-2 md500:grid-cols-3"
+        onMouseEnter={() => setHighlightDesks(true)}
+        onMouseLeave={() => setHighlightDesks(false)}
+      >
         <select
           className="h-12 bg-transparent border border-gray text-bgDark1 rounded-lg focus:ring-main2 focus:border-main2 block p-2.5 transition-colors duration-300 outline-none cursor-pointer col-start-1 col-end-3 md500:col-end-2 "
           value={selectedDay}
@@ -190,7 +197,7 @@ export default function SecondNav({
           {from}
         </select>
         <select
-          className="h-12 bg-transparent border border-gray text-bgDark1 rounded-lg focus:ring-main2 focus:border-main2 block  p-2.5 transition-colors duration-300 outline-none cursor-pointer flex-grow-1"
+          className="h-12 bg-transparent border border-gray text-bgDark1 rounded-lg focus:ring-main2 focus:border-main2 block  p-2.5 transition-colors duration-300 outline-none cursor-pointer flex-grow"
           value={selectedDateTo}
           onChange={(e) => setSelectedDateTo(e.target.value)}
         >

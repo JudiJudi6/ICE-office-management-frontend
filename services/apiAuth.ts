@@ -14,7 +14,6 @@ interface userLoginInterface {
 }
 
 export async function signUp(userData: userInterface) {
-  console.log(userData);
   const response = await fetch(API_KEY + "/api/v1/signup", {
     method: "POST",
     headers: {
@@ -41,7 +40,6 @@ export async function signUp(userData: userInterface) {
 }
 
 export async function login(userData: userLoginInterface) {
-  console.log(userData);
   const response = await fetch(API_KEY + "/api/v1/login", {
     method: "POST",
     headers: {
@@ -62,7 +60,6 @@ export async function login(userData: userLoginInterface) {
 }
 
 export async function getUser(userToken: string | null) {
-  console.log(userToken);
   if (!userToken) return null;
 
   const response = await fetch(API_KEY + "/api/v1/login/getUser", {
@@ -76,7 +73,6 @@ export async function getUser(userToken: string | null) {
   });
   if (response.ok) {
     const userData = await response.json();
-    console.log(userData);
     return { status: "success", data: { user: userData } };
   } else {
     const bodyText = await response.json();

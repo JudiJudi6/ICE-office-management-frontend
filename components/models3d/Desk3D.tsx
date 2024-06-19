@@ -32,6 +32,8 @@ export default function Desk3D({
   setActiveDesk,
   selectedDesk,
   setSelectedDesk,
+  isDeskAvailable,
+  highlightDesks,
 }: deskInterface) {
   const [enter, setEnter] = useState(false);
   const deskUrl = `/assets3d/${deskPath}.glb`;
@@ -53,6 +55,8 @@ export default function Desk3D({
   const scene4 = gltf4.scene;
   const scene5 = gltf5.scene;
   const scene6 = gltf6.scene;
+
+  console.log(isDeskAvailable);
 
   return (
     <Suspense fallback={null}>
@@ -106,14 +110,27 @@ export default function Desk3D({
                 opacity={0.8}
                 transparent
               />
+            ) : activeDesk === id || selectedDesk === id ? (
+              <meshStandardMaterial
+                color={0x00ab1b}
+                opacity={0.8}
+                transparent
+              />
             ) : (
-              (activeDesk === id || selectedDesk === id) && (
+              highlightDesks &&
+              (isDeskAvailable ? (
                 <meshStandardMaterial
                   color={0x00ab1b}
                   opacity={0.8}
                   transparent
                 />
-              )
+              ) : (
+                <meshStandardMaterial
+                  color={0xff0000}
+                  opacity={0.8}
+                  transparent
+                />
+              ))
             )
           }
         />
@@ -172,14 +189,27 @@ export default function Desk3D({
                 opacity={0.8}
                 transparent
               />
+            ) : activeDesk === id || selectedDesk === id ? (
+              <meshStandardMaterial
+                color={0x00ab1b}
+                opacity={0.8}
+                transparent
+              />
             ) : (
-              (activeDesk === id || selectedDesk === id) && (
+              highlightDesks &&
+              (isDeskAvailable ? (
                 <meshStandardMaterial
                   color={0x00ab1b}
                   opacity={0.8}
                   transparent
                 />
-              )
+              ) : (
+                <meshStandardMaterial
+                  color={0xff0000}
+                  opacity={0.8}
+                  transparent
+                />
+              ))
             )
           }
         />
@@ -226,14 +256,27 @@ export default function Desk3D({
                 opacity={0.8}
                 transparent
               />
+            ) : activeDesk === id || selectedDesk === id ? (
+              <meshStandardMaterial
+                color={0x00ab1b}
+                opacity={0.8}
+                transparent
+              />
             ) : (
-              (activeDesk === id || selectedDesk === id) && (
+              highlightDesks &&
+              (isDeskAvailable ? (
                 <meshStandardMaterial
                   color={0x00ab1b}
                   opacity={0.8}
                   transparent
                 />
-              )
+              ) : (
+                <meshStandardMaterial
+                  color={0xff0000}
+                  opacity={0.8}
+                  transparent
+                />
+              ))
             )
           }
         />
@@ -275,14 +318,27 @@ export default function Desk3D({
                   opacity={0.8}
                   transparent
                 />
+              ) : activeDesk === id || selectedDesk === id ? (
+                <meshStandardMaterial
+                  color={0x00ab1b}
+                  opacity={0.8}
+                  transparent
+                />
               ) : (
-                (activeDesk === id || selectedDesk === id) && (
+                highlightDesks &&
+                (isDeskAvailable ? (
                   <meshStandardMaterial
                     color={0x00ab1b}
                     opacity={0.8}
                     transparent
                   />
-                )
+                ) : (
+                  <meshStandardMaterial
+                    color={0xff0000}
+                    opacity={0.8}
+                    transparent
+                  />
+                ))
               )
             }
           />
@@ -332,14 +388,27 @@ export default function Desk3D({
                   opacity={0.8}
                   transparent
                 />
+              ) : activeDesk === id || selectedDesk === id ? (
+                <meshStandardMaterial
+                  color={0x00ab1b}
+                  opacity={0.8}
+                  transparent
+                />
               ) : (
-                (activeDesk === id || selectedDesk === id) && (
+                highlightDesks &&
+                (isDeskAvailable ? (
                   <meshStandardMaterial
                     color={0x00ab1b}
                     opacity={0.8}
                     transparent
                   />
-                )
+                ) : (
+                  <meshStandardMaterial
+                    color={0xff0000}
+                    opacity={0.8}
+                    transparent
+                  />
+                ))
               )
             }
           />
@@ -388,14 +457,27 @@ export default function Desk3D({
                   opacity={0.8}
                   transparent
                 />
+              ) : activeDesk === id || selectedDesk === id ? (
+                <meshStandardMaterial
+                  color={0x00ab1b}
+                  opacity={0.8}
+                  transparent
+                />
               ) : (
-                (activeDesk === id || selectedDesk === id) && (
+                highlightDesks &&
+                (isDeskAvailable ? (
                   <meshStandardMaterial
                     color={0x00ab1b}
                     opacity={0.8}
                     transparent
                   />
-                )
+                ) : (
+                  <meshStandardMaterial
+                    color={0xff0000}
+                    opacity={0.8}
+                    transparent
+                  />
+                ))
               )
             }
           />

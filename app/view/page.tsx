@@ -9,6 +9,7 @@ import RenderWall from "@/components/models3d/RenderWall";
 import Spinner from "@/components/ui/Spinner";
 import { OfficesContext } from "@/context/OfficesContext";
 import OfficeDataInterface, {
+  Desks,
   ReservationData,
 } from "@/interfaces/OfficeInterface";
 import UserInterface from "@/interfaces/UserInterface";
@@ -94,7 +95,6 @@ export default function App() {
   const [selectedDesk, setSelectedDesk] = useState("");
   const [freeCamera, setFreeCamera] = useState(false);
   const [highlightDesks, setHighlightDesks] = useState(false);
-  const [availableDesks, setAvailableDesks] = useState<string[]>([]);
   const [resetCamera, setResetCamera] = useState(false);
   const [isometricView, setIsometricView] = useState(false);
   const [isometricViewStep, setIsometricViewStep] = useState(-1000);
@@ -115,8 +115,23 @@ export default function App() {
   const [isAdmin, setIsAdmin] = useState(
     selectedOfficeBuild?.authorId === user?.data.user._id
   );
-  
-  
+
+  const today = new Date();
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
   useEffect(
     function () {
       if (!isAuth) {
@@ -129,14 +144,13 @@ export default function App() {
   useEffect(
     function () {
       const office = searchParams.get("o");
-      console.log(office);
       if (office) {
         setSelectedOffice(office);
       }
     },
     [searchParams, setSelectedOffice, selectedOffice]
   );
-  
+
   useEffect(() => {
     const foundOffice = officeData?.data.offices.find(
       (item) => item.id === selectedOffice
@@ -146,36 +160,70 @@ export default function App() {
       setIsAdmin(foundOffice.authorId === user?.data.user._id);
     }
   }, [officeData, selectedOffice, user?.data.user._id]);
-  
+
   if (!isAuth) {
     return null;
   }
 
+  function convertStringToDate(timeString: string, selectedDay: Date) {
+    const timeArray = timeString.split(":");
+    let hours = parseInt(timeArray[1]);
+    let helper = timeArray[2].split(" ");
+    let minutes = parseInt(helper[0]);
+    const ampm = helper[1];
 
-  // const isDeskAvailable = (
-  //   deskReservationData: ReservationData[] | undefined,
-  //   selectedTimeFrom: string,
-  //   selectedTimeTo: string
-  // ) => {
-  //   // Iterujemy przez rezerwacje biurka
-  //   for (const reservation of deskReservationData) {
-  //     // Pobieramy czasy rozpoczęcia i zakończenia rezerwacji
-  //     const startTime = new Date(reservation.startTime);
-  //     const endTime = new Date(reservation.endTime);
+    if (ampm === "PM" && hours < 12) {
+      hours += 12;
+    } else if (ampm === "AM" && hours === 12) {
+      hours = 0;
+    }
 
-  //     // Sprawdzamy, czy wybrany przedział czasowy koliduje z rezerwacją
-  //     if (
-  //       (selectedTimeFrom >= startTime && selectedTimeFrom < endTime) ||
-  //       (selectedTimeTo > startTime && selectedTimeTo <= endTime) ||
-  //       (selectedTimeFrom <= startTime && selectedTimeTo >= endTime)
-  //     ) {
-  //       // Jeśli istnieje kolizja, biurko jest niedostępne w wybranym przedziale czasowym
-  //       return false;
-  //     }
-  //   }
-  //   // Jeśli nie występuje kolizja, biurko jest dostępne
-  //   return true;
-  // };
+    const year = today.getFullYear();
+    const month = selectedDay.getMonth();
+    const day = selectedDay.getDate();
+
+    const date = new Date(year, month, day, hours, minutes);
+
+    return date;
+  }
+
+  function isDeskAvailable(id: string) {
+    const deskData: Desks[] | undefined = selectedOfficeBuild?.deskList.filter(
+      (desk) => desk.deskId === id
+    );
+
+    const day = selectedDay
+      ? `${selectedDay} ${today.getFullYear()}`
+      : `${months[today.getMonth()]} ${today.getDate()} ${today.getFullYear()}`;
+
+    const timeFrom = selectedDateFrom ? selectedDateFrom : "From: 8:00 AM";
+    const timeTo = selectedDateTo ? selectedDateTo : "To: 9:00 AM";
+    const selectedStartTime = convertStringToDate(timeFrom, new Date(day));
+    const selectedEndTime = convertStringToDate(timeTo, new Date(day));
+
+    const deskReservationData = deskData?.at(0)?.reservationData;
+
+    if (deskReservationData) {
+      for (const reservation of deskReservationData) {
+        const startTime = new Date(reservation.startTime);
+        const endTime = new Date(reservation.endTime);
+
+        console.log(selectedStartTime);
+        console.log(selectedEndTime);
+        console.log(startTime);
+        console.log(endTime);
+
+        if (
+          (selectedStartTime >= startTime && selectedStartTime < endTime) || // Przypadek 1
+          (selectedEndTime > startTime && selectedEndTime <= endTime) || // Przypadek 2
+          (selectedStartTime <= startTime && selectedEndTime >= endTime) // Przypadek 3 i 4
+        ) {
+          return false;
+        }
+      }
+      return true;
+    }
+  }
 
   return (
     <div className="text-black pt-16 h-screen relative overflow-x-hidden">
@@ -206,6 +254,7 @@ export default function App() {
         setDeskId={setSelectedDesk}
         selectedOfficeBuild={selectedOfficeBuild}
         isAdmin={isAdmin}
+        setHighlightDesks={setHighlightDesks}
       />
       <div className="relative h-full">
         <SectionsToolTip
@@ -356,6 +405,8 @@ export default function App() {
                   setActiveDesk={setActiveDesk}
                   setSelectedDesk={setSelectedDesk}
                   selectedDesk={selectedDesk}
+                  isDeskAvailable={isDeskAvailable(element.id)}
+                  highlightDesks={highlightDesks}
                 />
               );
             })}

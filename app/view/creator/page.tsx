@@ -66,6 +66,8 @@ export interface deskInterface {
   setActiveDesk?: React.Dispatch<React.SetStateAction<string>>;
   selectedDesk?: string;
   setSelectedDesk?: React.Dispatch<React.SetStateAction<string>>;
+  isDeskAvailable?: boolean;
+  highlightDesks?: boolean;
 }
 
 interface SpyProps {
