@@ -15,7 +15,7 @@ import UserInterface from "@/interfaces/UserInterface";
 import { OrbitControls, OrbitControlsProps } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { MdOutlineChevronRight, MdOutlinePartyMode } from "react-icons/md";
 import React, {
   MutableRefObject,
@@ -88,6 +88,7 @@ function CameraRig({
   return null;
 }
 export default function App() {
+  const searchParams = useSearchParams();
   const control = useRef<OrbitControlsProps>();
   const [activeDesk, setActiveDesk] = useState("");
   const [selectedDesk, setSelectedDesk] = useState("");
@@ -114,7 +115,8 @@ export default function App() {
   const [isAdmin, setIsAdmin] = useState(
     selectedOfficeBuild?.authorId === user?.data.user._id
   );
-
+  
+  
   useEffect(
     function () {
       if (!isAuth) {
@@ -124,6 +126,17 @@ export default function App() {
     [isAuth, router]
   );
 
+  useEffect(
+    function () {
+      const office = searchParams.get("o");
+      console.log(office);
+      if (office) {
+        setSelectedOffice(office);
+      }
+    },
+    [searchParams, setSelectedOffice, selectedOffice]
+  );
+  
   useEffect(() => {
     const foundOffice = officeData?.data.offices.find(
       (item) => item.id === selectedOffice
@@ -133,9 +146,11 @@ export default function App() {
       setIsAdmin(foundOffice.authorId === user?.data.user._id);
     }
   }, [officeData, selectedOffice, user?.data.user._id]);
+  
   if (!isAuth) {
     return null;
   }
+
 
   // const isDeskAvailable = (
   //   deskReservationData: ReservationData[] | undefined,

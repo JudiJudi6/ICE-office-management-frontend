@@ -12,8 +12,7 @@ export function useAddNewOfficeByCode() {
       addByCodeApi(requestData.invCode, user?.data.user._id),
     onSuccess: (data) => {
       toast.success("Office added");
-      //   router.push()
-      console.log(data);
+      router.push(`view?o=${data.data.offices.at(-1)}`);
       queryClient.invalidateQueries({ queryKey: ["user"] });
       queryClient.invalidateQueries({ queryKey: ["userOffices"] });
     },

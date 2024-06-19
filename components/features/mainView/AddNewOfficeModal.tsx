@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useAddNewOfficeByCode } from "@/hooks/creator/useAddNewOfficeByCode";
 interface AddNewOfficeModalProps {
-  onCloseModal?: () => void;
+  onCloseModal: () => void;
 }
 
 export default function AddNewOfficeModal({
@@ -24,13 +24,14 @@ export default function AddNewOfficeModal({
   );
 
   function handleAddOffice() {
+    onCloseModal()
     addByCode({ invCode: inputValue });
   }
 
   return (
     <div className="">
-      <p className="mb-5">Enter office invitation code to join: </p>
-      <div className="relative h-[50px] w-full">
+      <p className="">Enter office invitation code to join: </p>
+      <div className="relative h-[50px] w-full my-4">
         <motion.label
           htmlFor="code"
           className={`absolute top-1/2 left-3 text-gray cursor-text transition-colors duration-300 ${

@@ -2,8 +2,7 @@ import Modal from "@/components/ui/Modal";
 import { OfficesContext } from "@/context/OfficesContext";
 import OfficeDataInterface from "@/interfaces/OfficeInterface";
 import { useReducedMotion } from "framer-motion";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/router";
+import { useSearchParams, useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction, useContext, useEffect } from "react";
 import AddNewOfficeModal from "../mainView/AddNewOfficeModal";
 import { PiCheckSquareOffsetBold } from "react-icons/pi";
@@ -43,6 +42,7 @@ export default function SecondNav({
 }: SecondNavProps) {
   const officeData = useContext(OfficesContext);
   const searchParams = useSearchParams();
+  const router = useRouter();
   const today = new Date();
   const options = [];
   const from = [];
@@ -103,16 +103,6 @@ export default function SecondNav({
     );
   }
 
-  useEffect(
-    function () {
-      const office = searchParams.get("o");
-      if (office) {
-        setSelectedOffice(office);
-      }
-    },
-    [searchParams, setSelectedOffice]
-  );
-
   return (
     <div className="fixed z-10  gap-2 bg-white w-full lg:max-w-[calc(100%-250px)] flex flex-col p-4 md500:p-6 lg:flex-row lg:justify-between lg:items-center">
       <div className="flex justify-center items-center gap-5 flex-col md500:flex-row mb-5 md500:mb-0 max-w-[500px]">
@@ -121,6 +111,10 @@ export default function SecondNav({
           value={selectedOffice}
           onChange={(e) => {
             setSelectedOffice(e.target.value);
+            const params = new URLSearchParams(searchParams.toString());
+            params.set("dds", "dsadsa");
+            console.log(searchParams.toString());
+            router.push(`view?o=${e.target.value}`);
             setDeskId("");
           }}
         >
