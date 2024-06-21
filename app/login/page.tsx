@@ -1,22 +1,35 @@
 "use client";
 
 import TextLink from "@/components/ui/TextLink";
-import React from "react";
+import React, { useEffect } from "react";
 
 import PageCanvas from "@/components/features/login/PageCanvas";
 import InputBox from "@/components/ui/InputBox";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useLogin } from "@/hooks/user/useLogin";
+import { useRouter } from "next/navigation";
 
 export default function LogIn() {
+  const sessionToken = localStorage.getItem("sessionToken");
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FieldValues>();
+  const { login, isSuccess } = useLogin();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
+    login({ mail: data.email, password: data.password });
   };
+
+  useEffect(
+    function () {
+      if (sessionToken) router.push("/view");
+    },
+    [sessionToken, router]
+  );
 
   return (
     <div className="min-h-screen w-full h-full">

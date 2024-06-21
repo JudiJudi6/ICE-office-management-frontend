@@ -28,6 +28,12 @@ export default function Desk3D({
   mouseInteractions = false,
   destroyElement,
   equipment,
+  activeDesk,
+  setActiveDesk,
+  selectedDesk,
+  setSelectedDesk,
+  isDeskAvailable,
+  highlightDesks,
 }: deskInterface) {
   const [enter, setEnter] = useState(false);
   const deskUrl = `/assets3d/${deskPath}.glb`;
@@ -50,6 +56,8 @@ export default function Desk3D({
   const scene5 = gltf5.scene;
   const scene6 = gltf6.scene;
 
+  console.log(isDeskAvailable);
+
   return (
     <Suspense fallback={null}>
       <mesh
@@ -59,6 +67,12 @@ export default function Desk3D({
         rotation={[rotX, rotY, rotZ]}
         receiveShadow
         castShadow={true}
+        onClick={() => {
+          if (setSelectedDesk && selectedDesk) {
+            setSelectedDesk(id);
+            console.log(selectedDesk);
+          }
+        }}
       >
         <Clone
           object={scene1}
@@ -66,12 +80,21 @@ export default function Desk3D({
           receiveShadow
           onPointerEnter={(e) => {
             e.stopPropagation();
+            if (setActiveDesk) {
+              setActiveDesk(id);
+            }
             setEnter(true);
           }}
           rotation={[0, equipment.includes("desk 90deg") ? 3.15 : 0, 0]}
-          onPointerLeave={() => setEnter(false)}
+          onPointerLeave={() => {
+            setEnter(false);
+            if (setActiveDesk) {
+              setActiveDesk("");
+            }
+          }}
           onClick={(e) => {
             destroyElement && id && destroyElement(e, id);
+            setSelectedDesk && setSelectedDesk(id);
             console.log(equipment);
           }}
           inject={
@@ -81,14 +104,33 @@ export default function Desk3D({
                 opacity={0.5}
                 transparent
               />
+            ) : transparent ? (
+              <meshStandardMaterial
+                color={0x00ab1b}
+                opacity={0.8}
+                transparent
+              />
+            ) : activeDesk === id || selectedDesk === id ? (
+              <meshStandardMaterial
+                color={0x00ab1b}
+                opacity={0.8}
+                transparent
+              />
             ) : (
-              transparent && (
+              highlightDesks &&
+              (isDeskAvailable ? (
                 <meshStandardMaterial
                   color={0x00ab1b}
                   opacity={0.8}
                   transparent
                 />
-              )
+              ) : (
+                <meshStandardMaterial
+                  color={0xff0000}
+                  opacity={0.8}
+                  transparent
+                />
+              ))
             )
           }
         />
@@ -119,10 +161,19 @@ export default function Desk3D({
           onPointerEnter={(e) => {
             e.stopPropagation();
             setEnter(true);
+            if (setActiveDesk) {
+              setActiveDesk(id);
+            }
           }}
-          onPointerLeave={() => setEnter(false)}
+          onPointerLeave={() => {
+            setEnter(false);
+            if (setActiveDesk) {
+              setActiveDesk("");
+            }
+          }}
           onClick={(e) => {
             destroyElement && id && destroyElement(e, id);
+            setSelectedDesk && setSelectedDesk(id);
             console.log(equipment);
           }}
           inject={
@@ -132,14 +183,33 @@ export default function Desk3D({
                 opacity={0.5}
                 transparent
               />
+            ) : transparent ? (
+              <meshStandardMaterial
+                color={0x00ab1b}
+                opacity={0.8}
+                transparent
+              />
+            ) : activeDesk === id || selectedDesk === id ? (
+              <meshStandardMaterial
+                color={0x00ab1b}
+                opacity={0.8}
+                transparent
+              />
             ) : (
-              transparent && (
+              highlightDesks &&
+              (isDeskAvailable ? (
                 <meshStandardMaterial
                   color={0x00ab1b}
                   opacity={0.8}
                   transparent
                 />
-              )
+              ) : (
+                <meshStandardMaterial
+                  color={0xff0000}
+                  opacity={0.8}
+                  transparent
+                />
+              ))
             )
           }
         />
@@ -158,10 +228,19 @@ export default function Desk3D({
           onPointerEnter={(e) => {
             e.stopPropagation();
             setEnter(true);
+            if (setActiveDesk) {
+              setActiveDesk(id);
+            }
           }}
-          onPointerLeave={() => setEnter(false)}
+          onPointerLeave={() => {
+            setEnter(false);
+            if (setActiveDesk) {
+              setActiveDesk("");
+            }
+          }}
           onClick={(e) => {
             destroyElement && id && destroyElement(e, id);
+            setSelectedDesk && setSelectedDesk(id);
             console.log(equipment);
           }}
           inject={
@@ -171,14 +250,33 @@ export default function Desk3D({
                 opacity={0.5}
                 transparent
               />
+            ) : transparent ? (
+              <meshStandardMaterial
+                color={0x00ab1b}
+                opacity={0.8}
+                transparent
+              />
+            ) : activeDesk === id || selectedDesk === id ? (
+              <meshStandardMaterial
+                color={0x00ab1b}
+                opacity={0.8}
+                transparent
+              />
             ) : (
-              transparent && (
+              highlightDesks &&
+              (isDeskAvailable ? (
                 <meshStandardMaterial
                   color={0x00ab1b}
                   opacity={0.8}
                   transparent
                 />
-              )
+              ) : (
+                <meshStandardMaterial
+                  color={0xff0000}
+                  opacity={0.8}
+                  transparent
+                />
+              ))
             )
           }
         />
@@ -192,10 +290,19 @@ export default function Desk3D({
             onPointerEnter={(e) => {
               e.stopPropagation();
               setEnter(true);
+              if (setActiveDesk) {
+                setActiveDesk(id);
+              }
             }}
-            onPointerLeave={() => setEnter(false)}
+            onPointerLeave={() => {
+              setEnter(false);
+              if (setActiveDesk) {
+                setActiveDesk("");
+              }
+            }}
             onClick={(e) => {
               destroyElement && id && destroyElement(e, id);
+              setSelectedDesk && setSelectedDesk(id);
               console.log(equipment);
             }}
             inject={
@@ -205,14 +312,33 @@ export default function Desk3D({
                   opacity={0.5}
                   transparent
                 />
+              ) : transparent ? (
+                <meshStandardMaterial
+                  color={0x00ab1b}
+                  opacity={0.8}
+                  transparent
+                />
+              ) : activeDesk === id || selectedDesk === id ? (
+                <meshStandardMaterial
+                  color={0x00ab1b}
+                  opacity={0.8}
+                  transparent
+                />
               ) : (
-                transparent && (
+                highlightDesks &&
+                (isDeskAvailable ? (
                   <meshStandardMaterial
                     color={0x00ab1b}
                     opacity={0.8}
                     transparent
                   />
-                )
+                ) : (
+                  <meshStandardMaterial
+                    color={0xff0000}
+                    opacity={0.8}
+                    transparent
+                  />
+                ))
               )
             }
           />
@@ -234,10 +360,19 @@ export default function Desk3D({
             onPointerEnter={(e) => {
               e.stopPropagation();
               setEnter(true);
+              if (setActiveDesk) {
+                setActiveDesk(id);
+              }
             }}
-            onPointerLeave={() => setEnter(false)}
+            onPointerLeave={() => {
+              setEnter(false);
+              if (setActiveDesk) {
+                setActiveDesk("");
+              }
+            }}
             onClick={(e) => {
               destroyElement && id && destroyElement(e, id);
+              setSelectedDesk && setSelectedDesk(id);
               console.log(equipment);
             }}
             inject={
@@ -247,14 +382,33 @@ export default function Desk3D({
                   opacity={0.5}
                   transparent
                 />
+              ) : transparent ? (
+                <meshStandardMaterial
+                  color={0x00ab1b}
+                  opacity={0.8}
+                  transparent
+                />
+              ) : activeDesk === id || selectedDesk === id ? (
+                <meshStandardMaterial
+                  color={0x00ab1b}
+                  opacity={0.8}
+                  transparent
+                />
               ) : (
-                transparent && (
+                highlightDesks &&
+                (isDeskAvailable ? (
                   <meshStandardMaterial
                     color={0x00ab1b}
                     opacity={0.8}
                     transparent
                   />
-                )
+                ) : (
+                  <meshStandardMaterial
+                    color={0xff0000}
+                    opacity={0.8}
+                    transparent
+                  />
+                ))
               )
             }
           />
@@ -275,10 +429,19 @@ export default function Desk3D({
             onPointerEnter={(e) => {
               e.stopPropagation();
               setEnter(true);
+              if (setActiveDesk) {
+                setActiveDesk(id);
+              }
             }}
-            onPointerLeave={() => setEnter(false)}
+            onPointerLeave={() => {
+              setEnter(false);
+              if (setActiveDesk) {
+                setActiveDesk("");
+              }
+            }}
             onClick={(e) => {
               destroyElement && id && destroyElement(e, id);
+              setSelectedDesk && setSelectedDesk(id);
               console.log(equipment);
             }}
             inject={
@@ -288,14 +451,33 @@ export default function Desk3D({
                   opacity={0.5}
                   transparent
                 />
+              ) : transparent ? (
+                <meshStandardMaterial
+                  color={0x00ab1b}
+                  opacity={0.8}
+                  transparent
+                />
+              ) : activeDesk === id || selectedDesk === id ? (
+                <meshStandardMaterial
+                  color={0x00ab1b}
+                  opacity={0.8}
+                  transparent
+                />
               ) : (
-                transparent && (
+                highlightDesks &&
+                (isDeskAvailable ? (
                   <meshStandardMaterial
                     color={0x00ab1b}
                     opacity={0.8}
                     transparent
                   />
-                )
+                ) : (
+                  <meshStandardMaterial
+                    color={0xff0000}
+                    opacity={0.8}
+                    transparent
+                  />
+                ))
               )
             }
           />

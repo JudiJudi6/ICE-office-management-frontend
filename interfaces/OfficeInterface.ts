@@ -55,6 +55,7 @@ type WallRenderData = {
   endY: number;
   endZ: number;
   id: string;
+  transparent?: boolean;
   x: number;
   y: number;
   z: number;
@@ -67,16 +68,16 @@ type OfficeRenderData = {
   walls: WallRenderData[];
 };
 
-type ReservationData = {
+export type ReservationData = {
   reservationId: string;
   userId: string;
   user: { name: string; surname: string };
-  startTime: Date;
-  endTime: Date;
-  createdAt: Date;
+  startTime: string;
+  endTime: string;
+  createdAt: string;
 };
 
-type Desks = {
+export type Desks = {
   deskId: string;
   deskName: string;
   equipment: string[];

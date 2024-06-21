@@ -61,6 +61,13 @@ export interface deskInterface {
   transparent?: boolean;
   destroyElement?: (e: ThreeEvent<MouseEvent>, id: string) => void;
   equipment: string[];
+
+  activeDesk?: string;
+  setActiveDesk?: React.Dispatch<React.SetStateAction<string>>;
+  selectedDesk?: string;
+  setSelectedDesk?: React.Dispatch<React.SetStateAction<string>>;
+  isDeskAvailable?: boolean;
+  highlightDesks?: boolean;
 }
 
 interface SpyProps {

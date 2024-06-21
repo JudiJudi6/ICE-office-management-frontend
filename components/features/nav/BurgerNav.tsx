@@ -92,7 +92,7 @@ export default function BurgerNav() {
               animate={open ? { translateX: "0%" } : { translateX: "100%" }}
               initial={{ translateX: "100%" }}
               transition={{ ease: "easeInOut" }}
-              className={`absolute w-full h-full z-[9] top-0 left-0  flex justify-center items-center overflow-hidden ${
+              className={`absolute w-full h-full z-[30] top-0 left-0  flex justify-center items-center overflow-hidden ${
                 pathName !== "/view/creator" && "lg:hidden"
               }`}
             ></motion.div>
@@ -100,7 +100,7 @@ export default function BurgerNav() {
               animate={open ? { translateX: "0%" } : { translateX: "100%" }}
               initial={{ translateX: "100%" }}
               transition={{ ease: "easeInOut" }}
-              className={`absolute right-0 top-0 z-[9] -translate-x-full h-full w-[280px] bg-white border-l border-l-slate-200 border-solid p-6 pt-[88px] flex flex-col ${
+              className={`absolute right-0 top-0 z-[30] -translate-x-full h-full w-[280px] bg-white border-l border-l-slate-200 border-solid p-6 pt-[88px] flex flex-col ${
                 pathName !== "/view/creator" && "lg:hidden"
               }`}
             >

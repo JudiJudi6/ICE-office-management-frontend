@@ -1,14 +1,31 @@
 "use client";
 
 import { RxCross2 } from "react-icons/rx";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Greeting from "@/components/features/homepage/Greeting";
 import DescriptionBox from "@/components/features/homepage/DescriptionBox";
 import Footer from "@/components/features/homepage/Footer";
 import CreatorPanel from "@/components/features/homepage/CreatorPanel";
 import RegisterAd from "@/components/features/homepage/RegisterAd";
+import { useQueryClient } from "@tanstack/react-query";
+import UserInterface from "@/interfaces/UserInterface";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const queryClient = useQueryClient();
+  const user: UserInterface | undefined = queryClient.getQueryData(["user"]);
+  const isAuth = user?.data.user;
+  const router = useRouter();
+
+  useEffect(
+    function () {
+      if (isAuth) {
+        router.push("/view");
+      }
+    },
+    [isAuth, router]
+  );
+
   return (
     <div className="z-[-1]   overflow-hidden bg-bgWhite1  ">
       <Greeting />
@@ -30,7 +47,7 @@ export default function Home() {
         <div className=" xl:m-12 lg:mx-16  lg:col-span-2 2xl:col-span-1  my-16">
           <DescriptionBox
             boxTitle="How do I use FireDesk?"
-            text="Using FireDesk is intuitive and straightforward. Simply utilize our 3D office creator tool to visualize your office space. Then, drag and drop desks into your desired layout, adjust configurations as needed, and voila! You've successfully optimized your workspace with FireDesk."
+            text="Using FireDesk is intuitive and straightforward. Simply utilize our 3D office creator tool to visualize your office space."
             image="FiTool"
           />
         </div>

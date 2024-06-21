@@ -47,6 +47,8 @@ export default function Greeting() {
                 enableZoom={false}
                 enableDamping={false}
                 enablePan={false}
+                minPolarAngle={0}
+                maxPolarAngle={Math.PI / 2 - 0.1}
               />
               <Desk3D
                 id={"1"}

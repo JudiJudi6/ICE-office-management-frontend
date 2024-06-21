@@ -4,6 +4,7 @@ import PageCanvas from "@/components/features/login/PageCanvas";
 import InputBox from "@/components/ui/InputBox";
 import Spinner from "@/components/ui/Spinner";
 import TextLink from "@/components/ui/TextLink";
+import { useSignUp } from "@/hooks/user/useSignup";
 import React from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
@@ -14,9 +15,17 @@ export default function SignUp() {
     getValues,
     formState: { errors },
   } = useForm<FieldValues>();
+  const { signUp, isSuccess } = useSignUp();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
+    signUp({
+      name: data.name,
+      surname: data.surname,
+      mail: data.email,
+      password: data.password,
+      repeatPassword: data.repeatPassword,
+    });
   };
 
   return (
@@ -84,13 +93,13 @@ export default function SignUp() {
 
               <div className="mb-6">
                 <InputBox
-                  id="passwordRep"
+                  id="repeatPassword"
                   type="password"
                   label="Repeat Password"
-                  error={errors?.passwordRep?.message}
+                  error={errors?.repeatPassword?.message}
                   register={register}
                   validateFunction={() => {
-                    if (getValues().password !== getValues().passwordRep)
+                    if (getValues().password !== getValues().repeatPassword)
                       return "Passwords don't match";
                     else return true;
                   }}
