@@ -109,8 +109,7 @@ export default function App() {
   >(officeData?.data.offices.at(0));
   const queryClient = useQueryClient();
   const user: UserInterface | undefined = queryClient.getQueryData(["user"]);
-  const isAuth =
-    localStorage.getItem("sessionToken") !== null && user?.data.user;
+  const isAuth = localStorage.getItem("sessionToken") !== null;
   const router = useRouter();
   const [isAdmin, setIsAdmin] = useState(
     selectedOfficeBuild?.authorId === user?.data.user._id
@@ -207,11 +206,6 @@ export default function App() {
       for (const reservation of deskReservationData) {
         const startTime = new Date(reservation.startTime);
         const endTime = new Date(reservation.endTime);
-
-        console.log(selectedStartTime);
-        console.log(selectedEndTime);
-        console.log(startTime);
-        console.log(endTime);
 
         if (
           (selectedStartTime >= startTime && selectedStartTime < endTime) || // Przypadek 1

@@ -207,3 +207,26 @@ export async function addByCode(invCode: string, userId: string) {
     throw new Error(`${bodyText}`);
   }
 }
+
+export async function getUserReservations(
+  userId: string,
+  officeId: string | undefined
+) {
+  const response = await fetch(
+    API_KEY + "/api/v1/reservations/user/" + officeId + "/" + userId,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  } else {
+    const bodyText = await response.text();
+    console.error(response);
+    throw new Error(`${bodyText}`);
+  }
+}

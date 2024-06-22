@@ -114,9 +114,6 @@ export default function SecondNav({
           value={selectedOffice}
           onChange={(e) => {
             setSelectedOffice(e.target.value);
-            const params = new URLSearchParams(searchParams.toString());
-            params.set("dds", "dsadsa");
-            console.log(searchParams.toString());
             router.push(`view?o=${e.target.value}`);
             setDeskId("");
           }}
