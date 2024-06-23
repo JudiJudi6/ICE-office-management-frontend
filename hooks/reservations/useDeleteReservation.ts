@@ -10,7 +10,7 @@ export function useDeleteReservation() {
       officeId: string | undefined;
       reservationId: string | undefined;
     }) =>
-        deleteReservationApi(
+      deleteReservationApi(
         requestData.deskId,
         requestData.officeId,
         requestData.reservationId
@@ -18,6 +18,7 @@ export function useDeleteReservation() {
     onSuccess: () => {
       toast.success("Reservation deleted");
       queryClient.invalidateQueries({ queryKey: ["userOffices"] });
+      queryClient.invalidateQueries({ queryKey: ["userReservations"] });
     },
     onError: () => {
       toast.error("Something went wrong");

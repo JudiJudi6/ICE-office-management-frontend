@@ -22,6 +22,7 @@ export function useModifyReservation() {
     onSuccess: () => {
       toast.success("Reservation modified");
       queryClient.invalidateQueries({ queryKey: ["userOffices"] });
+      queryClient.invalidateQueries({ queryKey: ["userReservations"] });
     },
     onError: (err) => {
       const errorObject = JSON.parse(err.message);

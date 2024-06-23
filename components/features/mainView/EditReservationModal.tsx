@@ -13,6 +13,7 @@ interface EditReservationModalProps {
   onCloseModal: () => void;
   reservation: ReservationData | undefined;
   officeId: string | undefined;
+  me?: boolean;
 }
 
 export default function EditReservationModal({
@@ -20,6 +21,7 @@ export default function EditReservationModal({
   desk,
   officeId,
   reservation,
+  me,
 }: EditReservationModalProps) {
   const { modifyReservation } = useModifyReservation();
   const [selectedDateFrom, setSelectedDateFrom] = useState(
@@ -179,10 +181,15 @@ export default function EditReservationModal({
             Created at: {new Date(reservation?.createdAt ?? "").getDate()}{" "}
             {months[new Date(reservation?.createdAt ?? "").getMonth()]}{" "}
             {new Date(reservation?.createdAt ?? "").getFullYear()}{" "}
-            {formatDateTo12Hour(new Date(reservation?.createdAt ?? ""))}, by{" "}
-            <span className="font-semibold">
-              {reservation?.user.name} {reservation?.user.surname}
-            </span>
+            {formatDateTo12Hour(new Date(reservation?.createdAt ?? ""))}{" "}
+            {!me && (
+              <span>
+                , by{" "}
+                <span className="font-semibold">
+                  {reservation?.user.name} {reservation?.user.surname}
+                </span>
+              </span>
+            )}
           </p>
         </div>{" "}
         <div className="text-base mt-5 mb-8">
@@ -229,6 +236,7 @@ export default function EditReservationModal({
               reservation={reservation}
               officeId={officeId}
               desk={desk}
+              me={me}
             />
           </Modal.Window>
           <button

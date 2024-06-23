@@ -9,6 +9,7 @@ interface ConfirmReservationDeleteProps {
   reservation: ReservationData | undefined;
   officeId: string | undefined;
   onCloseModalSec?: () => void;
+  me?: boolean;
 }
 
 export default function ConfirmReservationDelete({
@@ -17,6 +18,7 @@ export default function ConfirmReservationDelete({
   officeId,
   reservation,
   onCloseModalSec,
+  me,
 }: ConfirmReservationDeleteProps) {
   const { deleteReservation } = useDeleteReservation();
   const months = [
@@ -70,9 +72,13 @@ export default function ConfirmReservationDelete({
         <span className="font-medium">
           {formatHoursTo12(new Date(reservation?.endTime ?? ""))}
         </span>
-        , that is made by{" "}
-        <span className="font-medium">{reservation?.user.name}</span>{" "}
-        <span className="font-medium">{reservation?.user.surname}</span>
+        {!me && (
+          <span>
+            , that is made by{" "}
+            <span className="font-medium">{reservation?.user.name}</span>{" "}
+            <span className="font-medium">{reservation?.user.surname}</span>
+          </span>
+        )}
       </p>
       <div className="flex justify-center items-center gap-3">
         <button
