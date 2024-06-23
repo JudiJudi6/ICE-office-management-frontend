@@ -1,22 +1,14 @@
 import { getUserReservations } from "@/services/apiOffices";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-export function useGetUserReservations() {
+export function useGetUserReservations({ officeId }: { officeId: string }) {
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData(["user"]);
 
-  const {
-    mutate: getReservations,
-    data,
-    isSuccess,
-  } = useMutation({
-    mutationFn: (requestData: { officeId: string | undefined }) => {
-      console.log(user?.data.user._id, requestData.officeId);
-      return getUserReservations(user?.data.user._id, requestData.officeId);
-    },
-    onSuccess: (data) => console.log(data),
-    onError: (err) => console.log(err),
+  const { data, isSuccess, refetch } = useQuery({
+    queryFn: () => getUserReservations(user?.data.user._id, officeId),
+    queryKey: ["userReservations"],
   });
 
-  return { data, isSuccess, getReservations };
+  return { data, isSuccess, refetch };
 }
