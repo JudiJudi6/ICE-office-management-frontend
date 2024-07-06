@@ -1,14 +1,6 @@
-import * as THREE from "three";
 import { ThreeEvent, useLoader } from "@react-three/fiber";
-import React, {
-  Suspense,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { Mesh, MeshPhongMaterial } from "three";
+import React, { Suspense, useRef, useState } from "react";
+import { Mesh } from "three";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
 import { Clone } from "@react-three/drei";
 interface ModelProps {

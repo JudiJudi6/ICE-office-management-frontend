@@ -2,7 +2,6 @@
 
 import PageCanvas from "@/components/features/login/PageCanvas";
 import InputBox from "@/components/ui/InputBox";
-import Spinner from "@/components/ui/Spinner";
 import TextLink from "@/components/ui/TextLink";
 import { useSignUp } from "@/hooks/user/useSignup";
 import React from "react";

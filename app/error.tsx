@@ -1,9 +1,8 @@
-'use client'
+"use client";
 
 import Link from "next/link";
 import { FaRegFaceTired } from "react-icons/fa6";
 import { FaFire } from "react-icons/fa";
-import { WiSmoke } from "react-icons/wi";
 
 export default function NotFound() {
   return (

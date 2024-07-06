@@ -2,7 +2,6 @@
 
 import React, { useEffect } from "react";
 import Spinner from "./Spinner";
-import { useGetOffices } from "@/hooks/creator/useGetOffices";
 import { OfficesContext } from "@/context/OfficesContext";
 import { useGetUserOffices } from "@/hooks/creator/useGetUserOffices";
 import { useQueryClient } from "@tanstack/react-query";
@@ -13,17 +12,17 @@ interface MainAppProps {
 }
 
 export default function MainApp({ children }: MainAppProps) {
-  const userToken = localStorage.getItem("sessionToken");
   const queryClient = useQueryClient();
   const user: UserInterface | undefined = queryClient.getQueryData(["user"]);
   const { data, isLoading } = useGetUserOffices(user?.data?.user?._id);
-  // const { data, isLoading } = useGetOffices();
 
-  console.log(data);
-
-  useEffect(function(){
-    if(!isLoading) queryClient.invalidateQueries({queryKey: ['userOffices']})
-  },[isLoading, queryClient])
+  useEffect(
+    function () {
+      if (!isLoading)
+        queryClient.invalidateQueries({ queryKey: ["userOffices"] });
+    },
+    [isLoading, queryClient]
+  );
 
   return (
     <>

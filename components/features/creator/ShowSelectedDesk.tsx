@@ -4,7 +4,6 @@ import React, { Dispatch, SetStateAction, useState } from "react";
 import { selectedDeskType } from "./DesksSection";
 import RenderFloor from "@/components/models3d/RenderFloor";
 import { OrbitControls } from "@react-three/drei";
-import { motion } from "framer-motion";
 import { FaCheck } from "react-icons/fa6";
 
 interface ShowSelectedDeskProps {

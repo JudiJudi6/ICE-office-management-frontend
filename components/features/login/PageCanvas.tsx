@@ -2,7 +2,7 @@ import React, { Suspense, useState } from "react";
 
 import Render3D from "@/components/models3d/Render3D";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, PerformanceMonitor, Stats } from "@react-three/drei";
+import { OrbitControls, PerformanceMonitor } from "@react-three/drei";
 
 import * as THREE from "three";
 import Spinner from "@/components/ui/Spinner";

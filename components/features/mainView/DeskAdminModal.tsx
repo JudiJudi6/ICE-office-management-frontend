@@ -3,7 +3,6 @@ import { Desks, ReservationData } from "@/interfaces/OfficeInterface";
 import { convertTo12HourFormat, formatDateTo12Hour } from "@/utils/helpers";
 import React, { useState } from "react";
 import { RxCross1 } from "react-icons/rx";
-import { CgUnavailable } from "react-icons/cg";
 import { FaCheck } from "react-icons/fa";
 import { VscError } from "react-icons/vsc";
 import Modal from "@/components/ui/Modal";

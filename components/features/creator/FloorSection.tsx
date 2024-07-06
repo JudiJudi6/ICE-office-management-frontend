@@ -1,9 +1,3 @@
-import * as THREE from "three";
-
-import Render3D from "@/components/models3d/Render3D";
-import RenderFloor from "@/components/models3d/RenderFloor";
-import { Box } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
 import React from "react";
 import Image from "next/image";
 

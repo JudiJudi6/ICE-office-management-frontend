@@ -1,4 +1,3 @@
-import { deskInterface } from "@/app/view/creator/page";
 import { useDeleteReservation } from "@/hooks/reservations/useDeleteReservation";
 import { Desks, ReservationData } from "@/interfaces/OfficeInterface";
 import React from "react";

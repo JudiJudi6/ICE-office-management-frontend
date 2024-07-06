@@ -3,13 +3,12 @@
 import * as THREE from "three";
 
 import Menu from "@/components/features/creator/Menu";
-import AxesHelper from "@/components/models3d/AxesHelper";
 import Desk3D from "@/components/models3d/Desk3D";
 import Render3D from "@/components/models3d/Render3D";
 import RenderFloor from "@/components/models3d/RenderFloor";
 import RenderWall from "@/components/models3d/RenderWall";
 import Spinner from "@/components/ui/Spinner";
-import { Box, OrbitControls, Stats, useHelper } from "@react-three/drei";
+import { Box, OrbitControls } from "@react-three/drei";
 import { Canvas, ThreeEvent, useFrame } from "@react-three/fiber";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Vector3 } from "three";

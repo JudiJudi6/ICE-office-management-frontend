@@ -8,16 +8,13 @@ import RenderFloor from "@/components/models3d/RenderFloor";
 import RenderWall from "@/components/models3d/RenderWall";
 import Spinner from "@/components/ui/Spinner";
 import { OfficesContext } from "@/context/OfficesContext";
-import OfficeDataInterface, {
-  Desks,
-  ReservationData,
-} from "@/interfaces/OfficeInterface";
+import OfficeDataInterface, { Desks } from "@/interfaces/OfficeInterface";
 import UserInterface from "@/interfaces/UserInterface";
 import { OrbitControls, OrbitControlsProps } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
-import { MdOutlineChevronRight, MdOutlinePartyMode } from "react-icons/md";
+import { MdOutlineChevronRight } from "react-icons/md";
 import React, {
   MutableRefObject,
   Suspense,
@@ -30,8 +27,6 @@ import { SectionsToolTip } from "@/components/features/creator/SectionsToolTip";
 import { MdOutlineLockOpen } from "react-icons/md";
 import { GrPowerReset } from "react-icons/gr";
 import { PiMapTrifoldLight } from "react-icons/pi";
-import { FaChevronLeft } from "react-icons/fa6";
-import { FaChevronRight } from "react-icons/fa";
 import { MdOutlineChevronLeft } from "react-icons/md";
 
 export interface cameraInterface {
@@ -70,6 +65,7 @@ function CameraRig({
     camera.lookAt(0, 0, 0);
 
     if (controls.current) {
+      // @ts-ignore
       controls.current.reset();
     }
   }, [resetTrigger, resetCamera, camera, controls]);
@@ -81,6 +77,7 @@ function CameraRig({
       camera.position.lerp({ x: targetX, y: targetY, z: targetZ }, 0.1);
       camera.lookAt(0, 0, 0);
       if (controls.current) {
+        // @ts-ignore
         controls.current.update();
       }
     }

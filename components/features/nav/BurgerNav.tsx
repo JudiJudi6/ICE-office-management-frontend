@@ -2,9 +2,7 @@
 
 import { motion } from "framer-motion";
 import React, { useState } from "react";
-import BurgerBtn from "./BurgerBtn";
 import { createPortal } from "react-dom";
-import LoginBtn from "./LoginBtn";
 import NavMobile from "./NavMobile";
 import { usePathname } from "next/navigation";
 

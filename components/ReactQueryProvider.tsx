@@ -52,7 +52,7 @@ export default function ReactQueryProvider({
           className: "text-dark",
         }}
       />
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
 }

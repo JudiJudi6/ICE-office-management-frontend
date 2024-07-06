@@ -1,7 +1,6 @@
 "use client";
 
-import { RxCross2 } from "react-icons/rx";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Greeting from "@/components/features/homepage/Greeting";
 import DescriptionBox from "@/components/features/homepage/DescriptionBox";
 import Footer from "@/components/features/homepage/Footer";

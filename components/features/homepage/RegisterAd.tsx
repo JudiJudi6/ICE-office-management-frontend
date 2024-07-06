@@ -1,5 +1,3 @@
-import { FaFire } from "react-icons/fa";
-
 export default function RegisterAd() {
   return (
     <div className="flex flex-col justify-center items-center gap-5 sm:gap-7 px-6 py-10 sm:py-16 lg:py-24 max-w-xl mx-auto">

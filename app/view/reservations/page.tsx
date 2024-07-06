@@ -2,13 +2,10 @@
 
 import EditReservationModal from "@/components/features/mainView/EditReservationModal";
 import Modal from "@/components/ui/Modal";
-import Spinner from "@/components/ui/Spinner";
 import { OfficesContext } from "@/context/OfficesContext";
 import { useGetUserReservations } from "@/hooks/reservations/useGetUserreservations";
-import OfficeDataInterface, {
-  ReservationData,
-} from "@/interfaces/OfficeInterface";
-import { convertTo12HourFormat, formatDateTo12Hour } from "@/utils/helpers";
+import { ReservationData } from "@/interfaces/OfficeInterface";
+import { convertTo12HourFormat } from "@/utils/helpers";
 import React, { useContext, useEffect, useState } from "react";
 import { PiClockCountdownLight } from "react-icons/pi";
 
@@ -39,14 +36,6 @@ export default function Reservations() {
     date.setDate(today.getDate() + index);
     return date;
   });
-  const filteredReservations = isSuccess
-    ? reservations.reservations.filter((item) => {
-        const reservationDate = new Date(item.startTime);
-        return (
-          reservationDate >= daysArray[0] && reservationDate < daysArray[6]
-        );
-      })
-    : [];
 
   useEffect(() => {
     refetch();
@@ -71,21 +60,6 @@ export default function Reservations() {
       });
     });
   }
-
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
 
   if (!isAuth) {
     return null;

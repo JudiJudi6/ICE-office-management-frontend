@@ -3,29 +3,14 @@ import {
   elementInterface,
   floorInterface,
 } from "@/app/view/creator/page";
-import Render3D from "@/components/models3d/Render3D";
-import { Box } from "@react-three/drei";
-import React, {
-  Dispatch,
-  MouseEvent,
-  MutableRefObject,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
-import ReactDOM from "react-dom";
-import { createRoot } from "react-dom/client";
-import { Vector3 } from "three";
+import React, { Dispatch, MutableRefObject, SetStateAction } from "react";
 
 import { RiArrowGoBackFill } from "react-icons/ri";
 import { MdOutlinePartyMode } from "react-icons/md";
-import { CiSquarePlus } from "react-icons/ci";
-import { CiSquareMinus } from "react-icons/ci";
 import { IoIosHelpCircleOutline } from "react-icons/io";
 import { TfiHummer } from "react-icons/tfi";
 import { RxCross2 } from "react-icons/rx";
 
-import { Canvas } from "@react-three/fiber";
 import DesksSection from "./DesksSection";
 import FloorSection from "./FloorSection";
 import WallsSection from "./WallsSection";

@@ -1,5 +1,3 @@
-import { Box } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
 import Image from "next/image";
 import React from "react";
 import { SectionsToolTip } from "./SectionsToolTip";

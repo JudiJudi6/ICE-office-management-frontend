@@ -1,18 +1,13 @@
 import Modal from "@/components/ui/Modal";
 import { OfficesContext } from "@/context/OfficesContext";
 import OfficeDataInterface from "@/interfaces/OfficeInterface";
-import { useReducedMotion } from "framer-motion";
 import { useSearchParams, useRouter } from "next/navigation";
-import React, { Dispatch, SetStateAction, useContext, useEffect } from "react";
+import React, { Dispatch, SetStateAction, useContext } from "react";
 import AddNewOfficeModal from "../mainView/AddNewOfficeModal";
 import { PiCheckSquareOffsetBold } from "react-icons/pi";
-import { cameraInterface } from "@/app/view/page";
-import { PerspectiveCamera } from "three";
-import { Camera } from "@react-three/fiber";
 import { IoPersonAddOutline } from "react-icons/io5";
 import { SectionsToolTip } from "../creator/SectionsToolTip";
 import toast from "react-hot-toast";
-import { GoSearch } from "react-icons/go";
 
 interface SecondNavProps {
   setSelectedOffice: Dispatch<SetStateAction<string>>;

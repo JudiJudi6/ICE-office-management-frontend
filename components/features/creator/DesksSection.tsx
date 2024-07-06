@@ -1,12 +1,9 @@
 "use client";
 
-import Render3D from "@/components/models3d/Render3D";
-import { Canvas } from "@react-three/fiber";
 import Image from "next/image";
 import React, { useState } from "react";
 import { SectionsToolTip } from "./SectionsToolTip";
 import Modal from "@/components/ui/Modal";
-import Desk3D from "@/components/models3d/Desk3D";
 import ShowSelectedDesk from "./ShowSelectedDesk";
 
 interface DesksSectionProps {
