@@ -15,9 +15,9 @@ Live - no live :(
 [![TypeScript](https://img.shields.io/badge/TypeScript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-## Showcase
+## More Details
 
-[![Watch the video](path/to/thumbnail.jpg)](.public/ghReadme/showcase.mp4)
+See more details about this huge project <a href="https://portfolio-page-judijudi6.vercel.app/firedesk">HERE</a>
 
 ## Pictures
 
