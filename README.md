@@ -6,7 +6,7 @@ FireDesk is office management app made in coop with Xebia Company and Rzeszów U
 
 See more details about this huge project <a href="https://portfolio-page-judijudi6.vercel.app/firedesk">HERE</a>
 
-<a href="https://portfolio-page-judijudi6.vercel.app/firedesk">See backend repo </a>
+<a href="https://github.com/JudiJudi6/ICE-office-management-backend">See backend repo </a>
 
 Live - no live :(
 
